@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: MF BankID
-Plugin URI: 
+Plugin URI: https://github.com/frostkom/mf_bank_id
 Description: 
-Version: 1.4.8
+Version: 1.4.9
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -11,6 +11,7 @@ Text Domain: lang_bank_id
 Domain Path: /lang
 
 Depends: MF Base
+GitHub Plugin URI: frostkom/mf_bank_id
 */
 
 include_once("include/classes.php");
