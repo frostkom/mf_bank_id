@@ -1,0 +1,40 @@
+@media all
+{
+	#loginform .login_or
+	{
+		margin-bottom: .5em;
+	}
+
+		#loginform .login_or label
+		{
+			font-size: 1.4em !important;
+		}
+
+	#login_fields
+	{
+		margin-bottom: .5em;
+	}
+
+		#login_fields a
+		{
+			color: inherit;
+			font-size: .8em;
+		}
+
+		#login_fields input
+		{
+			margin-bottom: .2em;
+		}
+
+	#login_loading
+	{
+		margin-bottom: .5em;
+	}
+
+	#loginform iframe
+	{
+		border: 0;
+		height: 0;
+		width: 0;
+	}
+}
