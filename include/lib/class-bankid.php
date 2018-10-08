@@ -85,17 +85,17 @@ class BankID
 		if($user_settings['test_mode'] == 1)
 		{
 			$default_settings = array(
-				"production"  => false,
-				"certificate" => JPATH_BASE.'/certs/certname.pem'
+				'production'  => false,
+				'certificate' => JPATH_BASE.'/certs/certname.pem',
 			);
 		}
 
 		else
 		{
 			$default_settings = array(
-				"production"  => true,
-				//"certificate" => JPATH_BASE.'/'.$user_settings['cert_path']
-				"certificate" => $user_settings['cert_path']
+				'production'  => true,
+				//'certificate' => JPATH_BASE.'/'.$user_settings['cert_path']
+				'certificate' => $user_settings['cert_path'],
 			);
 		}
 
@@ -105,9 +105,11 @@ class BankID
 
 		if(count($invalid_settings) > 0)
 		{
-			$returnarray = array();
-			$returnarray['error'] =  1;
-			$returnarray['msg'] = "invalid settings: " . implode(array_keys(', ',$invalid_settings));
+			$returnarray = array(
+				'error' => 1,
+				'msg' => "invalid settings: " . implode(array_keys(', ',$invalid_settings)),
+			);
+
 			echo json_encode($returnarray);
 			exit;
         }
@@ -143,10 +145,13 @@ class BankID
             );
 
             // make sure test or production RP certificate exists
-            if(!file_exists($certificate_path)){
-				$returnarray = array();
-				$returnarray['error'] =  1;
-				$returnarray['msg'] = "Unable to load your certificate file! " . $certificate_path;
+            if(!file_exists($certificate_path))
+			{
+				$returnarray = array(
+					'error' => 1,
+					'msg' => "Unable to load your certificate file! (".$certificate_path.")",
+				);
+
 				echo json_encode($returnarray);
 				exit;
             }
@@ -154,9 +159,11 @@ class BankID
             // make sure the bankid server certificate for the selected server exists
             if(!file_exists($server['cert_path']))
 			{
-				$returnarray = array();
-				$returnarray['error'] =  1;
-				$returnarray['msg'] = "Unable to find bankid certificate: " . $server['cert_path'];
+				$returnarray = array(
+					'error' => 1,
+					'msg' => "Unable to find bankid certificate: " . $server['cert_path'],
+				);
+
 				echo json_encode($returnarray);
 				exit;
             }
@@ -165,9 +172,11 @@ class BankID
 
 			if($ssl_context === null)
 			{
-				$returnarray = array();
-				$returnarray['error'] =  1;
-				$returnarray['msg'] = "Failed to create stream context for communication with the bank-id server (" . $server['peer_name'] . ")";
+				$returnarray = array(
+					'error' => 1,
+					'msg' => "Failed to create stream context for communication with the bank-id server (" . $server['peer_name'] . ")",
+				);
+
 				echo json_encode($returnarray);
 				exit;
             }

@@ -210,6 +210,11 @@ class mf_bank_id
 				}
 			}
 
+			else
+			{
+				delete_option('setting_bank_id_activate');
+			}
+
 			show_settings_fields(array('area' => $options_area, 'object' => $this, 'settings' => $arr_settings));
 		}
 	}
@@ -235,7 +240,7 @@ class mf_bank_id
 				." <a href='//bankid.com/kontakt/foeretag/saeljare'>".__("Get yours here", 'lang_bank_id')."</a>";
 		}
 
-		echo get_media_library(array('name' => $setting_key, 'value' => $option, 'type' => 'file', 'description' => $description));
+		echo get_media_library(array('name' => $setting_key, 'value' => $option, 'description' => $description)); //, 'type' => 'file'
 	}
 
 	function setting_bank_id_activate_callback()
@@ -395,7 +400,7 @@ class mf_bank_id
 
 	function login_init()
 	{
-		if(get_option('setting_bank_id_activate') == 'yes')
+		if(get_site_option('setting_bank_id_certificate') != '' && get_option('setting_bank_id_activate') == 'yes')
 		{
 			$plugin_include_url = plugin_dir_url(__FILE__);
 			$plugin_version = get_plugin_version(__FILE__);
@@ -409,7 +414,7 @@ class mf_bank_id
 
 	function login_form()
 	{
-		if(get_option('setting_bank_id_activate') == 'yes')
+		if(get_site_option('setting_bank_id_certificate') != '' && get_option('setting_bank_id_activate') == 'yes')
 		{
 			$setting_bank_id_disable_default_login = isset($_GET['allow_default_login']) ? false : get_option('setting_bank_id_disable_default_login');
 
