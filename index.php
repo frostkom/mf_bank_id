@@ -3,7 +3,7 @@
 Plugin Name: MF BankID
 Plugin URI: https://github.com/frostkom/mf_bank_id
 Description: 
-Version: 1.4.10
+Version: 2.0.9
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -17,6 +17,8 @@ GitHub Plugin URI: frostkom/mf_bank_id
 include_once("include/classes.php");
 
 $obj_bank_id = new mf_bank_id();
+
+add_action('cron_base', array($obj_bank_id, 'cron_base'), mt_rand(1, 10));
 
 if(is_admin())
 {
@@ -32,10 +34,9 @@ if(is_admin())
 
 	add_action('admin_notices', array($obj_bank_id, 'admin_notices'));
 
-	add_action('show_user_profile', array($obj_bank_id, 'show_user_profile'));
-	add_action('edit_user_profile', array($obj_bank_id, 'show_user_profile'));
-	add_action('personal_options_update', array($obj_bank_id, 'personal_options_update'));
-	add_action('edit_user_profile_update', array($obj_bank_id, 'personal_options_update'));
+	add_action('show_user_profile', array($obj_bank_id, 'edit_user_profile'));
+	add_action('edit_user_profile', array($obj_bank_id, 'edit_user_profile'));
+	add_action('profile_update', array($obj_bank_id, 'profile_update'));
 }
 
 else
@@ -45,6 +46,8 @@ else
 
 	add_action('register_form', array($obj_bank_id, 'register_form'), 0);
 	add_action('user_register', array($obj_bank_id, 'user_register'));
+
+	add_filter('filter_profile_fields', array($obj_bank_id, 'filter_profile_fields'));
 }
 
 load_plugin_textdomain('lang_bank_id', false, basename(dirname(__FILE__)).'/lang');
@@ -52,7 +55,7 @@ load_plugin_textdomain('lang_bank_id', false, basename(dirname(__FILE__)).'/lang
 function uninstall_bank_id()
 {
 	mf_uninstall_plugin(array(
-		'options' => array('setting_bank_id_certificate', 'setting_bank_id_activate', 'setting_bank_id_disable_default_login', 'setting_bank_id_v2'),
+		'options' => array('setting_bank_id_certificate', 'option_bank_id_certificate', 'setting_bank_id_activate', 'setting_bank_id_disable_default_login', 'setting_bank_id_v2'),
 		'meta' => array('profile_ssn'),
 	));
 }

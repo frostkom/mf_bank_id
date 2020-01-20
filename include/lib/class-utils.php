@@ -13,7 +13,6 @@
 
 class Utils
 {
-
     const COLLECT_ERRORS       = 'collect';
     const AUTHENTICATION_ERROR = 'authentication';
     const SIGNING_ERROR        = 'signing';
@@ -194,10 +193,15 @@ class Utils
     {
         $cert_path = dirname( __DIR__ ) . DIRECTORY_SEPARATOR . 'certs' . DIRECTORY_SEPARATOR . $name;
 
-        if ( file_exists( $cert_path ) )
-            return $cert_path;
-        else if(file_exists( $name ))
-            return $name;
+        if(file_exists($cert_path))
+		{
+			return $cert_path;
+		}
+
+        else if(file_exists($name))
+		{
+			return $name;
+		}
 
         return null;
     }
@@ -213,23 +217,29 @@ class Utils
 
     private static function find_description($type, $identifier) {
         self::init();
-        switch ($type) {
+        switch ($type)
+		{
             case self::COLLECT_ERRORS:
                 $definitions = self::$collect_errors;
-                break;
+			break;
+
             case self::AUTHENTICATION_ERROR:
                 $definitions = self::$authentication_errors;
-                break;
+            break;
+
             case self::SIGNING_ERROR:
                 $definitions = self::$signing_errors;
-                break;
+            break;
+
             case self::PROGRESS_STATUS:
                 $definitions = self::$progress_status_types;
-                break;
+            break;
+
             default:
                 return null;
-                break;
+            break;
         }
+
         return isset($definitions[$identifier]) ? $definitions[$identifier] : null;
     }
 }

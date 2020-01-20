@@ -25,10 +25,10 @@ jQuery(function($)
 	{
 		$.ajax(
 		{
+			url: script_bank_id.plugin_url + 'api.php?action=check&orderref=' + orderref,
 			type: 'POST',
 			cache: false,
-			dataType: 'json',
-			url: script_bank_id.plugin_url + 'api.php?action=check&orderref=' + orderref
+			dataType: 'json'
 		})
 		.done(function(data, textStatus)
 		{
@@ -84,10 +84,10 @@ jQuery(function($)
 
 		$.ajax(
 		{
+			url: script_bank_id.plugin_url + 'api.php?action=init&user_ssn=' + user_ssn,
 			type: 'POST',
 			cache: false,
-			dataType: 'json',
-			url: script_bank_id.plugin_url + 'api.php?action=init&user_ssn=' + user_ssn
+			dataType: 'json'
 		})
 		.done(function(data, textStatus)
 		{
@@ -228,7 +228,7 @@ jQuery(function($)
 
 			setTimeout(function()
 			{
-			   update_response(orderref, user_ssn);
+				update_response(orderref, user_ssn);
 			}, 10000);
 		}
 
@@ -241,7 +241,7 @@ jQuery(function($)
 
 			setTimeout(function()
 			{
-			   update_response(orderref, user_ssn);
+				update_response(orderref, user_ssn);
 			}, 10000);
 		}
 
@@ -251,16 +251,19 @@ jQuery(function($)
 
 			setTimeout(function()
 			{
-			   update_response(orderref, user_ssn);
+				update_response(orderref, user_ssn);
 			}, 10000);
 		}
 	}
 
 	if(script_bank_id.disable_default_login == 'yes')
 	{
+		console.log("Disable");
+
 		$("#loginform").attr({'action': '#'});
 
-		$("#log_input_lable, #pwd_input_lable").parent("p").remove();
+		$("#user_login").parent("p#lable_login_input").remove();
+		$("#pwd_input_lable.user-pass-wrap, #log_input_lable.forgetmenot, #lable_password_input").remove();
 
 		$("#loginform .login_or, #loginform .forgetmenot").addClass('hide');
 	}

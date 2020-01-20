@@ -2,7 +2,7 @@
 
 if(!defined('ABSPATH'))
 {
-	header('Content-Type: application/json');
+	header("Content-Type: application/json");
 
 	$folder = str_replace("/wp-content/plugins/mf_bank_id/include", "/", dirname(__FILE__));
 
@@ -25,13 +25,21 @@ $orderref = check_var('orderref');
 
 list($upload_path, $upload_url) = get_uploads_folder();
 
+$setting_bank_id_certificate = get_site_option('setting_bank_id_certificate');
+$setting_bank_id_certificate = str_replace($upload_url, $upload_path, $setting_bank_id_certificate);
+
+if(!file_exists($setting_bank_id_certificate))
+{
+	do_log(sprintf("The file %s does not exist", $setting_bank_id_certificate));
+}
+
 $plg_params = array(
 	'logo' => '',
 	'welcome_text' => '',
 	'background_color' => '',
 	'button_color' => '',
 	'background_image' => '',
-	'cert_path' => str_replace($upload_url, $upload_path, get_site_option('setting_bank_id_certificate')),
+	'cert_path' => $setting_bank_id_certificate,
 	'test_mode' => get_site_option('setting_bank_id_test_mode') == 'yes' ? 1 : 0,
 );
 
@@ -65,7 +73,7 @@ $user_ssn = $obj_bank_id->filter_ssn($user_ssn);
 
 		case 'check':
 			$json_output = array(
-				'error' =>  0,
+				'error' => 0,
 				'success' => 0,
 				'retry' => 0,
 			);
@@ -124,7 +132,7 @@ $user_ssn = $obj_bank_id->filter_ssn($user_ssn);
 
 			else
 			{
-				$json_output['error'] =  1;
+				$json_output['error'] = 1;
 				$json_output['msg'] = $obj_bank_id->get_message('CHECK_ERROR'); //$reply
 			}
 		break;

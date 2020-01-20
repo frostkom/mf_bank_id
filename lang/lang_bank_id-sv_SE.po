@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-03 09:11+0100\n"
+"POT-Creation-Date: 2019-06-12 12:51+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -15,141 +15,105 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../include/api.php:104
 msgid "Something went wrong when trying to login. If the problem persists, please contact an admin"
 msgstr "Något gick fel vid inloggningen. Om problemet kvarstår, var vänlig kontakta en administratör"
 
-#: ../include/api.php:112
 msgid "The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there."
 msgstr "Personnumret som du försöker logga in med är inte kopplad till någon användare. Var vänlig logga in med ditt användarnamn och lösenord, gå till din profil och fyll i ditt personnummer där."
 
-#: ../include/classes.php:54
-msgid "Start your BankID app"
-msgstr "Starta BankID-appen"
+msgid "The social security number that you are trying to login with is not connected to any user. Please login with your username and password, go to your Profile and add your social security number there."
+msgstr "Personnumret som du försöker logga in med är inte kopplat till någon användare. Var vänlig logga in med ditt användarnamn och lösenord, gå till profilen och lägg till personnumret där."
 
-#: ../include/classes.php:58
-msgid "The BankID app is not installed. Please contact your internet bank."
-msgstr "BankID-appen är inte installerad. Var vänlig kontakta din internetbank."
-
-#: ../include/classes.php:63
-msgid "Already in Progress. Wait a few seconds and then try again."
-msgstr "Håller redan på. Vänta en stund och försök igen."
-
-#: ../include/classes.php:68
-msgid "Action cancelled. Please try again."
-msgstr "Åtgärden avbröts. Var vänlig försök igen"
-
-#: ../include/classes.php:74
-msgid "Internal error. Please try again."
-msgstr "Internt fel. Var vänlig försök igen"
-
-#: ../include/classes.php:79
-msgid "Action cancelled"
-msgstr "Åtgärden avbröts"
-
-#: ../include/classes.php:84
-msgid "The BankID app is not responding. Please check that the program is started and that you have internet access. If you dont have a valid BankID you can get one from your bank. Try again."
-msgstr "BankID-appen svarar inte. Var vänlig kolla så att programmet är igång och att du har tillgång till internet."
-
-#: ../include/classes.php:89
-msgid "Enter your security code in the BankID app and select Identify or Sign."
-msgstr "Fyll i din säkerhetskod i BankID-appen och välj Identifiera eller Signera."
-
-#: ../include/classes.php:94
-msgid "Internal error. Update your BankID app and try again."
-msgstr "Internt fel. Uppdatera BankID-appen och försök igen."
-
-#: ../include/classes.php:99
-msgid "Trying to start your BankID app."
-msgstr "Försöker starta BankID-appen."
-
-#: ../include/classes.php:107
-msgid "Searching for BankID:s, it may take a little while&hellip;"
-msgstr "Söker efter BankID, det kan ta en stund&hellip;"
-
-#: ../include/classes.php:112
-msgid "The BankID you are trying to use is revoked or too old. Please use another BankID or order a new one from your internet bank."
-msgstr "BankIDt som du försöker använda eller tillbakadraget eller för gammalt. Var vänlig använd ett annat BankID eller beställ ett nytt fårn din internetbank."
-
-#: ../include/classes.php:117
-#, php-format
-msgid "The BankID app couldn't be found on your computer or mobile device. Please install it and order a BankID from your internet bank. Install the app from %s."
-msgstr "BankID-appen kunde inte hittas på din dator eller mobila enhet. Var vänlig installera den och beställ ett BankID från din internetbank. Appen kan installeras från %s."
-
-#: ../include/classes.php:121
-msgid "Would you like to login or sign with a BankID on this computer or with a Mobile BankID?"
-msgstr "Vill du logga in eller signera med BankID på denna dator eller med mobilt BankID?"
-
-#: ../include/classes.php:125
-msgid "Would you like to login or sign with a BankID on this device or with a BankID on another device?"
-msgstr "Vill du logga in eller signera med BankID på denna enhet eller på en annan enhet?"
-
-#: ../include/classes.php:129
-msgid "Unknown Action"
-msgstr "Okänd händelse"
-
-#: ../include/classes.php:200
 msgid "Certificate File"
 msgstr "Certifikatfil"
 
-#: ../include/classes.php:205
 msgid "Activate"
 msgstr "Aktivera"
 
-#: ../include/classes.php:209
 msgid "Disable Login with Username"
 msgstr "Inaktivera inloggning med användarnamn"
 
-#: ../include/classes.php:210
 msgid "Use Test Mode"
 msgstr "Använd testläge"
 
-#: ../include/classes.php:211
 msgid "Use Login v2"
 msgstr "Använd login v2"
 
-#: ../include/classes.php:223
-#: ../include/classes.php:420
-msgid "BankID"
-msgstr "BankID"
-
-#: ../include/classes.php:236
-#, php-format
 msgid "The file should be a %s file."
 msgstr "Filen bör vara en %s-fil."
 
-#: ../include/classes.php:237
 msgid "Get yours here"
 msgstr "Hämta din här"
 
-#: ../include/classes.php:286
-#: ../include/classes.php:336
-#: ../include/classes.php:367
-#: ../include/classes.php:420
+msgid "Use the certificate file %s"
+msgstr "Använd certifikatfilen %s"
+
+msgid "Start your %s app"
+msgstr "Starta din %s-app"
+
+msgid "The %s app is not installed. Please contact your internet bank."
+msgstr "BankID-appen är inte installerad. Var vänlig kontakta din internetbank."
+
+msgid "Already in Progress. Wait a few seconds and then try again."
+msgstr "Håller redan på. Vänta en stund och försök igen."
+
+msgid "Action cancelled. Please try again."
+msgstr "Åtgärden avbröts. Var vänlig försök igen"
+
+msgid "Internal error. Please try again."
+msgstr "Internt fel. Var vänlig försök igen"
+
+msgid "Action cancelled"
+msgstr "Åtgärden avbröts"
+
+msgid "The %s app is not responding. Please check that the program is started and that you have internet access. If you do not have a valid %s you can get one from your bank. Try again."
+msgstr "BankID-appen svarar inte. Var vänlig se till så att programmet är startat och att du har tillgång till internet. Om du inte har ett giltigt BankID så kan du hämta ett från din bank. Försök igen."
+
+msgid "Enter your security code in the %s app and select Identify or Sign."
+msgstr "Fyll i din säkerhetskod i %s-appen och välj att identifiera eller signera."
+
+msgid "Internal error. Update your %s app and try again."
+msgstr "Internt fel. Uppdatera din %s-app och försök igen."
+
+msgid "Trying to start your %s app"
+msgstr "Försöker starta din BankID-app"
+
+msgid "Searching for %s, it may take a little while..."
+msgstr "Söker efter %s, det kan ta en liten stund..."
+
+msgid "The %s you are trying to use is revoked or too old. Please use another %s or order a new one from your internet bank."
+msgstr "Det %s som du försöker använda är tillbakadraget eller gammalt. Använd ett annat %s eller beställ ett nytt från din internetbank."
+
+msgid "The %s app could not be found on your computer or mobile device. Please install it and order a %s from your internet bank. Install the app from %s."
+msgstr "%s-appen kunde inte hittas på denna dator eller mobila enhet. Var vänlig installera den och beställ ett %s från din internetbank. Installera appen från %s."
+
+msgid "Would you like to login or sign with a %s on this computer or with a Mobile %s?"
+msgstr "Vill du logga in eller signera med ett %s på denna dator eller med ett mobilt %s?"
+
+msgid "Would you like to login or sign with a %s on this device or with a %s on another device?"
+msgstr "Vill du logga in eller signera med ett %s på denna dator eller med ett %s på en annan enhet?"
+
+msgid "Unknown Action"
+msgstr "Okänd händelse"
+
 msgid "Social Security Number"
 msgstr "Personnummer"
 
-#: ../include/classes.php:316
 msgid "You have to enter your Social Security Number to be able to login in the future"
 msgstr "Du behöver fylla i ditt personnummer för att kunna logga in i framtiden"
 
-#: ../include/classes.php:321
 msgid "You have to enter your Social Security Number"
 msgstr "Du behöver fylla i ditt personnummer"
 
-#: ../include/classes.php:408
-msgid "I'm trying to open the BankID Application. If it doesn't open automatically you have to do it manually"
-msgstr "Jag försöker öppna BankID-appen. Om den inte öppnas automatiskt behöver du öppna den"
+msgid "I am trying to open the %s application. If it does not open automatically you have to do it manually"
+msgstr "Jag försöker öppna %s-applikationen. Om det inte öppnas automatiskt så behöver du göra det manuellt"
 
-#: ../include/classes.php:408
 msgid "The login took too long. Please try again"
 msgstr "Inloggningen tog för lång tid. Var vänlig försök igen"
 
-#: ../include/classes.php:418
 msgid "or"
 msgstr "eller"
 
-#: ../include/classes.php:420
-msgid "Get BankID"
-msgstr "Skaffa BankID"
+msgid "Get %s"
+msgstr "Hämta %s"
 
