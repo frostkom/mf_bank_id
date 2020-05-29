@@ -332,11 +332,11 @@ class mf_bank_id
 		switch($col)
 		{
 			case 'profile_ssn':
-				$post_meta = get_the_author_meta($col, $id);
+				$author_meta = get_the_author_meta($col, $id);
 
-				if($post_meta != '')
+				if($author_meta != '')
 				{
-					return substr($post_meta, 0, 8)."&hellip;";
+					return substr($author_meta, 0, 8)."&hellip;";
 				}
 			break;
 		}
