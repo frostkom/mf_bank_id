@@ -66,7 +66,9 @@ class BankID
 			do_log("Cert does NOT exist: ".$user_settings['cert_path']);
 		}*/
 
+		$test_server_cert = JPATH_BASE.'/certs/certname.pem';
 		$test_server_peer_name = "appapi.test.bankid.com";
+
 		//$production_server_peer_name = "appapi.bankid.com";
 		$production_server_peer_name = "appapi2.bankid.com";
 
@@ -74,7 +76,7 @@ class BankID
 			'test_server' => array(
 				'api_url'	=> "https://".$test_server_peer_name."/rp/v4",
 				'wdsl_url'  => "https://".$test_server_peer_name."/rp/v4?wsdl",
-				'cert_path' => JPATH_BASE.'/certs/certname.pem',
+				'cert_path' => $test_server_cert,
 				'peer_name' => $test_server_peer_name
 			),
 			'production_server' => array(
@@ -89,7 +91,7 @@ class BankID
 		{
 			$default_settings = array(
 				'production'  => false,
-				'certificate' => JPATH_BASE.'/certs/certname.pem',
+				'certificate' => $test_server_cert,
 			);
 		}
 
