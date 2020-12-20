@@ -262,10 +262,9 @@ jQuery(function($)
 
 		$("#loginform").attr({'action': '#'});
 
-		$("#user_login").parent("p#lable_login_input").remove();
-		$("#pwd_input_lable.user-pass-wrap, #log_input_lable.forgetmenot, #lable_password_input").remove();
-
-		$("#loginform .login_or, #loginform .forgetmenot").addClass('hide');
+		$("#user_login").parent("p").remove();
+		$("#user_pass").parent(".wp-pwd").parent(".user-pass-wrap").remove();
+		$("#loginform .login_or, #loginform .forgetmenot").remove();
 	}
 
 	$("#loginform").on('submit', function(e)
