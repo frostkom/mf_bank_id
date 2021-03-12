@@ -15,11 +15,19 @@
 		margin-bottom: .5em;
 	}
 
-		#login_fields a
+		#login_fields img
+		{
+			display: inline-block;
+			height: 40px;
+			margin-right: .5em;
+			width: 40px;
+		}
+
+		/*#login_fields a
 		{
 			color: inherit;
 			font-size: .8em;
-		}
+		}*/
 
 		#login_fields input
 		{

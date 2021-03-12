@@ -3,12 +3,14 @@
 Plugin Name: MF BankID
 Plugin URI: https://github.com/frostkom/mf_bank_id
 Description: 
-Version: 2.0.13
+Version: 2.1.2
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
 Text Domain: lang_bank_id
 Domain Path: /lang
+
+Credit URI: https://github.com/dimafe6/bank-id
 
 Depends: MF Base
 GitHub Plugin URI: frostkom/mf_bank_id
@@ -16,12 +18,16 @@ GitHub Plugin URI: frostkom/mf_bank_id
 
 include_once("include/classes.php");
 
+load_plugin_textdomain('lang_bank_id', false, basename(dirname(__FILE__)).'/lang');
+
 $obj_bank_id = new mf_bank_id();
 
+add_action('cron_base', 'activate_bank_id', mt_rand(1, 10));
 add_action('cron_base', array($obj_bank_id, 'cron_base'), mt_rand(1, 10));
 
 if(is_admin())
 {
+	register_activation_hook(__FILE__, 'activate_bank_id');
 	register_uninstall_hook(__FILE__, 'uninstall_bank_id');
 
 	add_action('admin_init', array($obj_bank_id, 'settings_bank_id'));
@@ -50,12 +56,17 @@ else
 	add_filter('filter_profile_fields', array($obj_bank_id, 'filter_profile_fields'));
 }
 
-load_plugin_textdomain('lang_bank_id', false, basename(dirname(__FILE__)).'/lang');
+function activate_bank_id()
+{
+	mf_uninstall_plugin(array(
+		'options' => array('setting_bank_id_v2', 'setting_bank_id_api_version', 'setting_bank_id_test_mode', 'setting_bank_id_disable_default_login'),
+	));
+}
 
 function uninstall_bank_id()
 {
 	mf_uninstall_plugin(array(
-		'options' => array('setting_bank_id_certificate', 'option_bank_id_certificate', 'setting_bank_id_activate', 'setting_bank_id_disable_default_login', 'setting_bank_id_v2'),
+		'options' => array('setting_bank_id_certificate', 'option_bank_id_certificate', 'setting_bank_id_activate', 'setting_bank_id_login_fields', 'setting_bank_id_api_mode'),
 		'meta' => array('profile_ssn'),
 	));
 }

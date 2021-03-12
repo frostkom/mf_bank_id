@@ -11,16 +11,12 @@ if(!defined('ABSPATH'))
 
 session_start();
 
-define('JPATH_BASE', __DIR__);
-
-include_once("lib/class-bankid.php");
-include_once("lib/class-utils.php");
 include_once("classes.php");
 
 $obj_bank_id = new mf_bank_id();
 
 $action = check_var('action');
-$user_ssn = check_var('user_ssn'); //, 'soc'
+$user_ssn = check_var('user_ssn');
 $orderref = check_var('orderref');
 
 list($upload_path, $upload_url) = get_uploads_folder();
@@ -33,126 +29,260 @@ if(!file_exists($setting_bank_id_certificate))
 	do_log(sprintf("The file %s does not exist", $setting_bank_id_certificate));
 }
 
-$plg_params = array(
-	'logo' => '',
-	'welcome_text' => '',
-	'background_color' => '',
-	'button_color' => '',
-	'background_image' => '',
-	'cert_path' => $setting_bank_id_certificate,
-	'test_mode' => get_site_option('setting_bank_id_test_mode') == 'yes' ? 1 : 0,
-);
+/*$setting_bank_id_api_version = get_option('setting_bank_id_api_version');
+
+switch($setting_bank_id_api_version)
+{
+	default:
+	case 4:
+		define('JPATH_BASE', __DIR__);
+
+		include_once("lib/class-bankid.php");
+		include_once("lib/class-utils.php");
+
+		$arr_params = array(
+			//'logo' => '',
+			//'welcome_text' => '',
+			//'background_color' => '',
+			//'button_color' => '',
+			//'background_image' => '',
+			'cert_path' => (get_option('setting_bank_id_api_mode') == 'live' || get_site_option('setting_bank_id_test_mode') == 'yes' ? __DIR__.'/certs/certname.pem' : $setting_bank_id_certificate),
+			'test_mode' => (get_option('setting_bank_id_api_mode') == 'live' || get_site_option('setting_bank_id_test_mode') == 'yes'),
+		);
+	break;
+
+	case 5:*/
+		include_once("lib/bankid_v5/vendor/autoload.php");
+		include_once("lib/bankid_v5/src/Service/BankIDService.php");
+
+		if(get_option('setting_bank_id_api_mode') == 'test' || get_site_option('setting_bank_id_test_mode') == 'yes')
+		{
+			$api_url = "https://appapi.test.bankid.com/rp/v5/";
+
+			$arr_params = array(
+				'cert' => __DIR__."/certs/certname.pem",
+				//'verify' => __DIR__."/certs/appapi2.test.bankid.com.crt",
+				'verify' => false,
+			);
+		}
+
+		else
+		{
+			$api_url = "https://appapi2.bankid.com/rp/v5/";
+
+			$arr_params = array(
+				'cert' => $setting_bank_id_certificate,
+				//'verify' => __DIR__."/certs/appapi2.bankid.com.crt",
+				'verify' => false,
+			);
+		}
+	/*break;
+}*/
 
 $user_ssn = $obj_bank_id->filter_ssn($user_ssn);
 
-/*if($obj_bank_id->user_exists($user_ssn))
-{*/
-	switch($action)
-	{
-		case 'init':
-			$json_output = array();
+$json_output = array();
 
-			$bankid_client = new BankID($plg_params);
-			$order_reference = $bankid_client->authenticate($user_ssn);
-			$result = $order_reference[0];
+switch($action)
+{
+	case 'init':
+		//$json_output = array();
 
-			if(!empty($result))
-			{
-				$_SESSION['orderref'] = $result->orderRef;
+		/*switch($setting_bank_id_api_version)
+		{
+			default:
+			case 4:
+				$bankid_client = new BankID($arr_params);
+				$order_reference = $bankid_client->authenticate($user_ssn);
+				$result = $order_reference[0];
 
-				$json_output['start_token'] = $result->autoStartToken;
-				$json_output['orderref'] = $result->orderRef;
-			}
-
-			else
-			{
-				$json_output['error'] = 1;
-				$json_output['msg'] = $obj_bank_id->get_message($order_reference[1]);
-			}
-		break;
-
-		case 'check':
-			$json_output = array(
-				'error' => 0,
-				'success' => 0,
-				'retry' => 0,
-			);
-
-			$bankid_client = new BankID($plg_params);
-			$order_reference = $bankid_client->collect($orderref);
-			$result = $order_reference[0];
-
-			/*$order_reference = array ( 0 => stdClass::__set_state(array( 'progressStatus' => 'COMPLETE', 'signature' => '[signature]', 'userInfo' => stdClass::__set_state(array( 'givenName' => '[first_name]', 'surname' => '[sur_name]', 'name' => '[full_name]', 'personalNumber' => '[ssn]', 'notBefore' => '[date]', 'notAfter' => '[date]', 'ipAddress' => '[ip]', )), 'ocspResponse' => '[signature]', )), 1 => NULL, )*/
-
-			if(!empty($result))
-			{
-				if($result->progressStatus == "USER_SIGN")
+				if(!empty($result))
 				{
-					$json_output['error'] = 1;
-					$json_output['retry'] = 1;
-					$json_output['msg'] = $obj_bank_id->get_message($result->progressStatus);
+					$_SESSION['orderref'] = $result->orderRef;
+
+					$json_output['start_token'] = $result->autoStartToken;
+					$json_output['orderref'] = $result->orderRef;
 				}
 
-				else if($result->progressStatus == "COMPLETE")
+				else
 				{
-					$user_ssn = $result->userInfo->personalNumber;
-					$user_ssn = $obj_bank_id->filter_ssn($user_ssn);
+					$json_output['error'] = 1;
+					$json_output['msg'] = $obj_bank_id->get_message($order_reference[1]);
+				}
+			break;
 
-					if($obj_bank_id->user_exists($user_ssn))
+			case 5:*/
+				$json_output['error'] = 0;
+
+				$_SESSION['personelnumber'] = $user_ssn;
+
+				if(!empty($user_ssn)) 
+				{
+					$bankIDService = new BankIDService($api_url, $_SERVER['REMOTE_ADDR'], $arr_params);
+
+					try
 					{
-						if($obj_bank_id->login($obj_bank_id->user_login))
+						$response = $bankIDService->getAuthResponse($user_ssn);
+						$_SESSION['start_token'] = $response->autoStartToken;
+						$_SESSION['orderRef'] = $response->orderRef;
+					}
+
+					catch(Exception $e)
+					{
+						$message_arr = json_decode($e->getMessage());
+
+						$json_output['error'] = 1;
+						$json_output['msg'] = $message_arr->response;
+					}
+				}
+			/*break;
+		}*/
+	break;
+
+	case 'check':
+		/*$json_output = array(
+			'error' => 0,
+			'success' => 0,
+			'retry' => 0,
+		);*/
+
+		/*switch($setting_bank_id_api_version)
+		{
+			default:
+			case 4:
+				$bankid_client = new BankID($arr_params);
+				$order_reference = $bankid_client->collect($orderref);
+				$result = $order_reference[0];
+
+				if(!empty($result))
+				{
+					if($result->progressStatus == "USER_SIGN")
+					{
+						$json_output['error'] = 1;
+						$json_output['retry'] = 1;
+						$json_output['msg'] = $obj_bank_id->get_message($result->progressStatus);
+					}
+
+					else if($result->progressStatus == "COMPLETE")
+					{
+						$user_ssn = $result->userInfo->personalNumber;
+						$user_ssn = $obj_bank_id->filter_ssn($user_ssn);
+
+						if($obj_bank_id->user_exists($user_ssn))
 						{
-							$json_output['success'] = 1;
-							$json_output['redirect'] = admin_url(); //$obj_bank_id->get_message($result->progressStatus)
+							if($obj_bank_id->login($obj_bank_id->user_login))
+							{
+								$json_output['success'] = 1;
+								$json_output['redirect'] = admin_url(); //$obj_bank_id->get_message($result->progressStatus)
+							}
+
+							else
+							{
+								$json_output['error'] = 1;
+								$json_output['msg'] = __("Something went wrong when trying to login. If the problem persists, please contact an admin.", $obj_bank_id->lang_key);
+							}
 						}
 
 						else
 						{
-							$json_output['error'] = 1;
-							$json_output['msg'] = __("Something went wrong when trying to login. If the problem persists, please contact an admin", 'lang_bank_id');
+							$json_output = array(
+								'error' => 1,
+								'msg' => __("The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there.", $obj_bank_id->lang_key),
+							);
 						}
 					}
 
 					else
 					{
-						$json_output = array(
-							'error' => 1,
-							'msg' => __("The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there.", 'lang_bank_id'),
-						);
+						$json_output['error'] = 1;
+						$json_output['retry'] = 1;
+						$json_output['msg'] = $obj_bank_id->get_message($result->progressStatus);
 					}
 				}
 
 				else
 				{
 					$json_output['error'] = 1;
-					$json_output['retry'] = 1;
-					$json_output['msg'] = $obj_bank_id->get_message($result->progressStatus);
+					$json_output['msg'] = $obj_bank_id->get_message('CHECK_ERROR'); //$reply
 				}
-			}
+			break;
 
-			else
-			{
-				$json_output['error'] = 1;
-				$json_output['msg'] = $obj_bank_id->get_message('CHECK_ERROR'); //$reply
-			}
-		break;
+			case 5:*/
+				$orderref = $_SESSION['orderRef'];
+				$user_ssn = $_SESSION['personelnumber'];
 
-		default:
-			$json_output = array(
-				'error' => 1,
-				'msg' => $obj_bank_id->get_message($action),
-			);
-		break;
-	}
-/*}
+				$bankIDService = new BankIDService($api_url, $_SERVER['REMOTE_ADDR'], $arr_params);
 
-else
-{
-	$json_output = array(
-		'error' => 1,
-		'msg' => __("The social security number that you are trying to login with is not connected to any user. Please login with your username and password, go to your Profile and add your social security number there.", 'lang_bank_id'),
-	);
-}*/
+				try
+				{
+					$result = $bankIDService->collectResponse($orderref);
+
+					switch($result->status)
+					{
+						case 'pending':
+							$json_output['error'] = 1;
+							$json_output['retry'] = 1;
+							$json_output['msg'] = $result->hintCode;
+						break;
+
+						case 'complete':
+							$user_ssn = $obj_bank_id->filter_ssn($user_ssn);
+
+							if($obj_bank_id->user_exists($user_ssn))
+							{
+								if($obj_bank_id->login($obj_bank_id->user_login))
+								{
+									$json_output['success'] = 1;
+									$json_output['msg'] = __("The validation was successful! You are being logged in...", $obj_bank_id->lang_key);
+									$json_output['redirect'] = admin_url();
+								}
+
+								else
+								{
+									$json_output['error'] = 1;
+									$json_output['msg'] = __("Something went wrong when trying to login. If the problem persists, please contact an admin.", $obj_bank_id->lang_key);
+								}
+							}
+
+							else
+							{
+								$json_output['error'] = 1;
+								$json_output['msg'] = __("The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there.", $obj_bank_id->lang_key);
+							}
+						break;
+
+						case 'NO_CLIENT':
+							$json_output['error'] = 1;
+							$json_output['retry'] = 1;
+							$json_output['msg'] = __("Login attempt timed out. Please try again.", $obj_bank_id->lang_key);
+						break;
+
+						default:
+							$json_output['error'] = 1;
+							$json_output['retry'] = 1;
+							$json_output['msg'] = $result->status;
+						break;
+					}
+				}
+
+				catch(Exception $e)
+				{
+					$message_arr = json_decode($e->getMessage());
+
+					$json_output['error'] = 1;
+					$json_output['msg'] = $message_arr->response;
+				}
+			/*break;
+		}*/
+	break;
+
+	default:
+		$json_output = array(
+			'error' => 1,
+			'msg' => $obj_bank_id->get_message($action),
+		);
+	break;
+}
 
 echo json_encode($json_output);
 exit;

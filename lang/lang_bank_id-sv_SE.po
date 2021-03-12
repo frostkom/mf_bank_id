@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-12 12:51+0100\n"
+"POT-Creation-Date: 2021-03-11 14:23+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -15,105 +15,188 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-msgid "Something went wrong when trying to login. If the problem persists, please contact an admin"
-msgstr "Något gick fel vid inloggningen. Om problemet kvarstår, var vänlig kontakta en administratör"
+#: ../include/api.php:236
+msgid "The validation was successful! You are being logged in..."
+msgstr "Valideringen lyckades! Du loggas nu in..."
 
+#: ../include/api.php:243
+msgid "Something went wrong when trying to login. If the problem persists, please contact an admin."
+msgstr "Något gick fel vid inloggningen. Om problemet kvarstår, var vänlig kontakta en administratör."
+
+#: ../include/api.php:250
 msgid "The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there."
 msgstr "Personnumret som du försöker logga in med är inte kopplad till någon användare. Var vänlig logga in med ditt användarnamn och lösenord, gå till din profil och fyll i ditt personnummer där."
 
-msgid "The social security number that you are trying to login with is not connected to any user. Please login with your username and password, go to your Profile and add your social security number there."
-msgstr "Personnumret som du försöker logga in med är inte kopplat till någon användare. Var vänlig logga in med ditt användarnamn och lösenord, gå till profilen och lägg till personnumret där."
+#: ../include/api.php:257
+msgid "Login attempt timed out. Please try again."
+msgstr "Inloggningsförsöket tog för lång tid. Var vänlig försök igen."
 
+#: ../include/classes.php:13
+msgid "Test"
+msgstr ""
+
+#: ../include/classes.php:14
+msgid "Live"
+msgstr ""
+
+#: ../include/classes.php:52
 msgid "Certificate File"
 msgstr "Certifikatfil"
 
+#: ../include/classes.php:57
 msgid "Activate"
 msgstr "Aktivera"
 
+#: ../include/classes.php:61
 msgid "Disable Login with Username"
 msgstr "Inaktivera inloggning med användarnamn"
 
-msgid "Use Test Mode"
-msgstr "Använd testläge"
+#: ../include/classes.php:62
+msgid "API Mode"
+msgstr "API-läge"
 
-msgid "Use Login v2"
-msgstr "Använd login v2"
-
+#: ../include/classes.php:95
+#, php-format
 msgid "The file should be a %s file."
 msgstr "Filen bör vara en %s-fil."
 
+#: ../include/classes.php:96
 msgid "Get yours here"
 msgstr "Hämta din här"
 
+#: ../include/classes.php:114
+#, php-format
 msgid "Use the certificate file %s"
 msgstr "Använd certifikatfilen %s"
 
+#: ../include/classes.php:218
+#, php-format
 msgid "Start your %s app"
 msgstr "Starta din %s-app"
 
+#: ../include/classes.php:222
+#, php-format
 msgid "The %s app is not installed. Please contact your internet bank."
-msgstr "BankID-appen är inte installerad. Var vänlig kontakta din internetbank."
+msgstr "%s-appen är inte installerad. Var vänlig kontakta din internetbank."
 
+#: ../include/classes.php:227
 msgid "Already in Progress. Wait a few seconds and then try again."
 msgstr "Håller redan på. Vänta en stund och försök igen."
 
+#: ../include/classes.php:232
 msgid "Action cancelled. Please try again."
-msgstr "Åtgärden avbröts. Var vänlig försök igen"
+msgstr "Åtgärden avbröts. Var vänlig försök igen."
 
+#: ../include/classes.php:238
 msgid "Internal error. Please try again."
-msgstr "Internt fel. Var vänlig försök igen"
+msgstr "Internt fel. Var vänlig försök igen."
 
+#: ../include/classes.php:243
 msgid "Action cancelled"
 msgstr "Åtgärden avbröts"
 
+#: ../include/classes.php:248
+#, php-format
 msgid "The %s app is not responding. Please check that the program is started and that you have internet access. If you do not have a valid %s you can get one from your bank. Try again."
 msgstr "BankID-appen svarar inte. Var vänlig se till så att programmet är startat och att du har tillgång till internet. Om du inte har ett giltigt BankID så kan du hämta ett från din bank. Försök igen."
 
+#: ../include/classes.php:253
+#, php-format
 msgid "Enter your security code in the %s app and select Identify or Sign."
 msgstr "Fyll i din säkerhetskod i %s-appen och välj att identifiera eller signera."
 
+#: ../include/classes.php:258
+#, php-format
 msgid "Internal error. Update your %s app and try again."
 msgstr "Internt fel. Uppdatera din %s-app och försök igen."
 
+#: ../include/classes.php:263
+#, php-format
 msgid "Trying to start your %s app"
 msgstr "Försöker starta din BankID-app"
 
+#: ../include/classes.php:271
+#, php-format
 msgid "Searching for %s, it may take a little while..."
 msgstr "Söker efter %s, det kan ta en liten stund..."
 
+#: ../include/classes.php:276
+#, php-format
 msgid "The %s you are trying to use is revoked or too old. Please use another %s or order a new one from your internet bank."
 msgstr "Det %s som du försöker använda är tillbakadraget eller gammalt. Använd ett annat %s eller beställ ett nytt från din internetbank."
 
+#: ../include/classes.php:281
+#, php-format
 msgid "The %s app could not be found on your computer or mobile device. Please install it and order a %s from your internet bank. Install the app from %s."
 msgstr "%s-appen kunde inte hittas på denna dator eller mobila enhet. Var vänlig installera den och beställ ett %s från din internetbank. Installera appen från %s."
 
+#: ../include/classes.php:285
+#, php-format
 msgid "Would you like to login or sign with a %s on this computer or with a Mobile %s?"
 msgstr "Vill du logga in eller signera med ett %s på denna dator eller med ett mobilt %s?"
 
+#: ../include/classes.php:289
+#, php-format
 msgid "Would you like to login or sign with a %s on this device or with a %s on another device?"
 msgstr "Vill du logga in eller signera med ett %s på denna dator eller med ett %s på en annan enhet?"
 
+#: ../include/classes.php:293
 msgid "Unknown Action"
 msgstr "Okänd händelse"
 
+#: ../include/classes.php:360
+#: ../include/classes.php:408
+#: ../include/classes.php:433
+#: ../include/classes.php:468
+#: ../include/classes.php:505
 msgid "Social Security Number"
 msgstr "Personnummer"
 
+#: ../include/classes.php:390
 msgid "You have to enter your Social Security Number to be able to login in the future"
 msgstr "Du behöver fylla i ditt personnummer för att kunna logga in i framtiden"
 
+#: ../include/classes.php:395
 msgid "You have to enter your Social Security Number"
 msgstr "Du behöver fylla i ditt personnummer"
 
+#: ../include/classes.php:488
+#, php-format
 msgid "I am trying to open the %s application. If it does not open automatically you have to do it manually"
-msgstr "Jag försöker öppna %s-applikationen. Om det inte öppnas automatiskt så behöver du göra det manuellt"
+msgstr "Jag försöker öppna %s-applikationen. Om den inte öppnas automatiskt så behöver du göra det manuellt"
 
-msgid "The login took too long. Please try again"
-msgstr "Inloggningen tog för lång tid. Var vänlig försök igen"
+#: ../include/classes.php:489
+msgid "The login took too long. Please try again."
+msgstr "Inloggningen tog för lång tid. Var vänlig försök igen."
 
+#: ../include/classes.php:502
 msgid "or"
 msgstr "eller"
 
-msgid "Get %s"
-msgstr "Hämta %s"
+#~ msgid "Use Test Mode"
+#~ msgstr "Använd testläge"
 
+#~ msgid "API Version"
+#~ msgstr "API-version"
+
+#~ msgid "Get %s"
+#~ msgstr "Hämta %s"
+
+#~ msgid ""
+#~ "Something went wrong when trying to login. If the problem persists, "
+#~ "please contact an admin"
+#~ msgstr ""
+#~ "Något gick fel vid inloggningen. Om problemet kvarstår, var vänlig "
+#~ "kontakta en administratör"
+
+#~ msgid "Use Login v2"
+#~ msgstr "Använd login v2"
+
+#~ msgid ""
+#~ "The social security number that you are trying to login with is not "
+#~ "connected to any user. Please login with your username and password, go "
+#~ "to your Profile and add your social security number there."
+#~ msgstr ""
+#~ "Personnumret som du försöker logga in med är inte kopplat till någon "
+#~ "användare. Var vänlig logga in med ditt användarnamn och lösenord, gå "
+#~ "till profilen och lägg till personnumret där."

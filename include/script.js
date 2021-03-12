@@ -111,42 +111,33 @@ jQuery(function($)
 			{
 				update_notification('success', script_bank_id.open_bank_id_application_text);
 
-				if(script_bank_id.bank_id_v2 == 'yes')
-				{
+				/*if(script_bank_id.bank_id_v2 == 'yes')
+				{*/
 					auto_launch_v2(data.start_token, data.orderref, user_ssn);
-				}
+				/*}
 
 				else
 				{
 					auto_launch(data.start_token, data.orderref, user_ssn);
-				}
+				}*/
 			}
 		});
 	}
 
 	function auto_launch_v2(autostarttoken, orderref, user_ssn)
 	{
-		var url = 'bankid:///?autostarttoken=' + autostarttoken + '&redirect=null';
+		var url = 'bankid:///?autostarttoken=' + autostarttoken + '&redirect=null',
+			login_iframe = $('<iframe src="' + url + '">');
 
-		/*if(window.navigator.userAgent && window.navigator.userAgent.toLowerCase().indexOf('chrome') > -1)
+		$("#loginform").append(login_iframe);
+
+		setTimeout(function()
 		{
-			window.location.href = url;
-		}
-
-		else
-		{*/
-			var login_iframe = $('<iframe src="' + url + '">');
-
-			$("#loginform").append(login_iframe);
-
-			setTimeout(function()
-			{
-				update_response(orderref, user_ssn);
-			}, 2000);
-		/*}*/
+			update_response(orderref, user_ssn);
+		}, 2000);
 	}
 
-	function auto_launch(autostarttoken, orderref, user_ssn)
+	/*function auto_launch(autostarttoken, orderref, user_ssn)
 	{
 		var url = 'bankid:///?autostarttoken=' + autostarttoken + '&redirect=null',
 			timer,
@@ -254,12 +245,10 @@ jQuery(function($)
 				update_response(orderref, user_ssn);
 			}, 10000);
 		}
-	}
+	}*/
 
 	if(script_bank_id.disable_default_login == 'yes')
 	{
-		console.log("Disable");
-
 		$("#loginform").attr({'action': '#'});
 
 		$("#user_login").parent("p").remove();
