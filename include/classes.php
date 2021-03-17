@@ -7,6 +7,15 @@ class mf_bank_id
 		$this->lang_key = 'lang_bank_id';
 	}
 
+	function get_login_methods_for_select()
+	{
+		return array(
+			'username' => __("Username", $this->lang_key),
+			'ssc' => __("Social Security Number", $this->lang_key),
+			'qr' => __("QR Code", $this->lang_key),
+		);
+	}
+
 	function get_api_modes_for_select()
 	{
 		return array(
@@ -58,7 +67,8 @@ class mf_bank_id
 
 				if(get_option('setting_bank_id_activate') == 'yes')
 				{
-					$arr_settings['setting_bank_id_disable_default_login'] = __("Disable Login with Username", $this->lang_key);
+					//$arr_settings['setting_bank_id_disable_default_login'] = __("Disable Login with Username", $this->lang_key);
+					$arr_settings['setting_bank_id_login_methods'] = __("Login Methods", $this->lang_key);
 					$arr_settings['setting_bank_id_api_mode'] = __("API Mode", $this->lang_key);
 					//$arr_settings['setting_bank_id_test_mode'] = __("Use Test Mode", $this->lang_key);
 					//$arr_settings['setting_bank_id_api_version'] = __("API Version", $this->lang_key);
@@ -114,12 +124,20 @@ class mf_bank_id
 		echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'description' => sprintf(__("Use the certificate file %s", $this->lang_key), $setting_bank_id_certificate)));
 	}
 
-	function setting_bank_id_disable_default_login_callback()
+	/*function setting_bank_id_disable_default_login_callback()
 	{
 		$setting_key = get_setting_key(__FUNCTION__);
 		$option = get_option($setting_key, 'no');
 
 		echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option));
+	}*/
+
+	function setting_bank_id_login_methods_callback()
+	{
+		$setting_key = get_setting_key(__FUNCTION__);
+		$option = get_option($setting_key, array());
+
+		echo show_select(array('data' => $this->get_login_methods_for_select(), 'name' => $setting_key."[]", 'value' => $option));
 	}
 
 	function setting_bank_id_api_mode_callback()
@@ -385,7 +403,8 @@ class mf_bank_id
 
 		if($pagenow == 'profile.php' && get_option('setting_bank_id_activate') == 'yes' && get_the_author_meta('profile_ssn', get_current_user_id()) == '')
 		{
-			if(get_option('setting_bank_id_disable_default_login') == 'yes')
+			//if(get_option('setting_bank_id_disable_default_login') == 'yes')
+			if($this->allow_username_login() == false)
 			{
 				$error_text = __("You have to enter your Social Security Number to be able to login in the future", $this->lang_key);
 			}
@@ -471,40 +490,143 @@ class mf_bank_id
 		return $arr_fields;
 	}
 
+	function allow_username_login()
+	{
+		if(isset($_GET['allow_default_login']))
+		{
+			return true;
+		}
+
+		else
+		{
+			$setting_bank_id_login_methods = get_option('setting_bank_id_login_methods', array());
+
+			return (count($setting_bank_id_login_methods) == 0 || in_array('username', $setting_bank_id_login_methods));
+		}
+	}
+
 	function login_init()
 	{
-		if(get_site_option('setting_bank_id_certificate') != '' && get_option('setting_bank_id_activate') == 'yes')
-		{
-			$plugin_include_url = plugin_dir_url(__FILE__);
-			$plugin_version = get_plugin_version(__FILE__);
+		$plugin_include_url = plugin_dir_url(__FILE__);
+		$plugin_version = get_plugin_version(__FILE__);
 
-			$setting_bank_id_disable_default_login = (isset($_GET['allow_default_login']) ? false : get_option('setting_bank_id_disable_default_login'));
+		//$disable_default_login = (isset($_GET['allow_default_login']) ? 'yes' : get_option('setting_bank_id_disable_default_login'));
+		$disable_default_login = ($this->allow_username_login() ? 'no' : 'yes');
 
-			mf_enqueue_style('style_bank_id', $plugin_include_url."style.css", $plugin_version);
-			mf_enqueue_script('script_bank_id', $plugin_include_url."script.js", array(
-				//'bank_id_v2' => (get_option('setting_bank_id_v2') == 'yes' ? 'yes' : 'no'),
-				'plugin_url' => $plugin_include_url,
-				'disable_default_login' => $setting_bank_id_disable_default_login,
-				'open_bank_id_application_text' => sprintf(__("I am trying to open the %s application. If it does not open automatically you have to do it manually", $this->lang_key), "BankID"),
-				'took_too_long_text' => __("The login took too long. Please try again.", $this->lang_key),
-			), $plugin_version);
-		}
+		mf_enqueue_style('style_bank_id', $plugin_include_url."style.css", $plugin_version);
+		mf_enqueue_script('script_bank_id', $plugin_include_url."script.js", array(
+			//'bank_id_v2' => (get_option('setting_bank_id_v2') == 'yes' ? 'yes' : 'no'),
+			'plugin_url' => $plugin_include_url,
+			'disable_default_login' => $disable_default_login,
+			'open_bank_id_application_text' => sprintf(__("I am trying to open the %s application. If it does not open automatically you have to do it manually", $this->lang_key), "BankID"),
+			'took_too_long_text' => __("The login took too long. Please try again.", $this->lang_key),
+		), $plugin_version);
 	}
 
 	function login_form()
 	{
-		if(get_site_option('setting_bank_id_certificate') != '' && get_option('setting_bank_id_activate') == 'yes')
+		global $error_text;
+
+		$setting_bank_id_login_methods = get_option('setting_bank_id_login_methods', array());
+
+		if(count($setting_bank_id_login_methods) == 0 || in_array('ssc', $setting_bank_id_login_methods))
 		{
 			$plugin_include_url = plugin_dir_url(__FILE__);
 
-			$field_required = (isset($_GET['allow_default_login']) ? false : get_option('setting_bank_id_disable_default_login') == 'yes');
+			//$field_required = (isset($_GET['allow_default_login']) ? false : get_option('setting_bank_id_disable_default_login') == 'yes');
+			$field_required = ($this->allow_username_login() == false);
 
-			echo "<p class='login_or'><label>".__("or", $this->lang_key)."</label></p>
-			<div id='login_fields' class='flex_flow tight'>"
+			if(count($setting_bank_id_login_methods) == 0 || in_array('username', $setting_bank_id_login_methods))
+			{
+				echo "<p class='login_or'><label>".__("or", $this->lang_key)."</label></p>";
+			}
+
+			echo "<div id='login_fields' class='flex_flow tight'>"
 				."<img src='".$plugin_include_url."images/bankid.svg'>"
 				.show_textfield(array('custom_tag' => 'p', 'name' => 'user_ssn', 'required' => $field_required, 'placeholder' => __("Social Security Number", $this->lang_key), 'xtra' => "class='input' autocomplete='off'")) //, 'text' => "BankID <a href='//support.bankid.com/sv'>(".sprintf(__("Get %s", $this->lang_key), "BankID").")</a>"
-			."</div>
-			<div id='login_loading' class='hide'><i class='fa fa-spinner fa-spin fa-3x'></i></div>
+			."</div>";
+		}
+
+		if(count($setting_bank_id_login_methods) == 0 || in_array('qr', $setting_bank_id_login_methods) && $_SERVER['REMOTE_ADDR'] == "")
+		{
+			/*include_once("lib/bankid_v5/vendor/autoload.php");
+			include_once("lib/bankid_v5/src/Service/BankIDService.php");
+			include_once("lib/phpqrcode/qrlib.php");
+
+			list($upload_path, $upload_url) = get_uploads_folder();
+
+			$setting_bank_id_certificate = get_site_option('setting_bank_id_certificate');
+			$setting_bank_id_certificate = str_replace($upload_url, $upload_path, $setting_bank_id_certificate);
+
+			if(file_exists($setting_bank_id_certificate))
+			{
+				if(get_option('setting_bank_id_api_mode') == 'test' || get_site_option('setting_bank_id_test_mode') == 'yes')
+				{
+					$api_url = "https://appapi.test.bankid.com/rp/v5/";
+
+					$arr_params = array(
+						'cert' => __DIR__."/certs/certname.pem",
+						//'verify' => __DIR__."/certs/appapi2.test.bankid.com.crt",
+						'verify' => false,
+					);
+				}
+
+				else
+				{
+					$api_url = "https://appapi2.bankid.com/rp/v5/";
+
+					$arr_params = array(
+						'cert' => $setting_bank_id_certificate,
+						//'verify' => __DIR__."/certs/appapi2.bankid.com.crt",
+						'verify' => false,
+					);
+				}
+
+				$bankIDService = new BankIDService($api_url, $_SERVER['REMOTE_ADDR'], $arr_params);
+
+				try
+				{
+					$response = $bankIDService->getAuthResponse();
+					//$_SESSION['start_token'] = $response->autoStartToken;
+					//$_SESSION['orderRef'] = $response->orderRef;
+
+					$qr_content = "bankid:///?autostarttoken=".$response->autoStartToken;
+					$qr_file = "qr_code_".md5($qr_content).".png";
+
+					QRcode::png($qr_content, $upload_path.$qr_file);
+
+					if(count($setting_bank_id_login_methods) == 0 || in_array('username', $setting_bank_id_login_methods) || in_array('ssc', $setting_bank_id_login_methods))
+					{
+						echo "<p class='login_or'><label>".__("or", $this->lang_key)."</label></p>";
+					}
+
+					echo "<p><img src='".$upload_url.$qr_file."'></p>";
+				}
+
+				catch(Exception $e)
+				{
+					$message_arr = json_decode($e->getMessage());
+
+					$error_text = $message_arr->response;
+
+					echo get_notification();
+				}
+			}*/
+
+			if(count($setting_bank_id_login_methods) == 0 || in_array('username', $setting_bank_id_login_methods) || in_array('ssc', $setting_bank_id_login_methods))
+			{
+				echo "<p class='login_or'><label>".__("or", $this->lang_key)."</label></p>";
+			}
+
+			echo "<div id='bankid_qr'>"
+				."<img src='".$plugin_include_url."images/bankid.svg'>"
+				//.show_button(array('type' => 'button', 'text' => __("QR Code", $this->lang_key)))
+			."</div>";
+		}
+
+		if(count($setting_bank_id_login_methods) == 0 || in_array('ssc', $setting_bank_id_login_methods) || in_array('qr', $setting_bank_id_login_methods))
+		{
+			echo "<div id='login_loading' class='hide'><i class='fa fa-spinner fa-spin fa-3x'></i></div>
 			<div id='notification' class='hide'></div>";
 		}
 	}

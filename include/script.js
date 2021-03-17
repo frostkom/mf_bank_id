@@ -21,11 +21,11 @@ jQuery(function($)
 		}
 	}
 
-	function update_response(orderref, user_ssn)
+	function check_ssc_response(orderref, user_ssn)
 	{
 		$.ajax(
 		{
-			url: script_bank_id.plugin_url + 'api.php?action=check&orderref=' + orderref,
+			url: script_bank_id.plugin_url + 'api.php?action=ssc_check&orderref=' + orderref,
 			type: 'POST',
 			cache: false,
 			dataType: 'json'
@@ -56,7 +56,7 @@ jQuery(function($)
 
 				setTimeout(function()
 				{
-					update_response(orderref, user_ssn);
+					check_ssc_response(orderref, user_ssn);
 				}, 10000);
 			}
 
@@ -75,6 +75,40 @@ jQuery(function($)
 		});
 	}
 
+	function check_qr_response()
+	{
+		$.ajax(
+		{
+			url: script_bank_id.plugin_url + 'api.php?action=qr_check',
+			type: 'POST',
+			cache: false,
+			dataType: 'json'
+		})
+		.done(function(data, textStatus)
+		{
+			if(data.success == 1)
+			{
+				update_notification('success', data.msg);
+
+				if(typeof data.redirect !== 'undefined' && data.redirect != '')
+				{
+					location.href = data.redirect;
+				}
+
+				else
+				{
+					$("#login_loading").addClass('hide');
+					$("#login_fields").removeClass('hide');
+				}
+			}
+
+			else
+			{
+				update_notification('error', data.msg);
+			}
+		});
+	}
+
 	function bankid_login(user_ssn)
 	{
 		checkstatus = 0;
@@ -84,7 +118,7 @@ jQuery(function($)
 
 		$.ajax(
 		{
-			url: script_bank_id.plugin_url + 'api.php?action=init&user_ssn=' + user_ssn,
+			url: script_bank_id.plugin_url + 'api.php?action=ssc_init&user_ssn=' + user_ssn,
 			type: 'POST',
 			cache: false,
 			dataType: 'json'
@@ -111,20 +145,12 @@ jQuery(function($)
 			{
 				update_notification('success', script_bank_id.open_bank_id_application_text);
 
-				/*if(script_bank_id.bank_id_v2 == 'yes')
-				{*/
-					auto_launch_v2(data.start_token, data.orderref, user_ssn);
-				/*}
-
-				else
-				{
-					auto_launch(data.start_token, data.orderref, user_ssn);
-				}*/
+				auto_launch(data.start_token, data.orderref, user_ssn);
 			}
 		});
 	}
 
-	function auto_launch_v2(autostarttoken, orderref, user_ssn)
+	function auto_launch(autostarttoken, orderref, user_ssn)
 	{
 		var url = 'bankid:///?autostarttoken=' + autostarttoken + '&redirect=null',
 			login_iframe = $('<iframe src="' + url + '">');
@@ -133,119 +159,9 @@ jQuery(function($)
 
 		setTimeout(function()
 		{
-			update_response(orderref, user_ssn);
+			check_ssc_response(orderref, user_ssn);
 		}, 2000);
 	}
-
-	/*function auto_launch(autostarttoken, orderref, user_ssn)
-	{
-		var url = 'bankid:///?autostarttoken=' + autostarttoken + '&redirect=null',
-			timer,
-			heartbeat,
-			iframe_timer;
-
-		activate();
-
-		function activate()
-		{
-			heartbeat = setInterval(intervalHeartbeat, 200);
-
-			if(navigator.userAgent.match(/Safari/))
-			{
-				tryWebkitApproach();
-
-				iframe_timer = setTimeout(function ()
-				{
-					tryIframeApproach();
-				}, 1500);
-			}
-
-			else if(navigator.userAgent.match(/Chrome/))
-			{
-				useIntent();
-			}
-
-			else if(navigator.userAgent.match(/Firefox/))
-			{
-				tryWebkitApproach();
-
-				iframe_timer = setTimeout(function ()
-				{
-					tryIframeApproach();
-				}, 1500);
-			}
-
-			else
-			{
-				tryIframeApproach();
-			}
-		}
-
-		function clearTimers()
-		{
-			clearTimeout(timer);
-			clearTimeout(heartbeat);
-			clearTimeout(iframe_timer);
-		}
-
-		function intervalHeartbeat()
-		{
-			if(document.webkitHidden || document.hidden)
-			{
-				clearTimers();
-			}
-		}
-
-		function tryIframeApproach()
-		{
-			var iframe = document.createElement('iframe');
-			iframe.style.border = 'none';
-			iframe.style.width = '1px';
-			iframe.style.height = '1px';
-
-			iframe.onload = function()
-			{
-				if(autostarttoken != null)
-				{
-					window.location = 'results.php?orderref=' + orderref;
-				}
-			};
-
-			if(autostarttoken != null)
-			{
-				iframe.src = url;
-				document.body.appendChild(iframe);
-			}
-
-			setTimeout(function()
-			{
-				update_response(orderref, user_ssn);
-			}, 10000);
-		}
-
-		function tryWebkitApproach()
-		{
-			if(autostarttoken != null)
-			{
-				window.location = url;
-			}
-
-			setTimeout(function()
-			{
-				update_response(orderref, user_ssn);
-			}, 10000);
-		}
-
-		function useIntent()
-		{
-			window.location = 'intent://?autostarttoken=' + autostarttoken+'&redirect=null#Intent;scheme=bankid;package=com.bankid.bus;end';
-
-			setTimeout(function()
-			{
-				update_response(orderref, user_ssn);
-			}, 10000);
-		}
-	}*/
 
 	if(script_bank_id.disable_default_login == 'yes')
 	{
@@ -253,8 +169,46 @@ jQuery(function($)
 
 		$("#user_login").parent("p").remove();
 		$("#user_pass").parent(".wp-pwd").parent(".user-pass-wrap").remove();
-		$("#loginform .login_or, #loginform .forgetmenot").remove();
+		$("#loginform .forgetmenot").remove(); /*#loginform .login_or, */
 	}
+
+	$("#bankid_qr img").on('click', function()
+	{
+		console.log("Button Pushed...");
+
+		$("#login_loading").removeClass('hide');
+		$("#bankid_qr img").addClass('hide');
+
+		$.ajax(
+		{
+			url: script_bank_id.plugin_url + 'api.php?action=qr_init',
+			type: 'POST',
+			cache: false,
+			dataType: 'json'
+		})
+		.done(function(data, textStatus)
+		{
+			if(data.success == 1)
+			{
+				$("#bankid_qr").append(data.html);
+
+				setTimeout(function()
+				{
+					check_qr_response();
+				}, 10000);
+			}
+
+			else
+			{
+				update_notification('error', data.msg);
+
+				$("#login_loading").addClass('hide');
+				$("#bankid_qr img").removeClass('hide');
+			}
+		});
+
+		return false;
+	});
 
 	$("#loginform").on('submit', function(e)
 	{
