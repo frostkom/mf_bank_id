@@ -10,33 +10,57 @@
 			font-size: 1.4em !important;
 		}
 
-	#login_fields
+	#loginform #login_fields
 	{
 		margin-bottom: .5em;
 	}
 
-		#login_fields img
+		#loginform #login_fields img.logo
 		{
-			display: inline-block;
+			/*-webkit-box-flex: 1 1 0;
+			-webkit-flex: 1 1 0;
+			-ms-flex: 1 1 0;
+			flex: 1 1 0;*/
 			height: 40px;
-			margin-right: .5em;
+			margin-right: 1em;
 			width: 40px;
+			max-width: 40px;
 		}
 
-		/*#login_fields a
-		{
-			color: inherit;
-			font-size: .8em;
-		}*/
+			#loginform #login_fields input
+			{
+				margin-bottom: .2em;
+			}
 
-		#login_fields input
-		{
-			margin-bottom: .2em;
-		}
-
-	#login_loading
+	#loginform #bankid_qr
 	{
-		margin-bottom: .5em;
+		cursor: pointer;
+	}
+
+		#loginform #bankid_qr img.logo
+		{
+			height: 40px;
+			margin-right: 1em;
+			width: 40px;
+			max-width: 40px;
+		}
+
+		#loginform #bankid_qr span
+		{
+			background: #fff;
+			border-radius: .5em;
+			font-size: 1.3em;
+			padding: .5em;
+		}
+
+	#loginform #login_loading
+	{
+		margin: .5em 0;
+	}
+
+	#loginform #notification
+	{
+		margin: .5em 0;
 	}
 
 	#loginform iframe

@@ -32,7 +32,7 @@ if(!file_exists($setting_bank_id_certificate))
 include_once("lib/bankid_v5/vendor/autoload.php");
 include_once("lib/bankid_v5/src/Service/BankIDService.php");
 
-if(get_option('setting_bank_id_api_mode') == 'test' || get_site_option('setting_bank_id_test_mode') == 'yes')
+if(get_option('setting_bank_id_api_mode') == 'test')
 {
 	$api_url = "https://appapi.test.bankid.com/rp/v5/";
 
@@ -154,70 +154,7 @@ switch($action)
 	break;
 
 	case 'qr_init':
-		/*$orderref = $_SESSION['orderRef'];
-		$user_ssn = $_SESSION['personelnumber'];
-
-		$bankIDService = new BankIDService($api_url, $_SERVER['REMOTE_ADDR'], $arr_params);
-
-		try
-		{
-			$result = $bankIDService->collectResponse($orderref);
-
-			switch($result->status)
-			{
-				case 'pending':
-					$json_output['error'] = 1;
-					$json_output['retry'] = 1;
-					$json_output['msg'] = $result->hintCode;
-				break;
-
-				case 'complete':
-					$user_ssn = $obj_bank_id->filter_ssn($user_ssn);
-
-					if($obj_bank_id->user_exists($user_ssn))
-					{
-						if($obj_bank_id->login($obj_bank_id->user_login))
-						{
-							$json_output['success'] = 1;
-							$json_output['msg'] = __("The validation was successful! You are being logged in...", $obj_bank_id->lang_key);
-							$json_output['redirect'] = admin_url();
-						}
-
-						else
-						{
-							$json_output['error'] = 1;
-							$json_output['msg'] = __("Something went wrong when trying to login. If the problem persists, please contact an admin.", $obj_bank_id->lang_key);
-						}
-					}
-
-					else
-					{
-						$json_output['error'] = 1;
-						$json_output['msg'] = __("The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there.", $obj_bank_id->lang_key);
-					}
-				break;
-
-				case 'NO_CLIENT':
-					$json_output['error'] = 1;
-					$json_output['retry'] = 1;
-					$json_output['msg'] = __("Login attempt timed out. Please try again.", $obj_bank_id->lang_key);
-				break;
-
-				default:
-					$json_output['error'] = 1;
-					$json_output['retry'] = 1;
-					$json_output['msg'] = $result->status;
-				break;
-			}
-		}
-
-		catch(Exception $e)
-		{
-			$message_arr = json_decode($e->getMessage());
-
-			$json_output['error'] = 1;
-			$json_output['msg'] = $message_arr->response;
-		}*/
+		include_once("lib/phpqrcode/qrlib.php");
 
 		$bankIDService = new BankIDService($api_url, $_SERVER['REMOTE_ADDR'], $arr_params);
 
@@ -256,7 +193,8 @@ switch($action)
 
 			switch($result->status)
 			{
-				case CollectResponse::STATUS_COMPLETED:
+				case 'complete':
+
 					$user_ssn = $result->completionData->user->personalNumber;
 					$user_ssn = $obj_bank_id->filter_ssn($user_ssn);
 

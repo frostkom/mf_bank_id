@@ -104,6 +104,8 @@ jQuery(function($)
 
 			else
 			{
+				console.log("Error: " , data.msg);
+
 				update_notification('error', data.msg);
 			}
 		});
@@ -172,12 +174,10 @@ jQuery(function($)
 		$("#loginform .forgetmenot").remove(); /*#loginform .login_or, */
 	}
 
-	$("#bankid_qr img").on('click', function()
+	$("#bankid_qr").on('click', function()
 	{
-		console.log("Button Pushed...");
-
 		$("#login_loading").removeClass('hide');
-		$("#bankid_qr img").addClass('hide');
+		$("#bankid_qr").addClass('hide');
 
 		$.ajax(
 		{
@@ -190,7 +190,10 @@ jQuery(function($)
 		{
 			if(data.success == 1)
 			{
-				$("#bankid_qr").append(data.html);
+				$("#bankid_qr").html(data.html).removeClass('flex_flow');
+
+				$("#login_loading").addClass('hide');
+				$("#bankid_qr").removeClass('hide');
 
 				setTimeout(function()
 				{
@@ -203,7 +206,7 @@ jQuery(function($)
 				update_notification('error', data.msg);
 
 				$("#login_loading").addClass('hide');
-				$("#bankid_qr img").removeClass('hide');
+				$("#bankid_qr").removeClass('hide');
 			}
 		});
 
