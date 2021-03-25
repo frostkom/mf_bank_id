@@ -35,6 +35,7 @@
 	#loginform #bankid_qr
 	{
 		cursor: pointer;
+		margin-bottom: .5em;
 	}
 
 		#loginform #bankid_qr img.logo

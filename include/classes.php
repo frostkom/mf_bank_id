@@ -484,7 +484,7 @@ class mf_bank_id
 
 			$field_required = ($this->allow_username_login() == false);
 
-			if(count($setting_bank_id_login_methods) == 0 || in_array('username', $setting_bank_id_login_methods))
+			if($this->allow_username_login()) //count($setting_bank_id_login_methods) == 0 || in_array('username', $setting_bank_id_login_methods)
 			{
 				echo "<p class='login_or'><label>".__("or", $this->lang_key)."</label></p>";
 			}
@@ -497,7 +497,9 @@ class mf_bank_id
 
 		if(count($setting_bank_id_login_methods) == 0 || in_array('qr', $setting_bank_id_login_methods))
 		{
-			if(count($setting_bank_id_login_methods) == 0 || in_array('username', $setting_bank_id_login_methods) || in_array('ssc', $setting_bank_id_login_methods))
+			$plugin_include_url = plugin_dir_url(__FILE__);
+
+			if($this->allow_username_login() || in_array('ssc', $setting_bank_id_login_methods)) //count($setting_bank_id_login_methods) == 0 || in_array('username', $setting_bank_id_login_methods)
 			{
 				echo "<p class='login_or'><label>".__("or", $this->lang_key)."</label></p>";
 			}
