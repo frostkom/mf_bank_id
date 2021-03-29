@@ -4,14 +4,16 @@ if(!defined('ABSPATH'))
 {
 	header("Content-Type: application/json");
 
-	$folder = str_replace("/wp-content/plugins/mf_bank_id/include", "/", dirname(__FILE__));
+	$folder = str_replace("/wp-content/plugins/mf_bank_id/include/api", "/", dirname(__FILE__));
 
 	require_once($folder."wp-load.php");
 }
 
 session_start();
 
-include_once("classes.php");
+include_once("../classes.php");
+include_once("../lib/bankid_v5/vendor/autoload.php");
+include_once("../lib/bankid_v5/src/Service/BankIDService.php");
 
 $obj_bank_id = new mf_bank_id();
 
@@ -28,9 +30,6 @@ if(!file_exists($setting_bank_id_certificate))
 {
 	do_log(sprintf("The file %s does not exist", $setting_bank_id_certificate));
 }
-
-include_once("lib/bankid_v5/vendor/autoload.php");
-include_once("lib/bankid_v5/src/Service/BankIDService.php");
 
 if(get_option('setting_bank_id_api_mode') == 'test')
 {
@@ -154,7 +153,7 @@ switch($action)
 	break;
 
 	case 'qr_init':
-		include_once("lib/phpqrcode/qrlib.php");
+		include_once("../lib/phpqrcode/qrlib.php");
 
 		$bankIDService = new BankIDService($api_url, $_SERVER['REMOTE_ADDR'], $arr_params);
 

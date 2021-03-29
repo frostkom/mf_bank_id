@@ -25,7 +25,7 @@ jQuery(function($)
 	{
 		$.ajax(
 		{
-			url: script_bank_id.plugin_url + 'api.php?action=ssc_check&orderref=' + orderref,
+			url: script_bank_id.plugin_url + 'api/?action=ssc_check&orderref=' + orderref,
 			type: 'POST',
 			cache: false,
 			dataType: 'json'
@@ -79,7 +79,7 @@ jQuery(function($)
 	{
 		$.ajax(
 		{
-			url: script_bank_id.plugin_url + 'api.php?action=qr_check',
+			url: script_bank_id.plugin_url + 'api/?action=qr_check',
 			type: 'POST',
 			cache: false,
 			dataType: 'json'
@@ -120,7 +120,7 @@ jQuery(function($)
 
 		$.ajax(
 		{
-			url: script_bank_id.plugin_url + 'api.php?action=ssc_init&user_ssn=' + user_ssn,
+			url: script_bank_id.plugin_url + 'api/?action=ssc_init&user_ssn=' + user_ssn,
 			type: 'POST',
 			cache: false,
 			dataType: 'json'
@@ -181,7 +181,7 @@ jQuery(function($)
 
 		$.ajax(
 		{
-			url: script_bank_id.plugin_url + 'api.php?action=qr_init',
+			url: script_bank_id.plugin_url + 'api/?action=qr_init',
 			type: 'POST',
 			cache: false,
 			dataType: 'json'
