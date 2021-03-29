@@ -452,7 +452,7 @@ class mf_bank_id
 
 		else
 		{
-			$setting_bank_id_login_methods = get_option('setting_bank_id_login_methods', array());
+			$setting_bank_id_login_methods = get_option_or_default('setting_bank_id_login_methods', array());
 
 			return (count($setting_bank_id_login_methods) == 0 || in_array('username', $setting_bank_id_login_methods));
 		}
@@ -476,7 +476,7 @@ class mf_bank_id
 	{
 		global $error_text;
 
-		$setting_bank_id_login_methods = get_option('setting_bank_id_login_methods', array());
+		$setting_bank_id_login_methods = get_option_or_default('setting_bank_id_login_methods', array());
 
 		if(count($setting_bank_id_login_methods) == 0 || in_array('ssc', $setting_bank_id_login_methods))
 		{
