@@ -86,8 +86,8 @@ switch($action)
 	break;
 
 	case 'ssc_check':
-		$orderref = $_SESSION['orderRef'];
-		$user_ssn = $_SESSION['personelnumber'];
+		$orderref = (isset($_SESSION['orderRef']) ? $_SESSION['orderRef'] : '');
+		$user_ssn = (isset($_SESSION['personelnumber']) ? $_SESSION['personelnumber'] : '');
 
 		$bankIDService = new BankIDService($api_url, $_SERVER['REMOTE_ADDR'], $arr_params);
 
