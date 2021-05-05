@@ -111,28 +111,28 @@ switch($action)
 						if($obj_bank_id->login($obj_bank_id->user_login))
 						{
 							$json_output['success'] = 1;
-							$json_output['msg'] = __("The validation was successful! You are being logged in...", $obj_bank_id->lang_key);
+							$json_output['msg'] = __("The validation was successful! You are being logged in...", 'lang_bank_id');
 							$json_output['redirect'] = admin_url();
 						}
 
 						else
 						{
 							$json_output['error'] = 1;
-							$json_output['msg'] = __("Something went wrong when trying to login. If the problem persists, please contact an admin.", $obj_bank_id->lang_key);
+							$json_output['msg'] = __("Something went wrong when trying to login. If the problem persists, please contact an admin.", 'lang_bank_id');
 						}
 					}
 
 					else
 					{
 						$json_output['error'] = 1;
-						$json_output['msg'] = __("The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there.", $obj_bank_id->lang_key);
+						$json_output['msg'] = __("The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there.", 'lang_bank_id');
 					}
 				break;
 
 				case 'NO_CLIENT':
 					$json_output['error'] = 1;
 					$json_output['retry'] = 1;
-					$json_output['msg'] = __("Login attempt timed out. Please try again.", $obj_bank_id->lang_key);
+					$json_output['msg'] = __("Login attempt timed out. Please try again.", 'lang_bank_id');
 				break;
 
 				default:
@@ -202,21 +202,21 @@ switch($action)
 						if($obj_bank_id->login($obj_bank_id->user_login))
 						{
 							$json_output['success'] = 1;
-							$json_output['msg'] = __("The validation was successful! You are being logged in...", $obj_bank_id->lang_key);
+							$json_output['msg'] = __("The validation was successful! You are being logged in...", 'lang_bank_id');
 							$json_output['redirect'] = admin_url();
 						}
 
 						else
 						{
 							$json_output['error'] = 1;
-							$json_output['msg'] = __("Something went wrong when trying to login. If the problem persists, please contact an admin.", $obj_bank_id->lang_key);
+							$json_output['msg'] = __("Something went wrong when trying to login. If the problem persists, please contact an admin.", 'lang_bank_id');
 						}
 					}
 
 					else
 					{
 						$json_output['error'] = 1;
-						$json_output['msg'] = __("The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there.", $obj_bank_id->lang_key);
+						$json_output['msg'] = __("The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there.", 'lang_bank_id');
 					}
 				break;
 			}
