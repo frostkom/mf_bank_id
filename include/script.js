@@ -25,7 +25,7 @@ jQuery(function($)
 	{
 		$.ajax(
 		{
-			url: script_bank_id.plugin_url + 'api/?action=ssc_check&orderref=' + orderref,
+			url: script_bank_id.plugin_url + 'api/?action=ssc_check&login_type=' + script_bank_id.login_type + '&orderref=' + orderref,
 			type: 'POST',
 			cache: false,
 			dataType: 'json'
@@ -79,7 +79,7 @@ jQuery(function($)
 	{
 		$.ajax(
 		{
-			url: script_bank_id.plugin_url + 'api/?action=qr_check',
+			url: script_bank_id.plugin_url + 'api/?action=qr_check&login_type=' + script_bank_id.login_type,
 			type: 'POST',
 			cache: false,
 			dataType: 'json'

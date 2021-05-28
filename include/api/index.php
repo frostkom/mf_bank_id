@@ -18,6 +18,7 @@ include_once("../lib/bankid_v5/src/Service/BankIDService.php");
 $obj_bank_id = new mf_bank_id();
 
 $action = check_var('action');
+$login_type = check_var('login_type');
 $user_ssn = check_var('user_ssn');
 $orderref = check_var('orderref');
 
@@ -106,7 +107,9 @@ switch($action)
 				case 'complete':
 					$user_ssn = $obj_bank_id->filter_ssn($user_ssn);
 
-					if($obj_bank_id->user_exists($user_ssn))
+					$obj_bank_id->validate_and_login(array('type' => $login_type, 'ssn' => $user_ssn), $json_output);
+
+					/*if($obj_bank_id->user_exists($user_ssn))
 					{
 						if($obj_bank_id->login($obj_bank_id->user_login))
 						{
@@ -126,7 +129,7 @@ switch($action)
 					{
 						$json_output['error'] = 1;
 						$json_output['msg'] = __("The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there.", 'lang_bank_id');
-					}
+					}*/
 				break;
 
 				case 'NO_CLIENT':
@@ -193,11 +196,12 @@ switch($action)
 			switch($result->status)
 			{
 				case 'complete':
-
 					$user_ssn = $result->completionData->user->personalNumber;
 					$user_ssn = $obj_bank_id->filter_ssn($user_ssn);
 
-					if($obj_bank_id->user_exists($user_ssn))
+					$obj_bank_id->validate_and_login(array('type' => $login_type, 'ssn' => $user_ssn), $json_output);
+
+					/*if($obj_bank_id->user_exists($user_ssn))
 					{
 						if($obj_bank_id->login($obj_bank_id->user_login))
 						{
@@ -217,7 +221,7 @@ switch($action)
 					{
 						$json_output['error'] = 1;
 						$json_output['msg'] = __("The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there.", 'lang_bank_id');
-					}
+					}*/
 				break;
 			}
 		}

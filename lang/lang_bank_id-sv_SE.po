@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-29 17:47+0100\n"
+"POT-Creation-Date: 2021-05-27 11:59+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -20,16 +20,16 @@ msgid "Username"
 msgstr "Användarnamn"
 
 #: ../include/classes.php:14
-#: ../include/classes.php:332
-#: ../include/classes.php:380
-#: ../include/classes.php:405
-#: ../include/classes.php:440
-#: ../include/classes.php:494
+#: ../include/classes.php:387
+#: ../include/classes.php:458
+#: ../include/classes.php:497
+#: ../include/classes.php:526
+#: ../include/classes.php:668
 msgid "Social Security Number"
 msgstr "Personnummer"
 
 #: ../include/classes.php:15
-#: ../include/classes.php:509
+#: ../include/classes.php:683
 msgid "QR Code"
 msgstr "QR-kod"
 
@@ -46,6 +46,7 @@ msgid "Certificate File"
 msgstr "Certifikatfil"
 
 #: ../include/classes.php:66
+#: ../include/classes.php:421
 msgid "Activate"
 msgstr "Aktivera"
 
@@ -146,44 +147,65 @@ msgstr "Vill du logga in eller signera med ett %s på denna dator eller med ett 
 msgid "Unknown Action"
 msgstr "Okänd händelse"
 
-#: ../include/classes.php:362
+#: ../include/classes.php:283
+#: ../include/classes.php:307
+#: ../include/api/index.php:122
+#: ../include/api/index.php:220
+msgid "The validation was successful! You are being logged in..."
+msgstr "Valideringen lyckades! Du loggas nu in..."
+
+#: ../include/classes.php:290
+#: ../include/classes.php:314
+#: ../include/api/index.php:129
+#: ../include/api/index.php:227
+msgid "Something went wrong when trying to login. If the problem persists, please contact an admin."
+msgstr "Något gick fel vid inloggningen. Om problemet kvarstår, var vänlig kontakta en administratör."
+
+#: ../include/classes.php:297
+#: ../include/api/index.php:136
+#: ../include/api/index.php:234
+msgid "The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there."
+msgstr "Personnumret som du försöker logga in med är inte kopplad till någon användare. Var vänlig logga in med ditt användarnamn och lösenord, gå till din profil och fyll i ditt personnummer där."
+
+#: ../include/classes.php:321
+msgid "The social security number that you are trying to login with is not connected to anyone. Please contact an admin."
+msgstr "Personnumret som du försöker logga in med är inte kopplad till någon. Var vänlig kontakt en administratör."
+
+#: ../include/classes.php:415
+msgid "BankID"
+msgstr ""
+
+#: ../include/classes.php:442
 msgid "You have to enter your Social Security Number to be able to login in the future"
 msgstr "Du behöver fylla i ditt personnummer för att kunna logga in i framtiden"
 
-#: ../include/classes.php:367
+#: ../include/classes.php:447
 msgid "You have to enter your Social Security Number"
 msgstr "Du behöver fylla i ditt personnummer"
 
-#: ../include/classes.php:470
+#: ../include/classes.php:593
+msgid "To view the content on this page you have to first login."
+msgstr "För att kunna se innehållet på denna sida så behöver du först logga in."
+
+#: ../include/classes.php:596
+msgid "Log in"
+msgstr "Logga in"
+
+#: ../include/classes.php:639
 #, php-format
 msgid "I am trying to open the %s application. If it does not open automatically you have to do it manually"
 msgstr "Jag försöker öppna %s-applikationen. Om den inte öppnas automatiskt så behöver du göra det manuellt"
 
-#: ../include/classes.php:471
+#: ../include/classes.php:640
 msgid "The login took too long. Please try again."
 msgstr "Inloggningen tog för lång tid. Var vänlig försök igen."
 
-#: ../include/classes.php:489
-#: ../include/classes.php:504
+#: ../include/classes.php:663
+#: ../include/classes.php:678
 msgid "or"
 msgstr "eller"
 
-#: ../include/api/index.php:114
-#: ../include/api/index.php:205
-msgid "The validation was successful! You are being logged in..."
-msgstr "Valideringen lyckades! Du loggas nu in..."
-
-#: ../include/api/index.php:121
-#: ../include/api/index.php:212
-msgid "Something went wrong when trying to login. If the problem persists, please contact an admin."
-msgstr "Något gick fel vid inloggningen. Om problemet kvarstår, var vänlig kontakta en administratör."
-
-#: ../include/api/index.php:128
-#: ../include/api/index.php:219
-msgid "The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there."
-msgstr "Personnumret som du försöker logga in med är inte kopplad till någon användare. Var vänlig logga in med ditt användarnamn och lösenord, gå till din profil och fyll i ditt personnummer där."
-
-#: ../include/api/index.php:135
+#: ../include/api/index.php:144
 msgid "Login attempt timed out. Please try again."
 msgstr "Inloggningsförsöket tog för lång tid. Var vänlig försök igen."
 

@@ -2,7 +2,10 @@
 
 class mf_bank_id
 {
-	function __construct(){}
+	function __construct()
+	{
+		$this->meta_prefix = 'mf_bank_id_';
+	}
 
 	function get_login_methods_for_select()
 	{
@@ -266,6 +269,61 @@ class mf_bank_id
 		return $out;
 	}
 
+	function validate_and_login($data, &$json_output)
+	{
+		switch($data['type'])
+		{
+			default:
+			case 'user':
+				if($this->user_exists($data['ssn']))
+				{
+					if($this->login($this->user_login))
+					{
+						$json_output['success'] = 1;
+						$json_output['msg'] = __("The validation was successful! You are being logged in...", 'lang_bank_id');
+						$json_output['redirect'] = admin_url();
+					}
+
+					else
+					{
+						$json_output['error'] = 1;
+						$json_output['msg'] = __("Something went wrong when trying to login. If the problem persists, please contact an admin.", 'lang_bank_id');
+					}
+				}
+
+				else
+				{
+					$json_output['error'] = 1;
+					$json_output['msg'] = __("The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there.", 'lang_bank_id');
+				}
+			break;
+			
+			case 'address':
+				if($this->address_exists($data['ssn']))
+				{
+					if($this->login_address())
+					{
+						$json_output['success'] = 1;
+						$json_output['msg'] = __("The validation was successful! You are being logged in...", 'lang_bank_id');
+						$json_output['redirect'] = wp_get_referer();
+					}
+
+					else
+					{
+						$json_output['error'] = 1;
+						$json_output['msg'] = __("Something went wrong when trying to login. If the problem persists, please contact an admin.", 'lang_bank_id');
+					}
+				}
+
+				else
+				{
+					$json_output['error'] = 1;
+					$json_output['msg'] = __("The social security number that you are trying to login with is not connected to anyone. Please contact an admin.", 'lang_bank_id');
+				}
+			break;
+		}
+	}
+
 	function user_exists($in)
 	{
 		global $wpdb;
@@ -348,11 +406,36 @@ class mf_bank_id
 		return $value;
 	}
 
+	function rwmb_meta_boxes($meta_boxes)
+	{
+		if(is_plugin_active("mf_address/index.php"))
+		{
+			$meta_boxes[] = array(
+				'id' => $this->meta_prefix.'settings',
+				'title' => __("BankID", 'lang_bank_id'),
+				'post_types' => array('page'),
+				'context' => 'side',
+				'priority' => 'low',
+				'fields' => array(
+					array(
+						'name' => __("Activate", 'lang_bank_id'),
+						'id' => $this->meta_prefix.'activate',
+						'type' => 'select',
+						'options' => get_yes_no_for_select(),
+						'std' => 'no',
+					),
+				)
+			);
+		}
+
+		return $meta_boxes;
+	}
+
 	function admin_notices()
 	{
 		global $pagenow, $error_text;
 
-		if($pagenow == 'profile.php' && get_option('setting_bank_id_activate') == 'yes' && get_the_author_meta('profile_ssn', get_current_user_id()) == '')
+		if($pagenow == 'profile.php' && get_the_author_meta('profile_ssn', get_current_user_id()) == '')
 		{
 			if($this->allow_username_login() == false)
 			{
@@ -370,74 +453,154 @@ class mf_bank_id
 
 	function edit_user_profile($user)
 	{
-		if(get_site_option('setting_bank_id_certificate') != '')
-		{
-			$meta_key = 'profile_ssn';
-			$meta_value = get_the_author_meta($meta_key, $user->ID);
-			$meta_text = __("Social Security Number", 'lang_bank_id');
+		$meta_key = 'profile_ssn';
+		$meta_value = get_the_author_meta($meta_key, $user->ID);
+		$meta_text = __("Social Security Number", 'lang_bank_id');
 
-			echo "<table class='form-table'>
-				<tr class='".str_replace("_", "-", $meta_key)."-wrap'>
-					<th><label for='".$meta_key."'>".$meta_text."</label></th>
-					<td>".show_textfield(array('name' => $meta_key, 'value' => $meta_value, 'xtra' => "class='regular-text' maxlength='12' required"))."</td>
-				</tr>
-			</table>";
-		}
+		echo "<table class='form-table'>
+			<tr class='".str_replace("_", "-", $meta_key)."-wrap'>
+				<th><label for='".$meta_key."'>".$meta_text."</label></th>
+				<td>".show_textfield(array('name' => $meta_key, 'value' => $meta_value, 'xtra' => "class='regular-text' maxlength='12' required"))."</td>
+			</tr>
+		</table>";
 	}
 
 	function profile_update($user_id)
 	{
-		if(get_site_option('setting_bank_id_certificate') != '' && current_user_can('edit_user', $user_id))
+		if(current_user_can('edit_user', $user_id))
 		{
 			$this->user_register($user_id);
 		}
 	}
 
+	function filter_theme_core_seo_type($seo_type)
+	{
+		global $post;
+
+		if($seo_type == '')
+		{
+			$post_activate = get_post_meta($post->ID, $this->meta_prefix.'activate', true);
+
+			if($post_activate == 'yes')
+			{
+				$seo_type = 'password_protected';
+			}
+		}
+
+		return $seo_type;
+	}
+
 	function register_form()
 	{
-		if(get_site_option('setting_bank_id_certificate') != '')
-		{
-			$meta_key = 'profile_ssn';
-			$meta_value = check_var($meta_key);
-			$meta_text = __("Social Security Number", 'lang_bank_id');
+		$meta_key = 'profile_ssn';
+		$meta_value = check_var($meta_key);
+		$meta_text = __("Social Security Number", 'lang_bank_id');
 
-			echo "<p>
-				<label for='".$meta_key."'>".$meta_text."</label><br>
-				<input type='text' name='".$meta_key."' value='".$meta_value."' class='regular-text' maxlength='12' required>
-			</p>";
-		}
+		echo "<p>
+			<label for='".$meta_key."'>".$meta_text."</label><br>
+			<input type='text' name='".$meta_key."' value='".$meta_value."' class='regular-text' maxlength='12' required>
+		</p>";
 	}
 
 	function user_register($user_id, $password = '', $meta = array())
 	{
 		global $wpdb;
 
-		if(get_site_option('setting_bank_id_certificate') != '')
+		$meta_key = 'profile_ssn';
+		$meta_value = $this->filter_ssn(check_var($meta_key));
+
+		$user_id_temp = $wpdb->get_var($wpdb->prepare("SELECT user_id FROM ".$wpdb->usermeta." WHERE user_id != '%d' AND meta_key = %s AND meta_value = %s", $user_id, $meta_key, $meta_value));
+
+		if($user_id_temp > 0)
 		{
-			$meta_key = 'profile_ssn';
-			$meta_value = $this->filter_ssn(check_var($meta_key));
+			//do_log(sprintf("The user %s tried to enter a social security number that %s already has", get_user_info(array('id' => $user_id)), get_user_info(array('id' => $user_id_temp)));
 
-			$user_id_temp = $wpdb->get_var($wpdb->prepare("SELECT user_id FROM ".$wpdb->usermeta." WHERE user_id != '%d' AND meta_key = %s AND meta_value = %s", $user_id, $meta_key, $meta_value));
-
-			if($user_id_temp > 0)
-			{
-				//do_log(sprintf("The user %s tried to enter a social security number that %s already has", get_user_info(array('id' => $user_id)), get_user_info(array('id' => $user_id_temp)));
-
-				$meta_value = '';
-			}
-
-			update_user_meta($user_id, $meta_key, $meta_value);
+			$meta_value = '';
 		}
+
+		update_user_meta($user_id, $meta_key, $meta_value);
 	}
 
 	function filter_profile_fields($arr_fields)
 	{
-		if(get_site_option('setting_bank_id_certificate') != '')
-		{
-			$arr_fields[] = array('type' => 'text', 'name' => 'profile_ssn', 'text' => __("Social Security Number", 'lang_bank_id'), 'required' => true, 'attributes' => " maxlength='12'");
-		}
+		$arr_fields[] = array('type' => 'text', 'name' => 'profile_ssn', 'text' => __("Social Security Number", 'lang_bank_id'), 'required' => true, 'attributes' => " maxlength='12'");
 
 		return $arr_fields;
+	}
+
+	function filter_is_password_protected($is_protected, $data)
+	{
+		if($is_protected == false && get_post_meta($data['post_id'], $this->meta_prefix.'activate', true) == 'yes')
+		{
+			if($data['check_login'] == true && $this->is_address_logged_in())
+			{
+				$is_protected = false;
+			}
+
+			else
+			{
+				$is_protected = true;
+			}
+		}
+
+		return $is_protected;
+	}
+
+	function address_exists($in)
+	{
+		global $wpdb;
+
+		if($in != '')
+		{
+			$emlAddressEmail = $wpdb->get_var($wpdb->prepare("SELECT addressEmail FROM ".get_address_table_prefix()."address WHERE addressBirthDate = %s", $in));
+
+			return ($emlAddressEmail != '');
+		}
+
+		else
+		{
+			return false;
+		}
+	}
+
+	function login_address()
+	{
+		$cookie_name = $this->meta_prefix.COOKIEHASH;
+		$cookie_value = 'address_ssn_'.$_SERVER['REMOTE_ADDR']; //$data['ssn']
+
+		setcookie($cookie_name, md5($cookie_value), strtotime("+1 week"), COOKIEPATH);
+
+		return true;
+	}
+
+	function is_address_logged_in()
+	{
+		$cookie_name = $this->meta_prefix.COOKIEHASH;
+		$cookie_value = 'address_ssn_'.$_SERVER['REMOTE_ADDR']; //$data['ssn']
+
+		$cookie_value_md5 = (isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : '');
+
+		return ($cookie_value_md5 == md5($cookie_value));
+	}
+
+	function the_content($html)
+	{
+		global $post;
+
+		if(is_user_logged_in() == false && isset($post->ID) && apply_filters('filter_is_password_protected', false, array('post_id' => $post->ID, 'check_login' => true)) == true)
+		{
+			$this->login_init(array('login_type' => 'address'));
+
+			$html = "<form id='loginform' class='mf_form' action='#' method='post'>
+				<p>".__("To view the content on this page you have to first login.", 'lang_bank_id')."</p>"
+				.$this->login_form(array('print' => false))
+				."<div class='form_button'>"
+					.show_button(array('name' => 'btnBankIDLogin', 'text' => __("Log in", 'lang_bank_id')))
+				."</div>
+			</form>";
+		}
+
+		return $html;
 	}
 
 	function allow_username_login()
@@ -455,8 +618,11 @@ class mf_bank_id
 		}
 	}
 
-	function login_init()
+	function login_init($data = array())
 	{
+		if(!is_array($data)){				$data = array();}
+		if(!isset($data['login_type'])){	$data['login_type'] = 'user';}
+
 		$plugin_include_url = plugin_dir_url(__FILE__);
 		$plugin_version = get_plugin_version(__FILE__);
 
@@ -464,14 +630,20 @@ class mf_bank_id
 		mf_enqueue_script('script_bank_id', $plugin_include_url."script.js", array(
 			'plugin_url' => $plugin_include_url,
 			'disable_default_login' => ($this->allow_username_login() ? 'no' : 'yes'),
+			'login_type' => $data['login_type'],
 			'open_bank_id_application_text' => sprintf(__("I am trying to open the %s application. If it does not open automatically you have to do it manually", 'lang_bank_id'), "BankID"),
 			'took_too_long_text' => __("The login took too long. Please try again.", 'lang_bank_id'),
 		), $plugin_version);
 	}
 
-	function login_form()
+	function login_form($data = array())
 	{
 		global $error_text;
+
+		if(!is_array($data)){			$data = array();}
+		if(!isset($data['print'])){		$data['print'] = true;}
+
+		$out = "";
 
 		$setting_bank_id_login_methods = get_option_or_default('setting_bank_id_login_methods', array());
 
@@ -481,12 +653,12 @@ class mf_bank_id
 
 			$field_required = ($this->allow_username_login() == false);
 
-			if($this->allow_username_login()) //count($setting_bank_id_login_methods) == 0 || in_array('username', $setting_bank_id_login_methods)
+			if($this->allow_username_login())
 			{
-				echo "<p class='login_or'><label>".__("or", 'lang_bank_id')."</label></p>";
+				$out .= "<p class='login_or'><label>".__("or", 'lang_bank_id')."</label></p>";
 			}
 
-			echo "<div id='login_fields' class='flex_flow'>
+			$out .= "<div id='login_fields' class='flex_flow'>
 				<img src='".$plugin_include_url."images/bankid.svg' class='logo'>"
 				.show_textfield(array('custom_tag' => 'p', 'name' => 'user_ssn', 'required' => $field_required, 'placeholder' => __("Social Security Number", 'lang_bank_id'), 'xtra' => "class='input' autocomplete='off'")) //, 'text' => "BankID <a href='//support.bankid.com/sv'>(".sprintf(__("Get %s", 'lang_bank_id'), "BankID").")</a>"
 			."</div>";
@@ -496,12 +668,12 @@ class mf_bank_id
 		{
 			$plugin_include_url = plugin_dir_url(__FILE__);
 
-			if($this->allow_username_login() || in_array('ssc', $setting_bank_id_login_methods)) //count($setting_bank_id_login_methods) == 0 || in_array('username', $setting_bank_id_login_methods)
+			if($this->allow_username_login() || in_array('ssc', $setting_bank_id_login_methods))
 			{
-				echo "<p class='login_or'><label>".__("or", 'lang_bank_id')."</label></p>";
+				$out .= "<p class='login_or'><label>".__("or", 'lang_bank_id')."</label></p>";
 			}
 
-			echo "<div id='bankid_qr' class='flex_flow'>
+			$out .= "<div id='bankid_qr' class='flex_flow'>
 				<img src='".$plugin_include_url."images/bankid.svg' class='logo'>
 				<span>".__("QR Code", 'lang_bank_id')."</span>
 			</div>";
@@ -509,8 +681,18 @@ class mf_bank_id
 
 		if(count($setting_bank_id_login_methods) == 0 || in_array('ssc', $setting_bank_id_login_methods) || in_array('qr', $setting_bank_id_login_methods))
 		{
-			echo "<div id='login_loading' class='hide'><i class='fa fa-spinner fa-spin fa-3x'></i></div>
+			$out .= "<div id='login_loading' class='hide'><i class='fa fa-spinner fa-spin fa-3x'></i></div>
 			<div id='notification' class='hide'></div>";
+		}
+
+		if($data['print'] == true)
+		{
+			echo $out;
+		}
+
+		else
+		{
+			return $out;
 		}
 	}
 }

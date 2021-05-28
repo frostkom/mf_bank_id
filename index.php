@@ -3,7 +3,7 @@
 Plugin Name: MF BankID
 Plugin URI: https://github.com/frostkom/mf_bank_id
 Description: 
-Version: 2.2.7
+Version: 2.3.1
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -40,11 +40,18 @@ if(is_plugin_active("mf_base/index.php"))
 		add_action('manage_users_columns', array($obj_bank_id, 'manage_users_columns'));
 		add_action('manage_users_custom_column', array($obj_bank_id, 'manage_users_custom_column'), 10, 3);
 
-		add_action('admin_notices', array($obj_bank_id, 'admin_notices'));
+		if(get_site_option('setting_bank_id_certificate') != '' && get_option('setting_bank_id_activate') == 'yes')
+		{
+			add_action('rwmb_meta_boxes', array($obj_bank_id, 'rwmb_meta_boxes'));
+			
+			add_action('admin_notices', array($obj_bank_id, 'admin_notices'));
+		}
 
 		add_action('show_user_profile', array($obj_bank_id, 'edit_user_profile'));
 		add_action('edit_user_profile', array($obj_bank_id, 'edit_user_profile'));
 		add_action('profile_update', array($obj_bank_id, 'profile_update'));
+
+		add_filter('filter_theme_core_seo_type', array($obj_bank_id, 'filter_theme_core_seo_type'));
 	}
 
 	else
@@ -59,6 +66,9 @@ if(is_plugin_active("mf_base/index.php"))
 		add_action('user_register', array($obj_bank_id, 'user_register'));
 
 		add_filter('filter_profile_fields', array($obj_bank_id, 'filter_profile_fields'));
+
+		add_filter('filter_is_password_protected', array($obj_bank_id, 'filter_is_password_protected'), 10, 2);
+		add_filter('the_content', array($obj_bank_id, 'the_content'));
 	}
 
 	function activate_bank_id()

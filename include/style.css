@@ -1,5 +1,25 @@
 @media all
 {
+	/* Public */
+	#wrapper #loginform
+	{
+		background: #ccc;
+		border-radius: 1em;
+		padding: 1em 1em .5em;
+		max-width: 400px;
+	}
+
+		/*#wrapper #loginform .flex_flow .form_button
+		{
+			text-align: right;
+		}
+
+			#wrapper loginform .flex_flow .form_button button:last-of-type
+			{
+				margin-right: 0 !important;
+			}*/
+
+	/* Admin */
 	#loginform .login_or
 	{
 		margin-bottom: .5em;
@@ -17,10 +37,6 @@
 
 		#loginform #login_fields img.logo
 		{
-			/*-webkit-box-flex: 1 1 0;
-			-webkit-flex: 1 1 0;
-			-ms-flex: 1 1 0;
-			flex: 1 1 0;*/
 			height: 40px;
 			margin-right: 1em;
 			width: 40px;
@@ -52,14 +68,10 @@
 			border-radius: .5em;
 			font-size: 1.3em;
 			padding: .5em;
+			text-align: center;
 		}
 
-	#loginform #login_loading
-	{
-		margin: .5em 0;
-	}
-
-	#loginform #notification
+	#loginform #login_loading, #loginform #notification
 	{
 		margin: .5em 0;
 	}
