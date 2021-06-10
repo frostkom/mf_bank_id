@@ -3,7 +3,7 @@
 Plugin Name: MF BankID
 Plugin URI: https://github.com/frostkom/mf_bank_id
 Description: 
-Version: 2.3.1
+Version: 2.3.4
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://frostkom.se
@@ -43,7 +43,7 @@ if(is_plugin_active("mf_base/index.php"))
 		if(get_site_option('setting_bank_id_certificate') != '' && get_option('setting_bank_id_activate') == 'yes')
 		{
 			add_action('rwmb_meta_boxes', array($obj_bank_id, 'rwmb_meta_boxes'));
-			
+
 			add_action('admin_notices', array($obj_bank_id, 'admin_notices'));
 		}
 

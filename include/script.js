@@ -165,6 +165,39 @@ jQuery(function($)
 		}, 2000);
 	}
 
+	/* Does not work as wanted when autofilling with pre-saved username/password */
+	/*function display_or_hide_submit_button(type)
+	{
+		var do_display = false;
+
+		if($("#user_login").length > 0 && (type == 'keyup' || $("#user_login").val() != ''))
+		{
+			do_display = true;
+		}
+
+		else if($("#user_ssn").length > 0 && $("#user_ssn").val() != '' && $("#user_ssn").val().length >= 10)
+		{
+			do_display = true;
+		}
+
+		if(do_display == true)
+		{
+			$("#loginform .submit, #loginform .form_button").removeClass('hide');
+		}
+
+		else
+		{
+			$("#loginform .submit, #loginform .form_button").addClass('hide');
+		}
+	}
+
+	$("#user_login, #user_ssn").on('keyup', function()
+	{
+		display_or_hide_submit_button('keyup');
+	});
+
+	display_or_hide_submit_button('init');*/
+
 	if(script_bank_id.disable_default_login == 'yes')
 	{
 		$("#loginform").attr({'action': '#'});

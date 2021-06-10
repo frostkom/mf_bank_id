@@ -9,15 +9,11 @@
 		max-width: 400px;
 	}
 
-		/*#wrapper #loginform .flex_flow .form_button
+		#wrapper #loginform .form_button
 		{
+			margin-top: 1em;
 			text-align: right;
 		}
-
-			#wrapper loginform .flex_flow .form_button button:last-of-type
-			{
-				margin-right: 0 !important;
-			}*/
 
 	/* Admin */
 	#loginform .login_or
@@ -30,18 +26,19 @@
 			font-size: 1.4em !important;
 		}
 
+	#loginform #login_fields img.logo, #loginform #bankid_qr img.logo
+	{
+		filter: drop-shadow(0 0 .5em rgba(0, 0, 0, .5));
+		height: 40px;
+		margin-right: 1em;
+		width: 40px;
+		max-width: 40px;
+	}
+
 	#loginform #login_fields
 	{
 		margin-bottom: .5em;
 	}
-
-		#loginform #login_fields img.logo
-		{
-			height: 40px;
-			margin-right: 1em;
-			width: 40px;
-			max-width: 40px;
-		}
 
 			#loginform #login_fields input
 			{
@@ -54,22 +51,20 @@
 		margin-bottom: .5em;
 	}
 
-		#loginform #bankid_qr img.logo
-		{
-			height: 40px;
-			margin-right: 1em;
-			width: 40px;
-			max-width: 40px;
-		}
-
 		#loginform #bankid_qr span
 		{
 			background: #fff;
 			border-radius: .5em;
+			box-shadow: 0 0 .5em rgba(0, 0, 0, .5);
 			font-size: 1.3em;
 			padding: .5em;
 			text-align: center;
 		}
+
+			#loginform #bankid_qr span:hover
+			{
+				box-shadow: 0 0 .5em rgba(0, 0, 0, .2);
+			}
 
 	#loginform #login_loading, #loginform #notification
 	{

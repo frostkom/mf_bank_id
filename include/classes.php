@@ -297,7 +297,7 @@ class mf_bank_id
 					$json_output['msg'] = __("The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there.", 'lang_bank_id');
 				}
 			break;
-			
+
 			case 'address':
 				if($this->address_exists($data['ssn']))
 				{
@@ -675,7 +675,7 @@ class mf_bank_id
 
 			$out .= "<div id='bankid_qr' class='flex_flow'>
 				<img src='".$plugin_include_url."images/bankid.svg' class='logo'>
-				<span>".__("QR Code", 'lang_bank_id')."</span>
+				<span>".__("Get QR Code", 'lang_bank_id')."</span>
 			</div>";
 		}
 

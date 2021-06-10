@@ -15,7 +15,10 @@ include_once("../classes.php");
 include_once("../lib/bankid_v5/vendor/autoload.php");
 include_once("../lib/bankid_v5/src/Service/BankIDService.php");
 
-$obj_bank_id = new mf_bank_id();
+if(!isset($obj_bank_id))
+{
+	$obj_bank_id = new mf_bank_id();
+}
 
 $action = check_var('action');
 $login_type = check_var('login_type');

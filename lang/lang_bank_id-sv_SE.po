@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-27 11:59+0100\n"
+"POT-Creation-Date: 2021-06-09 11:42+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -24,12 +24,11 @@ msgstr "Användarnamn"
 #: ../include/classes.php:458
 #: ../include/classes.php:497
 #: ../include/classes.php:526
-#: ../include/classes.php:668
+#: ../include/classes.php:663
 msgid "Social Security Number"
 msgstr "Personnummer"
 
 #: ../include/classes.php:15
-#: ../include/classes.php:683
 msgid "QR Code"
 msgstr "QR-kod"
 
@@ -149,21 +148,15 @@ msgstr "Okänd händelse"
 
 #: ../include/classes.php:283
 #: ../include/classes.php:307
-#: ../include/api/index.php:122
-#: ../include/api/index.php:220
 msgid "The validation was successful! You are being logged in..."
 msgstr "Valideringen lyckades! Du loggas nu in..."
 
 #: ../include/classes.php:290
 #: ../include/classes.php:314
-#: ../include/api/index.php:129
-#: ../include/api/index.php:227
 msgid "Something went wrong when trying to login. If the problem persists, please contact an admin."
 msgstr "Något gick fel vid inloggningen. Om problemet kvarstår, var vänlig kontakta en administratör."
 
 #: ../include/classes.php:297
-#: ../include/api/index.php:136
-#: ../include/api/index.php:234
 msgid "The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there."
 msgstr "Personnumret som du försöker logga in med är inte kopplad till någon användare. Var vänlig logga in med ditt användarnamn och lösenord, gå till din profil och fyll i ditt personnummer där."
 
@@ -183,29 +176,33 @@ msgstr "Du behöver fylla i ditt personnummer för att kunna logga in i framtide
 msgid "You have to enter your Social Security Number"
 msgstr "Du behöver fylla i ditt personnummer"
 
-#: ../include/classes.php:593
+#: ../include/classes.php:595
 msgid "To view the content on this page you have to first login."
 msgstr "För att kunna se innehållet på denna sida så behöver du först logga in."
 
-#: ../include/classes.php:596
+#: ../include/classes.php:598
 msgid "Log in"
 msgstr "Logga in"
 
-#: ../include/classes.php:639
+#: ../include/classes.php:634
 #, php-format
 msgid "I am trying to open the %s application. If it does not open automatically you have to do it manually"
 msgstr "Jag försöker öppna %s-applikationen. Om den inte öppnas automatiskt så behöver du göra det manuellt"
 
-#: ../include/classes.php:640
+#: ../include/classes.php:635
 msgid "The login took too long. Please try again."
 msgstr "Inloggningen tog för lång tid. Var vänlig försök igen."
 
-#: ../include/classes.php:663
-#: ../include/classes.php:678
+#: ../include/classes.php:658
+#: ../include/classes.php:673
 msgid "or"
 msgstr "eller"
 
-#: ../include/api/index.php:144
+#: ../include/classes.php:678
+msgid "Get QR Code"
+msgstr "Hämta QR-kod"
+
+#: ../include/api/index.php:141
 msgid "Login attempt timed out. Please try again."
 msgstr "Inloggningsförsöket tog för lång tid. Var vänlig försök igen."
 
