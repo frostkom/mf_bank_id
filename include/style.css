@@ -26,45 +26,62 @@
 			font-size: 1.4em !important;
 		}
 
-	#loginform #login_fields img.logo, #loginform #bankid_qr img.logo
-	{
-		filter: drop-shadow(0 0 .5em rgba(0, 0, 0, .5));
-		height: 40px;
-		margin-right: 1em;
-		width: 40px;
-		max-width: 40px;
-	}
-
 	#loginform #login_fields
 	{
 		margin-bottom: .5em;
 	}
 
-			#loginform #login_fields input
-			{
-				margin-bottom: .2em;
-			}
-
-	#loginform #bankid_qr
-	{
-		cursor: pointer;
-		margin-bottom: .5em;
-	}
-
-		#loginform #bankid_qr span
+		#loginform #login_fields input
 		{
-			background: #fff;
-			border-radius: .5em;
-			box-shadow: 0 0 .5em rgba(0, 0, 0, .5);
-			font-size: 1.3em;
-			padding: .5em;
-			text-align: center;
+			margin-bottom: .2em;
 		}
 
-			#loginform #bankid_qr span:hover
-			{
-				box-shadow: 0 0 .5em rgba(0, 0, 0, .2);
-			}
+		#loginform #login_fields img.logo
+		{
+			filter: drop-shadow(0 0 .5em rgba(0, 0, 0, .5));
+			height: 40px;
+			margin-right: 1em;
+			width: 40px;
+			max-width: 40px;
+		}
+
+	#loginform .bankid_button
+	{
+		background: #fff;
+		border-radius: .5em;
+		box-shadow: 0 0 .5em rgba(0, 0, 0, .5);
+		cursor: pointer;
+		margin-bottom: .5em;
+		padding: .5em 1em;
+		text-align: center;
+	}
+
+		#loginform .bankid_button:hover
+		{
+			box-shadow: 0 0 .5em rgba(0, 0, 0, .2);
+		}
+
+		#loginform .bankid_button span
+		{
+			font-size: 1.3em;
+			line-height: 1.7;
+		}
+
+		#loginform .bankid_button img.logo
+		{
+			filter: drop-shadow(0 0 .5em rgba(0, 0, 0, .5));
+			height: 30px;
+			width: 30px;
+			max-width: 30px;
+		}
+
+		#loginform .bankid_button a
+		{
+			color: inherit;
+			font-size: 1.3em;
+			line-height: 1.7;
+			text-decoration: none;
+		}
 
 	#loginform #login_loading, #loginform #notification
 	{

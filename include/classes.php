@@ -13,6 +13,7 @@ class mf_bank_id
 			'username' => __("Username", 'lang_bank_id'),
 			'ssc' => __("Social Security Number", 'lang_bank_id'),
 			'qr' => __("QR Code", 'lang_bank_id'),
+			'connected' => __("Same Device", 'lang_bank_id'),
 		);
 	}
 
@@ -412,7 +413,7 @@ class mf_bank_id
 		{
 			$meta_boxes[] = array(
 				'id' => $this->meta_prefix.'settings',
-				'title' => __("BankID", 'lang_bank_id'),
+				'title' => "BankID",
 				'post_types' => array('page'),
 				'context' => 'side',
 				'priority' => 'low',
@@ -631,7 +632,6 @@ class mf_bank_id
 			'plugin_url' => $plugin_include_url,
 			'disable_default_login' => ($this->allow_username_login() ? 'no' : 'yes'),
 			'login_type' => $data['login_type'],
-			'open_bank_id_application_text' => sprintf(__("I am trying to open the %s application. If it does not open automatically you have to do it manually", 'lang_bank_id'), "BankID"),
 			'took_too_long_text' => __("The login took too long. Please try again.", 'lang_bank_id'),
 		), $plugin_version);
 	}
@@ -645,6 +645,8 @@ class mf_bank_id
 
 		$out = "";
 
+		$add_login_or = $this->allow_username_login();
+
 		$setting_bank_id_login_methods = get_option_or_default('setting_bank_id_login_methods', array());
 
 		if(count($setting_bank_id_login_methods) == 0 || in_array('ssc', $setting_bank_id_login_methods))
@@ -653,7 +655,7 @@ class mf_bank_id
 
 			$field_required = ($this->allow_username_login() == false);
 
-			if($this->allow_username_login())
+			if($add_login_or == true)
 			{
 				$out .= "<p class='login_or'><label>".__("or", 'lang_bank_id')."</label></p>";
 			}
@@ -662,24 +664,45 @@ class mf_bank_id
 				<img src='".$plugin_include_url."images/bankid.svg' class='logo'>"
 				.show_textfield(array('custom_tag' => 'p', 'name' => 'user_ssn', 'required' => $field_required, 'placeholder' => __("Social Security Number", 'lang_bank_id'), 'xtra' => "class='input' autocomplete='off'")) //, 'text' => "BankID <a href='//support.bankid.com/sv'>(".sprintf(__("Get %s", 'lang_bank_id'), "BankID").")</a>"
 			."</div>";
+
+			$add_login_or = true;
 		}
 
 		if(count($setting_bank_id_login_methods) == 0 || in_array('qr', $setting_bank_id_login_methods))
 		{
 			$plugin_include_url = plugin_dir_url(__FILE__);
 
-			if($this->allow_username_login() || in_array('ssc', $setting_bank_id_login_methods))
+			if($add_login_or == true)
 			{
 				$out .= "<p class='login_or'><label>".__("or", 'lang_bank_id')."</label></p>";
 			}
 
-			$out .= "<div id='bankid_qr' class='flex_flow'>
-				<img src='".$plugin_include_url."images/bankid.svg' class='logo'>
+			$out .= "<div id='bankid_qr' class='flex_flow bankid_button'>
 				<span>".__("Get QR Code", 'lang_bank_id')."</span>
+				<img src='".$plugin_include_url."images/bankid.svg' class='logo'>
 			</div>";
+			
+			$add_login_or = true;
 		}
 
-		if(count($setting_bank_id_login_methods) == 0 || in_array('ssc', $setting_bank_id_login_methods) || in_array('qr', $setting_bank_id_login_methods))
+		if(count($setting_bank_id_login_methods) == 0 || in_array('connected', $setting_bank_id_login_methods))
+		{
+			$plugin_include_url = plugin_dir_url(__FILE__);
+
+			if($add_login_or == true)
+			{
+				$out .= "<p class='login_or'><label>".__("or", 'lang_bank_id')."</label></p>";
+			}
+
+			$out .= "<div id='bankid_connected' class='flex_flow bankid_button'>
+				<span>".__("Same Device", 'lang_bank_id')."</span>
+				<img src='".$plugin_include_url."images/bankid.svg' class='logo'>
+			</div>";
+
+			$add_login_or = true;
+		}
+
+		if(count($setting_bank_id_login_methods) == 0 || in_array('ssc', $setting_bank_id_login_methods) || in_array('qr', $setting_bank_id_login_methods) || in_array('connected', $setting_bank_id_login_methods))
 		{
 			$out .= "<div id='login_loading' class='hide'><i class='fa fa-spinner fa-spin fa-3x'></i></div>
 			<div id='notification' class='hide'></div>";

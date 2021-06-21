@@ -77,6 +77,14 @@ switch($action)
 				$response = $bankIDService->getAuthResponse($user_ssn);
 				$_SESSION['start_token'] = $response->autoStartToken;
 				$_SESSION['orderRef'] = $response->orderRef;
+
+				$json_output['msg'] = sprintf(__("I am trying to open the %s application. If it does not open automatically you have to do it manually", 'lang_bank_id'), "BankID");
+
+				// This will result in timeout anyway...
+				/*if($response->autoStartToken != '')
+				{
+					$json_output['msg'] .= " <a href='bankid:///?autostarttoken=".$response->autoStartToken."&redirect=null'>".sprintf(__("Click to open %s app...", 'lang_bank_id'), "BankID")."</a>";
+				}*/
 			}
 
 			catch(Exception $e)
@@ -111,28 +119,6 @@ switch($action)
 					$user_ssn = $obj_bank_id->filter_ssn($user_ssn);
 
 					$obj_bank_id->validate_and_login(array('type' => $login_type, 'ssn' => $user_ssn), $json_output);
-
-					/*if($obj_bank_id->user_exists($user_ssn))
-					{
-						if($obj_bank_id->login($obj_bank_id->user_login))
-						{
-							$json_output['success'] = 1;
-							$json_output['msg'] = __("The validation was successful! You are being logged in...", 'lang_bank_id');
-							$json_output['redirect'] = admin_url();
-						}
-
-						else
-						{
-							$json_output['error'] = 1;
-							$json_output['msg'] = __("Something went wrong when trying to login. If the problem persists, please contact an admin.", 'lang_bank_id');
-						}
-					}
-
-					else
-					{
-						$json_output['error'] = 1;
-						$json_output['msg'] = __("The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there.", 'lang_bank_id');
-					}*/
 				break;
 
 				case 'NO_CLIENT':
@@ -187,7 +173,34 @@ switch($action)
 		}
 	break;
 
+	case 'connected_init':
+		include_once("../lib/phpqrcode/qrlib.php");
+
+		$bankIDService = new BankIDService($api_url, $_SERVER['REMOTE_ADDR'], $arr_params);
+
+		try
+		{
+			$response = $bankIDService->getAuthResponse();
+			$_SESSION['start_token'] = $response->autoStartToken;
+			$_SESSION['orderRef'] = $response->orderRef;
+
+			$connected_url = "bankid:///?autostarttoken=".$response->autoStartToken."&redirect=null";
+
+			$json_output['success'] = 1;
+			$json_output['html'] = "<a href='".$connected_url."'>".sprintf(__("Click to open %s app...", 'lang_bank_id'), "BankID")."</a>";
+		}
+
+		catch(Exception $e)
+		{
+			$message_arr = json_decode($e->getMessage());
+
+			$json_output['error'] = 1;
+			$json_output['msg'] = $message_arr->response;
+		}
+	break;
+
 	case 'qr_check':
+	case 'connected_check':
 		$orderref = $_SESSION['orderRef'];
 
 		$bankIDService = new BankIDService($api_url, $_SERVER['REMOTE_ADDR'], $arr_params);
@@ -203,28 +216,6 @@ switch($action)
 					$user_ssn = $obj_bank_id->filter_ssn($user_ssn);
 
 					$obj_bank_id->validate_and_login(array('type' => $login_type, 'ssn' => $user_ssn), $json_output);
-
-					/*if($obj_bank_id->user_exists($user_ssn))
-					{
-						if($obj_bank_id->login($obj_bank_id->user_login))
-						{
-							$json_output['success'] = 1;
-							$json_output['msg'] = __("The validation was successful! You are being logged in...", 'lang_bank_id');
-							$json_output['redirect'] = admin_url();
-						}
-
-						else
-						{
-							$json_output['error'] = 1;
-							$json_output['msg'] = __("Something went wrong when trying to login. If the problem persists, please contact an admin.", 'lang_bank_id');
-						}
-					}
-
-					else
-					{
-						$json_output['error'] = 1;
-						$json_output['msg'] = __("The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there.", 'lang_bank_id');
-					}*/
 				break;
 			}
 		}
