@@ -26,17 +26,17 @@
 			font-size: 1.4em !important;
 		}
 
-	#loginform #login_fields
+	#loginform #login_ssn
 	{
 		margin-bottom: .5em;
 	}
 
-		#loginform #login_fields input
+		#loginform #login_ssn input
 		{
 			margin-bottom: .2em;
 		}
 
-		#loginform #login_fields img.logo
+		#loginform #login_ssn img.logo
 		{
 			filter: drop-shadow(0 0 .5em rgba(0, 0, 0, .5));
 			height: 40px;

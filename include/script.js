@@ -2,15 +2,15 @@ jQuery(function($)
 {
 	var dom_obj_form = $("#loginform"),
 			dom_obj_or = dom_obj_form.children(".login_or"),
-			dom_obj_fields = dom_obj_form.children("#login_fields"),
+			dom_obj_fields = dom_obj_form.children("#login_ssn"),
 				dom_obj_user_ssn = dom_obj_fields.find("#user_ssn"),
-			dom_obj_qr = dom_obj_form.children("#bankid_qr"),
-			dom_obj_connected = dom_obj_form.children("#bankid_connected"),
+			dom_obj_qr = dom_obj_form.children("#login_qr"),
+			dom_obj_connected = dom_obj_form.children("#login_connected"),
 			dom_obj_loading = dom_obj_form.children("#login_loading"),
 			dom_obj_notification = dom_obj_form.children("#notification"),
 		checkstatus = 0,
-		bankid_interval,
-		timeout_time = 2000;
+		checkstatus_limit = 7,
+		timeout_time = 3000;
 
 	function update_notification(type, message)
 	{
@@ -45,15 +45,15 @@ jQuery(function($)
 		dom_obj_connected.addClass('hide');
 		dom_obj_notification.addClass('hide');
 	}
-	
+
 	function reset_form_on_error()
 	{
-		clearInterval(bankid_interval);
-
 		dom_obj_or.removeClass('hide');
 		dom_obj_fields.removeClass('hide');
 		dom_obj_qr.removeClass('hide');
 		dom_obj_connected.removeClass('hide');
+
+		$("#submit_input").removeClass('hide');
 	}
 
 	function check_ssc_response(orderref, user_ssn)
@@ -69,6 +69,8 @@ jQuery(function($)
 		{
 			if(data.success == 1)
 			{
+				checkstatus = 0;
+
 				dom_obj_loading.addClass('hide');
 
 				update_notification('success', data.msg);
@@ -80,13 +82,11 @@ jQuery(function($)
 
 				else
 				{
-					checkstatus = 0;
-
 					reset_form_on_error();
 				}
 			}
 
-			else if(data.retry == 1 && checkstatus < 3)
+			else if(data.retry == 1 && checkstatus < checkstatus_limit)
 			{
 				checkstatus++;
 
@@ -96,16 +96,16 @@ jQuery(function($)
 				}, timeout_time);
 			}
 
-			else if(data.error == 1 && checkstatus == 3)
+			else if(data.error == 1 && checkstatus >= checkstatus_limit)
 			{
 				dom_obj_loading.addClass('hide');
 
-				update_notification('error', script_bank_id.took_too_long_text + " (" + data.msg + ")");
+				update_notification('error', script_bank_id.took_too_long_text);
 
 				reset_form_on_error();
 			}
 
-			else
+			else if(typeof data.msg !== 'undefined')
 			{
 				update_notification('error', data.msg);
 
@@ -213,10 +213,12 @@ jQuery(function($)
 			})
 			.done(function(data, textStatus)
 			{
-				dom_obj_loading.addClass('hide');
-
 				if(data.success == 1)
 				{
+					checkstatus = 0;
+
+					dom_obj_loading.addClass('hide');
+
 					update_notification('success', data.msg);
 
 					if(typeof data.redirect !== 'undefined' && data.redirect != '')
@@ -228,6 +230,25 @@ jQuery(function($)
 					{
 						reset_form_on_error();
 					}
+				}
+
+				else if(data.retry == 1 && checkstatus < checkstatus_limit)
+				{
+					checkstatus++;
+
+					setTimeout(function()
+					{
+						check_qr_response();
+					}, timeout_time);
+				}
+
+				else if(data.error == 1 && checkstatus >= checkstatus_limit)
+				{
+					dom_obj_loading.addClass('hide');
+
+					update_notification('error', script_bank_id.took_too_long_text);
+
+					reset_form_on_error();
 				}
 
 				else if(typeof data.msg !== 'undefined')
@@ -242,6 +263,8 @@ jQuery(function($)
 		dom_obj_qr.children("span").on('click', function()
 		{
 			display_loading();
+
+			$("#submit_input").addClass('hide');
 
 			$.ajax(
 			{
@@ -258,9 +281,7 @@ jQuery(function($)
 				{
 					dom_obj_qr.html(data.html).removeClass('flex_flow hide');
 
-					clearInterval(bankid_interval);
-
-					bankid_interval = setInterval(function()
+					setTimeout(function()
 					{
 						check_qr_response();
 					}, timeout_time);
@@ -277,7 +298,7 @@ jQuery(function($)
 			return false;
 		});
 	}
-	
+
 	/* Same Device */
 	if(dom_obj_connected.length > 0)
 	{
@@ -292,10 +313,12 @@ jQuery(function($)
 			})
 			.done(function(data, textStatus)
 			{
-				dom_obj_loading.addClass('hide');
-
 				if(data.success == 1)
 				{
+					checkstatus = 0;
+
+					dom_obj_loading.addClass('hide');
+
 					update_notification('success', data.msg);
 
 					if(typeof data.redirect !== 'undefined' && data.redirect != '')
@@ -307,6 +330,25 @@ jQuery(function($)
 					{
 						reset_form_on_error();
 					}
+				}
+
+				else if(data.retry == 1 && checkstatus < checkstatus_limit)
+				{
+					checkstatus++;
+
+					setTimeout(function()
+					{
+						check_connected_response();
+					}, timeout_time);
+				}
+
+				else if(data.error == 1 && checkstatus >= checkstatus_limit)
+				{
+					dom_obj_loading.addClass('hide');
+
+					update_notification('error', script_bank_id.took_too_long_text);
+
+					reset_form_on_error();
 				}
 
 				else if(typeof data.msg !== 'undefined')
@@ -321,6 +363,8 @@ jQuery(function($)
 		dom_obj_connected.children("span").on('click', function()
 		{
 			display_loading();
+
+			$("#submit_input").addClass('hide');
 
 			$.ajax(
 			{
@@ -337,9 +381,7 @@ jQuery(function($)
 				{
 					dom_obj_connected.html(data.html).removeClass('hide');
 
-					clearInterval(bankid_interval);
-
-					bankid_interval = setInterval(function()
+					setTimeout(function()
 					{
 						check_connected_response();
 					}, timeout_time);
@@ -387,7 +429,7 @@ jQuery(function($)
 	{
 		display_or_hide_submit_button('keyup');
 	});
-	
+
 	dom_obj_user_ssn.on('keyup', function()
 	{
 		display_or_hide_submit_button('keyup');

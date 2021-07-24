@@ -660,7 +660,7 @@ class mf_bank_id
 				$out .= "<p class='login_or'><label>".__("or", 'lang_bank_id')."</label></p>";
 			}
 
-			$out .= "<div id='login_fields' class='flex_flow'>
+			$out .= "<div id='login_ssn' class='flex_flow'>
 				<img src='".$plugin_include_url."images/bankid.svg' class='logo'>"
 				.show_textfield(array('custom_tag' => 'p', 'name' => 'user_ssn', 'required' => $field_required, 'placeholder' => __("Social Security Number", 'lang_bank_id'), 'xtra' => "class='input' autocomplete='off'")) //, 'text' => "BankID <a href='//support.bankid.com/sv'>(".sprintf(__("Get %s", 'lang_bank_id'), "BankID").")</a>"
 			."</div>";
@@ -677,11 +677,11 @@ class mf_bank_id
 				$out .= "<p class='login_or'><label>".__("or", 'lang_bank_id')."</label></p>";
 			}
 
-			$out .= "<div id='bankid_qr' class='flex_flow bankid_button'>
+			$out .= "<div id='login_qr' class='flex_flow bankid_button'>
 				<span>".__("Get QR Code", 'lang_bank_id')."</span>
 				<img src='".$plugin_include_url."images/bankid.svg' class='logo'>
 			</div>";
-			
+
 			$add_login_or = true;
 		}
 
@@ -694,7 +694,7 @@ class mf_bank_id
 				$out .= "<p class='login_or'><label>".__("or", 'lang_bank_id')."</label></p>";
 			}
 
-			$out .= "<div id='bankid_connected' class='flex_flow bankid_button'>
+			$out .= "<div id='login_connected' class='flex_flow bankid_button'>
 				<span>".__("Same Device", 'lang_bank_id')."</span>
 				<img src='".$plugin_include_url."images/bankid.svg' class='logo'>
 			</div>";

@@ -211,11 +211,29 @@ switch($action)
 
 			switch($result->status)
 			{
+				case 'pending':
+					$json_output['error'] = 1;
+					$json_output['retry'] = 1;
+					$json_output['msg'] = $result->hintCode;
+				break;
+
 				case 'complete':
 					$user_ssn = $result->completionData->user->personalNumber;
 					$user_ssn = $obj_bank_id->filter_ssn($user_ssn);
 
 					$obj_bank_id->validate_and_login(array('type' => $login_type, 'ssn' => $user_ssn), $json_output);
+				break;
+
+				case 'NO_CLIENT':
+					$json_output['error'] = 1;
+					$json_output['retry'] = 1;
+					$json_output['msg'] = __("Login attempt timed out. Please try again.", 'lang_bank_id');
+				break;
+
+				default:
+					$json_output['error'] = 1;
+					$json_output['retry'] = 1;
+					$json_output['msg'] = $result->status;
 				break;
 			}
 		}
