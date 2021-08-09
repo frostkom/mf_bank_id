@@ -32,7 +32,7 @@ $setting_bank_id_certificate = str_replace($upload_url, $upload_path, $setting_b
 
 if(!file_exists($setting_bank_id_certificate))
 {
-	do_log(sprintf("The file %s does not exist", $setting_bank_id_certificate));
+	do_log(sprintf("The file %s does not exist", $setting_bank_id_certificate)." (".$upload_url." -> ".$upload_path.")");
 }
 
 if(get_option('setting_bank_id_api_mode') == 'test')
@@ -92,7 +92,7 @@ switch($action)
 				$message_arr = json_decode($e->getMessage());
 
 				$json_output['error'] = 1;
-				$json_output['msg'] = $message_arr->response;
+				$json_output['msg'] = (isset($message_arr->response) ? $message_arr->response : __("Unknown Error", 'lang_bank_id'));
 			}
 		}
 	break;
@@ -169,7 +169,7 @@ switch($action)
 			$message_arr = json_decode($e->getMessage());
 
 			$json_output['error'] = 1;
-			$json_output['msg'] = $message_arr->response;
+			$json_output['msg'] = (isset($message_arr->response) ? $message_arr->response : __("Unknown Error", 'lang_bank_id'));
 		}
 	break;
 
