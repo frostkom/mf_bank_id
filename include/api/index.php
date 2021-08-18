@@ -28,7 +28,9 @@ $orderref = check_var('orderref');
 list($upload_path, $upload_url) = get_uploads_folder();
 
 $setting_bank_id_certificate = get_site_option('setting_bank_id_certificate');
-$setting_bank_id_certificate = str_replace($upload_url, $upload_path, $setting_bank_id_certificate);
+//$setting_bank_id_certificate = str_replace($upload_url, $upload_path, $setting_bank_id_certificate);
+list($domain, $file_path) = explode("/wp-content/uploads/", $setting_bank_id_certificate);
+$setting_bank_id_certificate = $upload_path.$file_path;
 
 if(!file_exists($setting_bank_id_certificate))
 {
