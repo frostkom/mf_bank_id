@@ -497,10 +497,20 @@ class mf_bank_id
 		$meta_value = check_var($meta_key);
 		$meta_text = __("Social Security Number", 'lang_bank_id');
 
-		echo "<p>
-			<label for='".$meta_key."'>".$meta_text."</label><br>
-			<input type='text' name='".$meta_key."' value='".$meta_value."' class='regular-text' maxlength='12' required>
-		</p>";
+		$post_id = apply_filters('get_widget_search', 'registration-widget');
+
+		if($post_id > 0)
+		{
+			echo show_textfield(array('name' => $meta_key, 'text' => $meta_text, 'value' => $meta_value, 'required' => true, 'xtra' => "maxlength='12'"));
+		}
+
+		else
+		{
+			echo "<p>
+				<label for='".$meta_key."'>".$meta_text."</label><br>
+				<input type='text' name='".$meta_key."' value='".$meta_value."' class='regular-text' maxlength='12' required>
+			</p>";
+		}
 	}
 
 	function user_register($user_id, $password = '', $meta = array())
