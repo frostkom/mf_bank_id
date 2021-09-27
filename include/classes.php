@@ -331,7 +331,7 @@ class mf_bank_id
 
 		if($in != '')
 		{
-			$this->user_login = $wpdb->get_var($wpdb->prepare("SELECT user_login FROM ".$wpdb->users." INNER JOIN ".$wpdb->usermeta." ON ".$wpdb->users.".ID = ".$wpdb->usermeta.".user_id WHERE meta_key = 'profile_ssn' AND meta_value = %s", $in));
+			$this->user_login = $wpdb->get_var($wpdb->prepare("SELECT user_login FROM ".$wpdb->users." INNER JOIN ".$wpdb->usermeta." ON ".$wpdb->users.".ID = ".$wpdb->usermeta.".user_id WHERE meta_key = %s AND meta_value = %s", 'profile_ssn', $in));
 
 			return ($this->user_login != '');
 		}
@@ -461,8 +461,8 @@ class mf_bank_id
 		echo "<table class='form-table'>
 			<tr class='".str_replace("_", "-", $meta_key)."-wrap'>
 				<th><label for='".$meta_key."'>".$meta_text."</label></th>
-				<td>".show_textfield(array('name' => $meta_key, 'value' => $meta_value, 'xtra' => "class='regular-text' maxlength='12' required"))."</td>
-			</tr>
+				<td>".show_textfield(array('name' => $meta_key, 'value' => $meta_value, 'placeholder' => __("YYMMDD-XXXX", 'lang_bank_id'), 'required' => true, 'xtra' => "class='regular-text' maxlength='12'"))."</td>" // required
+			."</tr>
 		</table>";
 	}
 
@@ -501,14 +501,14 @@ class mf_bank_id
 
 		if($post_id > 0)
 		{
-			echo show_textfield(array('name' => $meta_key, 'text' => $meta_text, 'value' => $meta_value, 'required' => true, 'xtra' => "maxlength='12'"));
+			echo show_textfield(array('name' => $meta_key, 'text' => $meta_text, 'value' => $meta_value, 'placeholder' => __("YYMMDD-XXXX", 'lang_bank_id'), 'required' => true, 'xtra' => "maxlength='12'"));
 		}
 
 		else
 		{
 			echo "<p>
 				<label for='".$meta_key."'>".$meta_text."</label><br>
-				<input type='text' name='".$meta_key."' value='".$meta_value."' class='regular-text' maxlength='12' required>
+				<input type='text' name='".$meta_key."' value='".$meta_value."' class='regular-text' placeholder='".__("YYMMDD-XXXX", 'lang_bank_id')."' maxlength='12' required>
 			</p>";
 		}
 	}
@@ -534,7 +534,14 @@ class mf_bank_id
 
 	function filter_profile_fields($arr_fields)
 	{
-		$arr_fields[] = array('type' => 'text', 'name' => 'profile_ssn', 'text' => __("Social Security Number", 'lang_bank_id'), 'required' => true, 'attributes' => " maxlength='12'");
+		$arr_fields[] = array(
+			'type' => 'text',
+			'name' => 'profile_ssn',
+			'text' => __("Social Security Number", 'lang_bank_id'),
+			//'placeholder' => __("YYMMDD-XXXX", 'lang_bank_id'),
+			'required' => true,
+			'attributes' => " maxlength='12'",
+		);
 
 		return $arr_fields;
 	}
