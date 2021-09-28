@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-27 09:28+0100\n"
+"POT-Creation-Date: 2021-09-28 09:12+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -24,7 +24,7 @@ msgstr "Användarnamn"
 #: ../include/classes.php:459
 #: ../include/classes.php:498
 #: ../include/classes.php:540
-#: ../include/classes.php:682
+#: ../include/classes.php:698
 msgid "Social Security Number"
 msgstr "Personnummer"
 
@@ -33,7 +33,7 @@ msgid "QR Code"
 msgstr "QR-kod"
 
 #: ../include/classes.php:16
-#: ../include/classes.php:715
+#: ../include/classes.php:731
 msgid "Same Device"
 msgstr "Samma enhet"
 
@@ -195,13 +195,21 @@ msgstr "Logga in"
 msgid "The login took too long. Please try again."
 msgstr "Inloggningen tog för lång tid. Var vänlig försök igen."
 
-#: ../include/classes.php:677
-#: ../include/classes.php:694
-#: ../include/classes.php:711
+#: ../include/classes.php:679
+#, php-format
+msgid "Use %s"
+msgstr "Använd %s"
+
+#: ../include/classes.php:682
+msgid "Use e-mail & password"
+msgstr "Använd e-post och lösenord"
+
+#: ../include/classes.php:710
+#: ../include/classes.php:727
 msgid "or"
 msgstr "eller"
 
-#: ../include/classes.php:698
+#: ../include/classes.php:714
 msgid "Get QR Code"
 msgstr "Hämta QR-kod"
 
@@ -233,9 +241,6 @@ msgstr "Klicka för att öppna %s-appen..."
 
 #~ msgid "API Version"
 #~ msgstr "API-version"
-
-#~ msgid "Get %s"
-#~ msgstr "Hämta %s"
 
 #~ msgid ""
 #~ "Something went wrong when trying to login. If the problem persists, "

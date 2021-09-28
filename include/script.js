@@ -1,16 +1,23 @@
 jQuery(function($)
 {
 	var dom_obj_form = $("#loginform"),
-			dom_obj_or = dom_obj_form.children(".login_or"),
-			dom_obj_fields = dom_obj_form.children("#login_ssn"),
-				dom_obj_user_ssn = dom_obj_fields.find("#user_ssn"),
-			dom_obj_qr = dom_obj_form.children("#login_qr"),
-			dom_obj_connected = dom_obj_form.children("#login_connected"),
-			dom_obj_loading = dom_obj_form.children("#login_loading"),
-			dom_obj_notification = dom_obj_form.children("#notification"),
+		dom_obj_username = $("#user_login").parent("p"),
+		dom_obj_password = $("#user_pass").parent(".wp-pwd").parent(".user-pass-wrap"),
+		dom_obj_remember = dom_obj_form.find(".forgetmenot"),
+		dom_obj_submit = dom_obj_form.find(".submit"),
+		dom_obj_choice = dom_obj_form.children("#login_choice"),
+		dom_obj_or = dom_obj_form.children(".login_or"),
+		dom_obj_fields = dom_obj_form.children("#login_ssn"),
+			dom_obj_user_ssn = dom_obj_fields.find("#user_ssn"),
+		dom_obj_qr = dom_obj_form.children("#login_qr"),
+		dom_obj_connected = dom_obj_form.children("#login_connected"),
+		dom_obj_loading = dom_obj_form.children("#login_loading"),
+		dom_obj_notification = dom_obj_form.children("#notification"),
 		checkstatus = 0,
 		checkstatus_limit = 7,
 		timeout_time = 3000;
+
+	console.log(dom_obj_form , dom_obj_submit);
 
 	function update_notification(type, message)
 	{
@@ -173,9 +180,14 @@ jQuery(function($)
 	{
 		dom_obj_form.attr({'action': '#'});
 
-		$("#user_login").parent("p").remove();
-		$("#user_pass").parent(".wp-pwd").parent(".user-pass-wrap").remove();
-		dom_obj_form.find(".forgetmenot").remove(); /*#loginform .login_or, */
+		dom_obj_username.remove();
+		dom_obj_password.remove();
+	}
+
+	if(dom_obj_username.length == 0 && dom_obj_fields.length == 0)
+	{
+		dom_obj_remember.remove();
+		dom_obj_submit.remove();
 	}
 
 	dom_obj_form.on('submit', function(e)
@@ -197,6 +209,52 @@ jQuery(function($)
 
 			return false;
 		}
+	});
+
+	/* Choice */
+	if(dom_obj_choice.length > 0)
+	{
+		dom_obj_username.addClass('hide');
+		dom_obj_password.addClass('hide');
+		dom_obj_remember.addClass('hide');
+		dom_obj_submit.addClass('hide');
+
+		dom_obj_or.addClass('hide');
+		dom_obj_fields.addClass('hide');
+		dom_obj_user_ssn.addClass('hide');
+		dom_obj_qr.addClass('hide');
+		dom_obj_connected.addClass('hide');
+	}
+
+	dom_obj_choice.children(".login_choice_bankid").on('click', function()
+	{
+		dom_obj_choice.addClass('hide');
+
+		if(dom_obj_fields.length > 0)
+		{
+			dom_obj_remember.removeClass('hide');
+			dom_obj_submit.removeClass('hide');
+		}
+
+		dom_obj_or.removeClass('hide');
+		dom_obj_fields.removeClass('hide');
+		dom_obj_user_ssn.removeClass('hide');
+		dom_obj_qr.removeClass('hide');
+		dom_obj_connected.addClass('hide');
+
+		return false;
+	});
+
+	dom_obj_choice.children(".login_choice_username").on('click', function()
+	{
+		dom_obj_choice.addClass('hide');
+
+		dom_obj_username.removeClass('hide');
+		dom_obj_password.removeClass('hide');
+		dom_obj_remember.removeClass('hide');
+		dom_obj_submit.removeClass('hide');
+
+		return false;
 	});
 
 	/* QR */
