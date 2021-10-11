@@ -72,7 +72,7 @@ switch($action)
 
 		if(!empty($user_ssn)) 
 		{
-			$bankIDService = new BankIDService($api_url, $_SERVER['REMOTE_ADDR'], $arr_params);
+			$bankIDService = new BankIDService($api_url, get_current_visitor_ip(), $arr_params);
 
 			try
 			{
@@ -103,7 +103,7 @@ switch($action)
 		$orderref = (isset($_SESSION['orderRef']) ? $_SESSION['orderRef'] : '');
 		$user_ssn = (isset($_SESSION['personelnumber']) ? $_SESSION['personelnumber'] : '');
 
-		$bankIDService = new BankIDService($api_url, $_SERVER['REMOTE_ADDR'], $arr_params);
+		$bankIDService = new BankIDService($api_url, get_current_visitor_ip(), $arr_params);
 
 		try
 		{
@@ -149,7 +149,7 @@ switch($action)
 	case 'qr_init':
 		include_once("../lib/phpqrcode/qrlib.php");
 
-		$bankIDService = new BankIDService($api_url, $_SERVER['REMOTE_ADDR'], $arr_params);
+		$bankIDService = new BankIDService($api_url, get_current_visitor_ip(), $arr_params);
 
 		try
 		{
@@ -178,7 +178,7 @@ switch($action)
 	case 'connected_init':
 		include_once("../lib/phpqrcode/qrlib.php");
 
-		$bankIDService = new BankIDService($api_url, $_SERVER['REMOTE_ADDR'], $arr_params);
+		$bankIDService = new BankIDService($api_url, get_current_visitor_ip(), $arr_params);
 
 		try
 		{
@@ -205,7 +205,7 @@ switch($action)
 	case 'connected_check':
 		$orderref = $_SESSION['orderRef'];
 
-		$bankIDService = new BankIDService($api_url, $_SERVER['REMOTE_ADDR'], $arr_params);
+		$bankIDService = new BankIDService($api_url, get_current_visitor_ip(), $arr_params);
 
 		try
 		{

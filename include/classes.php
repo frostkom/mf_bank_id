@@ -584,7 +584,7 @@ class mf_bank_id
 	function login_address()
 	{
 		$cookie_name = $this->meta_prefix.COOKIEHASH;
-		$cookie_value = 'address_ssn_'.$_SERVER['REMOTE_ADDR']; //$data['ssn']
+		$cookie_value = 'address_ssn_'.get_current_visitor_ip(); //$data['ssn']
 
 		setcookie($cookie_name, md5($cookie_value), strtotime("+1 week"), COOKIEPATH);
 
@@ -594,7 +594,7 @@ class mf_bank_id
 	function is_address_logged_in()
 	{
 		$cookie_name = $this->meta_prefix.COOKIEHASH;
-		$cookie_value = 'address_ssn_'.$_SERVER['REMOTE_ADDR']; //$data['ssn']
+		$cookie_value = 'address_ssn_'.get_current_visitor_ip(); //$data['ssn']
 
 		$cookie_value_md5 = (isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : '');
 
