@@ -257,5 +257,7 @@ switch($action)
 	break;
 }
 
+session_write_close();
+
 echo json_encode($json_output);
 exit;

@@ -100,7 +100,7 @@ class mf_bank_id
 		if($option == '')
 		{
 			$description = sprintf(__("The file should be a %s file.", 'lang_bank_id'), ".pem")
-				." <a href='//bankid.com/kontakt/foeretag/saeljare'>".__("Get yours here", 'lang_bank_id')."</a>";
+				." <a href='//bankid.com/foretag/anslut-foeretag'>".__("Get yours here", 'lang_bank_id')."</a>"; // //bankid.com/kontakt/foeretag/saeljare
 		}
 
 		echo get_media_library(array('name' => $setting_key, 'value' => $option, 'description' => $description));
