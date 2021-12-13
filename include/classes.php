@@ -164,8 +164,6 @@ class mf_bank_id
 				break;
 
 				case 10:
-					//$out = (substr($out, 0, 2) > date("y") ? 19 : 20).$out;
-
 					// Just in case this outlives me :)
 					$current_century = substr(date("Y"), 0, 2);
 					$out = (substr($out, 0, 2) > date("y") ? ($current_century - 1) : $current_century).$out;
@@ -489,6 +487,13 @@ class mf_bank_id
 		}
 
 		return $seo_type;
+	}
+
+	function filter_cookie_types($arr_cookie_types)
+	{
+		$arr_cookie_types['login']['mf_bank_id_'] = array('label' => __("Indicates whether you are logged in", 'lang_bank_id'), 'used' => false);
+
+		return $arr_cookie_types;
 	}
 
 	function register_form()
