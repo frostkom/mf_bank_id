@@ -491,7 +491,7 @@ class mf_bank_id
 
 	function filter_cookie_types($arr_cookie_types)
 	{
-		$arr_cookie_types['login']['mf_bank_id_'] = array('label' => __("Indicates whether you are logged in", 'lang_bank_id'), 'used' => false);
+		$arr_cookie_types['login']['mf_bank_id_'] = array('label' => __("Indicates whether you are logged in", 'lang_bank_id'), 'used' => false, 'lifetime' => "1 week");
 
 		return $arr_cookie_types;
 	}
