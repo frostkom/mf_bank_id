@@ -17,7 +17,7 @@ jQuery(function($)
 		checkstatus_limit = 7,
 		timeout_time = 3000;
 
-	console.log(dom_obj_form , dom_obj_submit);
+	/*console.log(dom_obj_form , dom_obj_submit);*/
 
 	function update_notification(type, message)
 	{
@@ -35,9 +35,9 @@ jQuery(function($)
 					dom_obj_notification.html("<div id='login_error'><p>" + message + "</p></div>").removeClass('hide');
 				break;
 
-				default:
+				/*default:
 					console.log("Unknown Type: " , type);
-				break;
+				break;*/
 			}
 		}
 	}
