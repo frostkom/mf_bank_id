@@ -1,11 +1,24 @@
 jQuery(function($)
 {
-	var dom_obj_form = $("#loginform"),
-		dom_obj_username = $("#user_login").parent("p"),
-		dom_obj_password = $("#user_pass").parent(".wp-pwd").parent(".user-pass-wrap"),
-		dom_obj_remember = dom_obj_form.find(".forgetmenot"),
-		dom_obj_submit = dom_obj_form.find(".submit"),
-		dom_obj_choice = dom_obj_form.children("#login_choice"),
+	var dom_obj_form = $("#loginform");
+
+	if($("body > #wrapper").length > 0)
+	{
+		var dom_obj_username = $("#user_login").parent(".form_textfield"),
+		dom_obj_password = $("#user_pass").parent(".form_password"),
+		dom_obj_remember = dom_obj_form.find("#rememberme").parent(".form_checkbox"),
+		dom_obj_submit = dom_obj_form.find(".form_button");
+	}
+
+	else
+	{
+		var dom_obj_username = $("#user_login").parent("p"),
+			dom_obj_password = $("#user_pass").parent(".wp-pwd").parent(".user-pass-wrap"),
+			dom_obj_remember = dom_obj_form.find(".forgetmenot"),
+			dom_obj_submit = dom_obj_form.find(".submit");
+	}
+
+	var dom_obj_choice = dom_obj_form.children("#login_choice"),
 		dom_obj_or = dom_obj_form.children(".login_or"),
 		dom_obj_fields = dom_obj_form.children("#login_ssn"),
 			dom_obj_user_ssn = dom_obj_fields.find("#user_ssn"),
@@ -16,8 +29,6 @@ jQuery(function($)
 		checkstatus = 0,
 		checkstatus_limit = 7,
 		timeout_time = 3000;
-
-	/*console.log(dom_obj_form , dom_obj_submit);*/
 
 	function update_notification(type, message)
 	{
@@ -240,7 +251,7 @@ jQuery(function($)
 		dom_obj_fields.removeClass('hide');
 		dom_obj_user_ssn.removeClass('hide');
 		dom_obj_qr.removeClass('hide');
-		dom_obj_connected.addClass('hide');
+		dom_obj_connected.removeClass('hide');
 
 		return false;
 	});

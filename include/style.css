@@ -3,9 +3,9 @@
 	/* Public */
 	#wrapper #loginform
 	{
-		background: #ccc;
-		border-radius: 1em;
-		padding: 1em 1em .5em;
+		background: rgba(0, 0, 0, .05);
+		border-radius: .5em;
+		padding: 1.5em 1.5em 1em;
 		max-width: 400px;
 	}
 
@@ -56,6 +56,11 @@
 		text-align: center;
 	}
 
+		#loginform .bankid_button + .bankid_button
+		{
+			margin-top: 1.5em;
+		}
+
 		#loginform .bankid_button:hover
 		{
 			box-shadow: 0 0 .5em rgba(0, 0, 0, .2);
@@ -69,7 +74,6 @@
 
 		#loginform .bankid_button img.logo
 		{
-			/*filter: drop-shadow(0 0 .5em rgba(0, 0, 0, .5));*/
 			height: 40px;
 			margin: -1em 0;
 			width: 40px;
