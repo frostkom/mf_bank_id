@@ -5,9 +5,9 @@ jQuery(function($)
 	if($("body > #wrapper").length > 0)
 	{
 		var dom_obj_username = $("#user_login").parent(".form_textfield"),
-		dom_obj_password = $("#user_pass").parent(".form_password"),
-		dom_obj_remember = dom_obj_form.find("#rememberme").parent(".form_checkbox"),
-		dom_obj_submit = dom_obj_form.find(".form_button");
+			dom_obj_password = $("#user_pass").parent(".form_password"),
+			dom_obj_remember = dom_obj_form.find("#rememberme").parent(".form_checkbox"),
+			dom_obj_submit = dom_obj_form.find(".form_button");
 	}
 
 	else
@@ -152,8 +152,6 @@ jQuery(function($)
 				dom_obj_loading.addClass('hide');
 
 				update_notification('success', data.msg);
-
-				/*dom_obj_fields.removeClass('hide');*/
 			}
 
 			else if(data.error == 1)

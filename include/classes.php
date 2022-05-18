@@ -239,7 +239,7 @@ class mf_bank_id
 			case 'RFA15(A)':
 			case 'RFA15(B)':
 			case 'STARTED':
-				$out = sprintf(__("Searching for %s, it may take a little while...", 'lang_bank_id'), "BankID"); //If a few seconds have passed and still no BankID has been found, you probably don’t have a BankID which can be used for this login/signature on this computer. If you have a BankID card, please insert it into your card reader. If you don’t have a BankID you can order one from your internet bank. If you have a BankID on another device you can start the BankID app on that device.
+				$out = sprintf(__("Searching for %s, it may take a little while...", 'lang_bank_id'), "BankID"); //If a few seconds have passed and still no BankID has been found, you probably don't have a BankID which can be used for this login/signature on this computer. If you have a BankID card, please insert it into your card reader. If you don't have a BankID you can order one from your internet bank. If you have a BankID on another device you can start the BankID app on that device.
 			break;
 
 			case 'RFA16':
@@ -459,7 +459,7 @@ class mf_bank_id
 		echo "<table class='form-table'>
 			<tr class='".str_replace("_", "-", $meta_key)."-wrap'>
 				<th><label for='".$meta_key."'>".$meta_text."</label></th>
-				<td>".show_textfield(array('name' => $meta_key, 'value' => $meta_value, 'placeholder' => __("YYMMDD-XXXX", 'lang_bank_id'), 'required' => true, 'xtra' => "class='regular-text' maxlength='12'"))."</td>" // required
+				<td>".show_textfield(array('name' => $meta_key, 'value' => $meta_value, 'placeholder' => __("YYMMDD-XXXX", 'lang_bank_id'), 'required' => true, 'xtra' => "class='regular-text' maxlength='12'"))."</td>"
 			."</tr>
 		</table>";
 	}
