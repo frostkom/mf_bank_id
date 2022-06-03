@@ -71,7 +71,7 @@ jQuery(function($)
 		dom_obj_qr.removeClass('hide');
 		dom_obj_connected.removeClass('hide');
 
-		$("#submit_input").removeClass('hide');
+		/*$("#submit_input").removeClass('hide');*/
 	}
 
 	function check_ssc_response(orderref, user_ssn)
@@ -331,7 +331,7 @@ jQuery(function($)
 		{
 			display_loading();
 
-			$("#submit_input").addClass('hide');
+			/*$("#submit_input").addClass('hide');*/
 
 			$.ajax(
 			{
@@ -431,7 +431,7 @@ jQuery(function($)
 		{
 			display_loading();
 
-			$("#submit_input").addClass('hide');
+			/*$("#submit_input").addClass('hide');*/
 
 			$.ajax(
 			{
