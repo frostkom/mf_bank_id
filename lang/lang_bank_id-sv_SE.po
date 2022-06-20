@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-28 09:12+0100\n"
+"POT-Creation-Date: 2022-06-20 14:54+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -15,248 +15,144 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../include/classes.php:13
-msgid "Username"
-msgstr "Användarnamn"
-
-#: ../include/classes.php:14
-#: ../include/classes.php:388
-#: ../include/classes.php:459
-#: ../include/classes.php:498
-#: ../include/classes.php:540
-#: ../include/classes.php:698
-msgid "Social Security Number"
-msgstr "Personnummer"
-
-#: ../include/classes.php:15
-msgid "QR Code"
-msgstr "QR-kod"
-
-#: ../include/classes.php:16
-#: ../include/classes.php:731
-msgid "Same Device"
-msgstr "Samma enhet"
-
-#: ../include/classes.php:23
-msgid "Test"
-msgstr ""
-
-#: ../include/classes.php:24
-msgid "Live"
-msgstr ""
-
-#: ../include/classes.php:62
-msgid "Certificate File"
-msgstr "Certifikatfil"
-
-#: ../include/classes.php:67
-#: ../include/classes.php:422
-msgid "Activate"
-msgstr "Aktivera"
-
-#: ../include/classes.php:71
-msgid "Login Methods"
-msgstr "Inloggningssätt"
-
-#: ../include/classes.php:72
-msgid "API Mode"
-msgstr "API-läge"
-
-#: ../include/classes.php:102
-#, php-format
-msgid "The file should be a %s file."
-msgstr "Filen bör vara en %s-fil."
-
-#: ../include/classes.php:103
-msgid "Get yours here"
-msgstr "Hämta din här"
-
-#: ../include/classes.php:121
-#, php-format
-msgid "Use the certificate file %s"
-msgstr "Använd certifikatfilen %s"
-
-#: ../include/classes.php:191
-#, php-format
-msgid "Start your %s app"
-msgstr "Starta din %s-app"
-
-#: ../include/classes.php:195
-#, php-format
-msgid "The %s app is not installed. Please contact your internet bank."
-msgstr "%s-appen är inte installerad. Var vänlig kontakta din internetbank."
-
-#: ../include/classes.php:200
-msgid "Already in Progress. Wait a few seconds and then try again."
-msgstr "Håller redan på. Vänta en stund och försök igen."
-
-#: ../include/classes.php:205
-msgid "Action cancelled. Please try again."
-msgstr "Åtgärden avbröts. Var vänlig försök igen."
-
-#: ../include/classes.php:211
-msgid "Internal error. Please try again."
-msgstr "Internt fel. Var vänlig försök igen."
-
-#: ../include/classes.php:216
-msgid "Action cancelled"
-msgstr "Åtgärden avbröts"
-
-#: ../include/classes.php:221
-#, php-format
-msgid "The %s app is not responding. Please check that the program is started and that you have internet access. If you do not have a valid %s you can get one from your bank. Try again."
-msgstr "BankID-appen svarar inte. Var vänlig se till så att programmet är startat och att du har tillgång till internet. Om du inte har ett giltigt BankID så kan du hämta ett från din bank. Försök igen."
-
-#: ../include/classes.php:226
-#, php-format
-msgid "Enter your security code in the %s app and select Identify or Sign."
-msgstr "Fyll i din säkerhetskod i %s-appen och välj att identifiera eller signera."
-
-#: ../include/classes.php:231
-#, php-format
-msgid "Internal error. Update your %s app and try again."
-msgstr "Internt fel. Uppdatera din %s-app och försök igen."
-
-#: ../include/classes.php:236
-#, php-format
-msgid "Trying to start your %s app"
-msgstr "Försöker starta din BankID-app"
-
-#: ../include/classes.php:244
-#, php-format
-msgid "Searching for %s, it may take a little while..."
-msgstr "Söker efter %s, det kan ta en liten stund..."
-
-#: ../include/classes.php:249
-#, php-format
-msgid "The %s you are trying to use is revoked or too old. Please use another %s or order a new one from your internet bank."
-msgstr "Det %s som du försöker använda är tillbakadraget eller gammalt. Använd ett annat %s eller beställ ett nytt från din internetbank."
-
-#: ../include/classes.php:254
-#, php-format
-msgid "The %s app could not be found on your computer or mobile device. Please install it and order a %s from your internet bank. Install the app from %s."
-msgstr "%s-appen kunde inte hittas på denna dator eller mobila enhet. Var vänlig installera den och beställ ett %s från din internetbank. Installera appen från %s."
-
-#: ../include/classes.php:258
-#, php-format
-msgid "Would you like to login or sign with a %s on this computer or with a Mobile %s?"
-msgstr "Vill du logga in eller signera med ett %s på denna dator eller med ett mobilt %s?"
-
-#: ../include/classes.php:262
-#, php-format
-msgid "Would you like to login or sign with a %s on this device or with a %s on another device?"
-msgstr "Vill du logga in eller signera med ett %s på denna dator eller med ett %s på en annan enhet?"
-
-#: ../include/classes.php:266
-msgid "Unknown Action"
-msgstr "Okänd händelse"
-
-#: ../include/classes.php:284
-#: ../include/classes.php:308
-msgid "The validation was successful! You are being logged in..."
-msgstr "Valideringen lyckades! Du loggas nu in..."
-
-#: ../include/classes.php:291
-#: ../include/classes.php:315
-msgid "Something went wrong when trying to login. If the problem persists, please contact an admin."
-msgstr "Något gick fel vid inloggningen. Om problemet kvarstår, var vänlig kontakta en administratör."
-
-#: ../include/classes.php:298
-msgid "The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there."
-msgstr "Personnumret som du försöker logga in med är inte kopplad till någon användare. Var vänlig logga in med ditt användarnamn och lösenord, gå till din profil och fyll i ditt personnummer där."
-
-#: ../include/classes.php:322
-msgid "The social security number that you are trying to login with is not connected to anyone. Please contact an admin."
-msgstr "Personnumret som du försöker logga in med är inte kopplad till någon. Var vänlig kontakt en administratör."
-
-#: ../include/classes.php:443
-msgid "You have to enter your Social Security Number to be able to login in the future"
-msgstr "Du behöver fylla i ditt personnummer för att kunna logga in i framtiden"
-
-#: ../include/classes.php:448
-msgid "You have to enter your Social Security Number"
-msgstr "Du behöver fylla i ditt personnummer"
-
-#: ../include/classes.php:464
-#: ../include/classes.php:504
-#: ../include/classes.php:511
-msgid "YYMMDD-XXXX"
-msgstr "ÅÅMMDD-XXXX"
-
-#: ../include/classes.php:613
-msgid "To view the content on this page you have to first login."
-msgstr "För att kunna se innehållet på denna sida så behöver du först logga in."
-
-#: ../include/classes.php:616
-msgid "Log in"
-msgstr "Logga in"
-
-#: ../include/classes.php:652
-msgid "The login took too long. Please try again."
-msgstr "Inloggningen tog för lång tid. Var vänlig försök igen."
-
-#: ../include/classes.php:679
-#, php-format
-msgid "Use %s"
-msgstr "Använd %s"
-
-#: ../include/classes.php:682
-msgid "Use e-mail & password"
-msgstr "Använd e-post och lösenord"
-
-#: ../include/classes.php:710
-#: ../include/classes.php:727
-msgid "or"
-msgstr "eller"
-
-#: ../include/classes.php:714
-msgid "Get QR Code"
-msgstr "Hämta QR-kod"
-
-#: ../include/api/index.php:83
-#, php-format
 msgid "I am trying to open the %s application. If it does not open automatically you have to do it manually"
 msgstr "Jag försöker öppna %s-applikationen. Om den inte öppnas automatiskt så behöver du göra det manuellt"
 
-#: ../include/api/index.php:97
-#: ../include/api/index.php:174
-msgid "Unknown Error"
-msgstr "Okänt fel"
-
-#: ../include/api/index.php:129
-#: ../include/api/index.php:232
-msgid "Login attempt timed out. Please try again."
-msgstr "Inloggningsförsöket tog för lång tid. Var vänlig försök igen."
-
-#: ../include/api/index.php:192
-#, php-format
 msgid "Click to open %s app..."
 msgstr "Klicka för att öppna %s-appen..."
 
-#~ msgid "Disable Login with Username"
-#~ msgstr "Inaktivera inloggning med användarnamn"
+msgid "Unknown Error"
+msgstr "Okänt fel"
 
-#~ msgid "Use Test Mode"
-#~ msgstr "Använd testläge"
+msgid "Login attempt timed out. Please try again."
+msgstr "Inloggningsförsöket tog för lång tid. Var vänlig försök igen."
 
-#~ msgid "API Version"
-#~ msgstr "API-version"
+msgid "Username"
+msgstr "Användarnamn"
 
-#~ msgid ""
-#~ "Something went wrong when trying to login. If the problem persists, "
-#~ "please contact an admin"
-#~ msgstr ""
-#~ "Något gick fel vid inloggningen. Om problemet kvarstår, var vänlig "
-#~ "kontakta en administratör"
+msgid "Social Security Number"
+msgstr "Personnummer"
 
-#~ msgid "Use Login v2"
-#~ msgstr "Använd login v2"
+msgid "QR Code"
+msgstr "QR-kod"
 
-#~ msgid ""
-#~ "The social security number that you are trying to login with is not "
-#~ "connected to any user. Please login with your username and password, go "
-#~ "to your Profile and add your social security number there."
-#~ msgstr ""
-#~ "Personnumret som du försöker logga in med är inte kopplat till någon "
-#~ "användare. Var vänlig logga in med ditt användarnamn och lösenord, gå "
-#~ "till profilen och lägg till personnumret där."
+msgid "Same Device"
+msgstr "Samma enhet"
+
+msgid "Certificate File"
+msgstr "Certifikatfil"
+
+msgid "Activate"
+msgstr "Aktivera"
+
+msgid "Login Methods"
+msgstr "Inloggningssätt"
+
+msgid "API Mode"
+msgstr "API-läge"
+
+msgid "The file should be a %s file."
+msgstr "Filen bör vara en %s-fil."
+
+msgid "Get yours here"
+msgstr "Hämta din här"
+
+msgid "Use the certificate file %s"
+msgstr "Använd certifikatfilen %s"
+
+msgid "Start your %s app"
+msgstr "Starta din %s-app"
+
+msgid "The %s app is not installed. Please contact your internet bank."
+msgstr "%s-appen är inte installerad. Var vänlig kontakta din internetbank."
+
+msgid "Already in Progress. Wait a few seconds and then try again."
+msgstr "Håller redan på. Vänta en stund och försök igen."
+
+msgid "Action cancelled. Please try again."
+msgstr "Åtgärden avbröts. Var vänlig försök igen."
+
+msgid "Internal error. Please try again."
+msgstr "Internt fel. Var vänlig försök igen."
+
+msgid "Action cancelled"
+msgstr "Åtgärden avbröts"
+
+msgid "The %s app is not responding. Please check that the program is started and that you have internet access. If you do not have a valid %s you can get one from your bank. Try again."
+msgstr "BankID-appen svarar inte. Var vänlig se till så att programmet är startat och att du har tillgång till internet. Om du inte har ett giltigt BankID så kan du hämta ett från din bank. Försök igen."
+
+msgid "Enter your security code in the %s app and select Identify or Sign."
+msgstr "Fyll i din säkerhetskod i %s-appen och välj att identifiera eller signera."
+
+msgid "Internal error. Update your %s app and try again."
+msgstr "Internt fel. Uppdatera din %s-app och försök igen."
+
+msgid "Trying to start your %s app"
+msgstr "Försöker starta din BankID-app"
+
+msgid "Searching for %s, it may take a little while..."
+msgstr "Söker efter %s, det kan ta en liten stund..."
+
+msgid "The %s you are trying to use is revoked or too old. Please use another %s or order a new one from your internet bank."
+msgstr "Det %s som du försöker använda är tillbakadraget eller gammalt. Använd ett annat %s eller beställ ett nytt från din internetbank."
+
+msgid "The %s app could not be found on your computer or mobile device. Please install it and order a %s from your internet bank. Install the app from %s."
+msgstr "%s-appen kunde inte hittas på denna dator eller mobila enhet. Var vänlig installera den och beställ ett %s från din internetbank. Installera appen från %s."
+
+msgid "Would you like to login or sign with a %s on this computer or with a Mobile %s?"
+msgstr "Vill du logga in eller signera med ett %s på denna dator eller med ett mobilt %s?"
+
+msgid "Would you like to login or sign with a %s on this device or with a %s on another device?"
+msgstr "Vill du logga in eller signera med ett %s på denna dator eller med ett %s på en annan enhet?"
+
+msgid "Unknown Action"
+msgstr "Okänd händelse"
+
+msgid "The validation was successful! You are being logged in..."
+msgstr "Valideringen lyckades! Du loggas nu in..."
+
+msgid "Something went wrong when trying to login. If the problem persists, please contact an admin."
+msgstr "Något gick fel vid inloggningen. Om problemet kvarstår, var vänlig kontakta en administratör."
+
+msgid "The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there."
+msgstr "Personnumret som du försöker logga in med är inte kopplad till någon användare. Var vänlig logga in med ditt användarnamn och lösenord, gå till din profil och fyll i ditt personnummer där."
+
+msgid "The social security number that you are trying to login with is not connected to anyone. Please contact an admin."
+msgstr "Personnumret som du försöker logga in med är inte kopplad till någon. Var vänlig kontakt en administratör."
+
+msgid "You have to enter your Social Security Number to be able to login in the future"
+msgstr "Du behöver fylla i ditt personnummer för att kunna logga in i framtiden"
+
+msgid "You have to enter your Social Security Number"
+msgstr "Du behöver fylla i ditt personnummer"
+
+msgid "YYMMDD-XXXX"
+msgstr "ÅÅMMDD-XXXX"
+
+msgid "Indicates whether you are logged in"
+msgstr "Visar om du är inloggad"
+
+msgid "To view the content on this page you have to first login."
+msgstr "För att kunna se innehållet på denna sida så behöver du först logga in."
+
+msgid "Log in"
+msgstr "Logga in"
+
+msgid "The login took too long. Please try again."
+msgstr "Inloggningen tog för lång tid. Var vänlig försök igen."
+
+msgid "Use %s"
+msgstr "Använd %s"
+
+msgid "Use e-mail & password"
+msgstr "Använd e-post och lösenord"
+
+msgid "or"
+msgstr "eller"
+
+msgid "Get %s"
+msgstr "Hämta %s"
+
+msgid "Get QR Code"
+msgstr "Hämta QR-kod"
+

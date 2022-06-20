@@ -7,7 +7,8 @@ jQuery(function($)
 		var dom_obj_username = $("#user_login").parent(".form_textfield"),
 			dom_obj_password = $("#user_pass").parent(".form_password"),
 			dom_obj_remember = dom_obj_form.find("#rememberme").parent(".form_checkbox"),
-			dom_obj_submit = dom_obj_form.find(".form_button");
+			dom_obj_submit = dom_obj_form.find(".form_button"),
+			dom_obj_forgot_password_link = dom_obj_form.next("p#lost_password_link");
 	}
 
 	else
@@ -15,7 +16,8 @@ jQuery(function($)
 		var dom_obj_username = $("#user_login").parent("p"),
 			dom_obj_password = $("#user_pass").parent(".wp-pwd").parent(".user-pass-wrap"),
 			dom_obj_remember = dom_obj_form.find(".forgetmenot"),
-			dom_obj_submit = dom_obj_form.find(".submit");
+			dom_obj_submit = dom_obj_form.find(".submit"),
+			dom_obj_forgot_password_link = dom_obj_form.next("p#nav");
 	}
 
 	var dom_obj_choice = dom_obj_form.children("#login_choice"),
@@ -191,6 +193,9 @@ jQuery(function($)
 
 		dom_obj_username.remove();
 		dom_obj_password.remove();
+
+		dom_obj_remember.remove();
+		dom_obj_forgot_password_link.remove();
 	}
 
 	if(dom_obj_username.length == 0 && dom_obj_fields.length == 0)

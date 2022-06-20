@@ -70,7 +70,7 @@ switch($action)
 
 		$_SESSION['personelnumber'] = $user_ssn;
 
-		if(!empty($user_ssn)) 
+		if(!empty($user_ssn))
 		{
 			$bankIDService = new BankIDService($api_url, get_current_visitor_ip(), $arr_params);
 
