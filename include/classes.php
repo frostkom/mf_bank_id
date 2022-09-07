@@ -545,7 +545,10 @@ class mf_bank_id
 			'text' => __("Social Security Number", 'lang_bank_id'),
 			//'placeholder' => __("YYMMDD-XXXX", 'lang_bank_id'),
 			'required' => true,
-			'attributes' => " maxlength='12'",
+			//'attributes' => " maxlength='12'",
+			'attributes' => array(
+				'maxlength' => 12,
+			),
 		);
 
 		return $arr_fields;
