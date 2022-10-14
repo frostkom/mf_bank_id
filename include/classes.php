@@ -489,11 +489,11 @@ class mf_bank_id
 		return $seo_type;
 	}
 
-	function filter_cookie_types($arr_cookie_types)
+	function filter_cookie_types($array)
 	{
-		$arr_cookie_types['login']['mf_bank_id_'] = array('label' => __("Indicates whether you are logged in", 'lang_bank_id'), 'used' => false, 'lifetime' => "1 week");
+		$array['login']['mf_bank_id_'] = array('label' => __("Indicates whether you are logged in", 'lang_bank_id'), 'used' => false, 'lifetime' => "1 week");
 
-		return $arr_cookie_types;
+		return $array;
 	}
 
 	function register_form()
