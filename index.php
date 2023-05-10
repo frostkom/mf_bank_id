@@ -3,7 +3,7 @@
 Plugin Name: MF BankID
 Plugin URI: https://github.com/frostkom/mf_bank_id
 Description: Extension to login with BankID
-Version: 2.4.17
+Version: 2.4.18
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se

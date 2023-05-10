@@ -177,7 +177,7 @@ jQuery(function($)
 	function auto_launch(autostarttoken, orderref, user_ssn)
 	{
 		var url = 'bankid:///?autostarttoken=' + autostarttoken + '&redirect=null',
-			login_iframe = $('<iframe src="' + url + '">');
+			login_iframe = $('<iframe src="' + url + '"></iframe>');
 
 		dom_obj_form.append(login_iframe);
 
