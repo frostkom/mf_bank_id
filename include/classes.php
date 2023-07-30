@@ -34,6 +34,7 @@ class mf_bank_id
 		{
 			$setting_bank_id_certificate = get_site_option('setting_bank_id_certificate');
 			$option_bank_id_certificate = get_site_option('option_bank_id_certificate');
+			$setting_bank_id_certificate_expiry_date = get_site_option('setting_bank_id_certificate_expiry_date');
 			$setting_bank_id_activate = get_option('setting_bank_id_activate');
 
 			if($setting_bank_id_certificate == '' && $option_bank_id_certificate != '' && $setting_bank_id_activate == 'yes')
@@ -41,6 +42,11 @@ class mf_bank_id
 				do_log("The backup (option_bank_id_certificate: ".$option_bank_id_certificate.") was set but the setting in use (setting_bank_id_certificate) was empty even though the site was using BankID (setting_bank_id_activate: ".$setting_bank_id_activate.")");
 
 				//update_site_option('setting_bank_id_certificate', $option_bank_id_certificate);
+			}
+
+			if($setting_bank_id_certificate_expiry_date > DEFAULT_DATE && $setting_bank_id_certificate_expiry_date < date("Y-m-d", strtotime("+2 month")))
+			{
+				do_log("The certificate is expiring ".$setting_bank_id_certificate_expiry_date);
 			}
 		}
 
@@ -64,6 +70,7 @@ class mf_bank_id
 
 			if(get_site_option('setting_bank_id_certificate') != '')
 			{
+				$arr_settings['setting_bank_id_certificate_expiry_date'] = __("Expiry Date", 'lang_bank_id');
 				$arr_settings['setting_bank_id_activate'] = __("Activate", 'lang_bank_id');
 
 				if(get_option('setting_bank_id_activate') == 'yes')
@@ -111,6 +118,15 @@ class mf_bank_id
 		}
 	}
 
+	function setting_bank_id_certificate_expiry_date_callback()
+	{
+		$setting_key = get_setting_key(__FUNCTION__);
+		settings_save_site_wide($setting_key);
+		$option = get_site_option($setting_key, get_option($setting_key));
+
+		echo show_textfield(array('type' => 'date', 'name' => $setting_key, 'value' => $option));
+	}
+
 	function setting_bank_id_activate_callback()
 	{
 		$setting_key = get_setting_key(__FUNCTION__);
@@ -147,6 +163,32 @@ class mf_bank_id
 
 			mf_redirect($profile_redirect);
 		}
+	}
+
+	function filter_sites_table_settings($arr_settings)
+	{
+		$arr_settings['settings_bank_id'] = array(
+			'setting_bank_id_certificate' => array(
+				'type' => 'string',
+				'global' => true,
+				'icon' => "fas fa-lock",
+				'name' => __("Certificate File", 'lang_bank_id'),
+			),
+			'setting_bank_id_certificate_expiry_date' => array(
+				'type' => 'string',
+				'global' => true,
+				'icon' => "fa fa-calendar-alt",
+				'name' => __("Expiry Date", 'lang_bank_id'),
+			),
+			'setting_bank_id_activate' => array(
+				'type' => 'bool',
+				'global' => false,
+				'icon' => "fa fa-check",
+				'name' => __("Activate", 'lang_bank_id'),
+			),
+		);
+
+		return $arr_settings;
 	}
 
 	function filter_ssn($in)
