@@ -203,7 +203,7 @@ switch($action)
 
 	case 'qr_check':
 	case 'connected_check':
-		$orderref = $_SESSION['orderRef'];
+		$orderref = (isset($_SESSION['orderRef']) ? $_SESSION['orderRef'] : '');
 
 		$bankIDService = new BankIDService($api_url, get_current_visitor_ip(), $arr_params);
 
