@@ -25,7 +25,7 @@ $login_type = check_var('login_type');
 $user_ssn = check_var('user_ssn');
 $orderref = check_var('orderref');
 
-list($upload_path, $upload_url) = get_uploads_folder();
+list($upload_path, $upload_url) = get_uploads_folder('mf_bank_id');
 
 $setting_bank_id_certificate = get_site_option('setting_bank_id_certificate');
 //$setting_bank_id_certificate = str_replace($upload_url, $upload_path, $setting_bank_id_certificate);
