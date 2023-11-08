@@ -2,10 +2,10 @@
 
 class mf_bank_id
 {
-	function __construct()
-	{
-		$this->meta_prefix = 'mf_bank_id_';
-	}
+	var $post_type = 'mf_bank_id';
+	var $meta_prefix = 'mf_bank_id_';
+
+	function __construct(){}
 
 	function get_login_methods_for_select()
 	{
@@ -533,7 +533,7 @@ class mf_bank_id
 
 	function filter_cookie_types($array)
 	{
-		$array['login']['mf_bank_id_'] = array('label' => __("Indicates whether you are logged in", 'lang_bank_id'), 'used' => false, 'lifetime' => "1 week");
+		$array['login'][$this->meta_prefix] = array('label' => __("Indicates whether you are logged in", 'lang_bank_id'), 'used' => false, 'lifetime' => "1 week");
 
 		return $array;
 	}

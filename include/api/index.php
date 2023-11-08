@@ -25,10 +25,9 @@ $login_type = check_var('login_type');
 $user_ssn = check_var('user_ssn');
 $orderref = check_var('orderref');
 
-list($upload_path, $upload_url) = get_uploads_folder('mf_bank_id');
+list($upload_path, $upload_url) = get_uploads_folder();
 
 $setting_bank_id_certificate = get_site_option('setting_bank_id_certificate');
-//$setting_bank_id_certificate = str_replace($upload_url, $upload_path, $setting_bank_id_certificate);
 list($domain, $file_path) = explode("/wp-content/uploads/", $setting_bank_id_certificate);
 $setting_bank_id_certificate = $upload_path.$file_path;
 
@@ -43,7 +42,6 @@ if(get_option('setting_bank_id_api_mode') == 'test')
 
 	$arr_params = array(
 		'cert' => __DIR__."/certs/certname.pem",
-		//'verify' => __DIR__."/certs/appapi2.test.bankid.com.crt",
 		'verify' => false,
 	);
 }
@@ -147,6 +145,8 @@ switch($action)
 	break;
 
 	case 'qr_init':
+		list($upload_path_qr, $upload_url_qr) = get_uploads_folder($obj_bank_id->post_type);
+
 		include_once("../lib/phpqrcode/qrlib.php");
 
 		$bankIDService = new BankIDService($api_url, get_current_visitor_ip(), $arr_params);
@@ -160,10 +160,10 @@ switch($action)
 			$qr_content = "bankid:///?autostarttoken=".$response->autoStartToken;
 			$qr_file = "qr_code_".md5($qr_content).".png";
 
-			QRcode::png($qr_content, $upload_path.$qr_file);
+			QRcode::png($qr_content, $upload_path_qr.$qr_file);
 
 			$json_output['success'] = 1;
-			$json_output['html'] = "<img src='".$upload_url.$qr_file."'>";
+			$json_output['html'] = "<img src='".$upload_url_qr.$qr_file."'>";
 		}
 
 		catch(Exception $e)
@@ -197,7 +197,7 @@ switch($action)
 			$message_arr = json_decode($e->getMessage());
 
 			$json_output['error'] = 1;
-			$json_output['msg'] = $message_arr->response;
+			$json_output['msg'] = (isset($message_arr->response) ? $message_arr->response : __("Unknown Error", 'lang_bank_id'));
 		}
 	break;
 
@@ -245,7 +245,7 @@ switch($action)
 			$message_arr = json_decode($e->getMessage());
 
 			$json_output['error'] = 1;
-			$json_output['msg'] = $message_arr->response;
+			$json_output['msg'] = (isset($message_arr->response) ? $message_arr->response : __("Unknown Error", 'lang_bank_id'));
 		}
 	break;
 
