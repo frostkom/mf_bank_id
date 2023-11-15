@@ -172,19 +172,19 @@ class mf_bank_id
 				'type' => 'string',
 				'global' => true,
 				'icon' => "fas fa-lock",
-				'name' => __("Certificate File", 'lang_bank_id'),
+				'name' => __("BankID", 'lang_bank_id')." - ".__("Certificate File", 'lang_bank_id'),
 			),
 			'setting_bank_id_certificate_expiry_date' => array(
 				'type' => 'string',
 				'global' => true,
 				'icon' => "fa fa-calendar-alt",
-				'name' => __("Expiry Date", 'lang_bank_id'),
+				'name' => __("BankID", 'lang_bank_id')." - ".__("Expiry Date", 'lang_bank_id'),
 			),
 			'setting_bank_id_activate' => array(
 				'type' => 'bool',
 				'global' => false,
 				'icon' => "fa fa-check",
-				'name' => __("Activate", 'lang_bank_id'),
+				'name' => __("BankID", 'lang_bank_id')." - ".__("Activate", 'lang_bank_id'),
 			),
 		);
 
