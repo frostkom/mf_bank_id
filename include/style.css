@@ -88,6 +88,11 @@
 			text-decoration: none;
 		}
 
+	#loginform #login_qr .qr_code
+	{
+		height: 30vh;
+	}
+
 	#loginform #login_loading, #loginform #notification
 	{
 		margin: .5em 0;

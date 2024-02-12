@@ -72,8 +72,6 @@ jQuery(function($)
 		dom_obj_fields.removeClass('hide');
 		dom_obj_qr.removeClass('hide');
 		dom_obj_connected.removeClass('hide');
-
-		/*$("#submit_input").removeClass('hide');*/
 	}
 
 	function check_ssc_response(orderref, user_ssn)
@@ -308,6 +306,11 @@ jQuery(function($)
 				{
 					checkstatus++;
 
+					if(data.html)
+					{
+						dom_obj_qr.html(data.html);
+					}
+
 					setTimeout(function()
 					{
 						check_qr_response();
@@ -332,11 +335,9 @@ jQuery(function($)
 			});
 		}
 
-		dom_obj_qr.children("span").on('click', function()
+		dom_obj_qr.on('click', function() /*.children("span")*/
 		{
 			display_loading();
-
-			/*$("#submit_input").addClass('hide');*/
 
 			$.ajax(
 			{
@@ -436,8 +437,6 @@ jQuery(function($)
 		{
 			display_loading();
 
-			/*$("#submit_input").addClass('hide');*/
-
 			$.ajax(
 			{
 				url: script_bank_id.plugin_url + 'api/?action=connected_init',
@@ -470,42 +469,4 @@ jQuery(function($)
 			return false;
 		});
 	}
-
-	/* Does not work as wanted when autofilling with pre-saved username/password */
-	/*function display_or_hide_submit_button(type)
-	{
-		var do_display = false;
-
-		if($("#user_login").length > 0 && (type == 'keyup' || $("#user_login").val() != ''))
-		{
-			do_display = true;
-		}
-
-		else if(dom_obj_user_ssn.length > 0 && dom_obj_user_ssn.val() != '' && dom_obj_user_ssn.val().length >= 10)
-		{
-			do_display = true;
-		}
-
-		if(do_display == true)
-		{
-			dom_obj_form.find(".submit, .form_button").removeClass('hide');
-		}
-
-		else
-		{
-			dom_obj_form.find(".submit, .form_button").addClass('hide');
-		}
-	}
-
-	$("#user_login").on('keyup', function()
-	{
-		display_or_hide_submit_button('keyup');
-	});
-
-	dom_obj_user_ssn.on('keyup', function()
-	{
-		display_or_hide_submit_button('keyup');
-	});
-
-	display_or_hide_submit_button('init');*/
 });

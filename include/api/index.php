@@ -12,8 +12,20 @@ if(!defined('ABSPATH'))
 session_start();
 
 include_once("../classes.php");
-include_once("../lib/bankid_v5/vendor/autoload.php");
-include_once("../lib/bankid_v5/src/Service/BankIDService.php");
+
+switch(get_option('setting_bank_id_api_version'))
+{
+	default:
+	case 5:
+		include_once("../lib/bankid_v5/vendor/autoload.php");
+		include_once("../lib/bankid_v5/src/Service/BankIDService.php");
+	break;
+
+	case 6:
+		include_once("../lib/bankid_v6/vendor/autoload.php");
+		include_once("../lib/bankid_v6/src/Service/BankIDService.php");
+	break;
+}
 
 if(!isset($obj_bank_id))
 {
@@ -22,8 +34,7 @@ if(!isset($obj_bank_id))
 
 $action = check_var('action');
 $login_type = check_var('login_type');
-$user_ssn = check_var('user_ssn');
-$orderref = check_var('orderref');
+$order_ref = check_var('orderref');
 
 list($upload_path, $upload_url) = get_uploads_folder();
 
@@ -38,7 +49,20 @@ if(!file_exists($setting_bank_id_certificate))
 
 if(get_option('setting_bank_id_api_mode') == 'test')
 {
-	$api_url = "https://appapi.test.bankid.com/rp/v5/";
+	switch(get_option('setting_bank_id_api_version'))
+	{
+		default:
+		case 5:
+			$api_url = "https://appapi.test.bankid.com/rp/v5/";
+
+			$user_ssn = check_var('user_ssn');
+			$user_ssn = $obj_bank_id->filter_ssn($user_ssn);
+		break;
+
+		case 6:
+			$api_url = "https://appapi.test.bankid.com/rp/v6.0/";
+		break;
+	}
 
 	$arr_params = array(
 		'cert' => __DIR__."/certs/certname.pem",
@@ -48,7 +72,20 @@ if(get_option('setting_bank_id_api_mode') == 'test')
 
 else
 {
-	$api_url = "https://appapi2.bankid.com/rp/v5/";
+	switch(get_option('setting_bank_id_api_version'))
+	{
+		default:
+		case 5:
+			$api_url = "https://appapi2.bankid.com/rp/v5/";
+
+			$user_ssn = check_var('user_ssn');
+			$user_ssn = $obj_bank_id->filter_ssn($user_ssn);
+		break;
+
+		case 6:
+			$api_url = "https://appapi2.bankid.com/rp/v6.0/";
+		break;
+	}
 
 	$arr_params = array(
 		'cert' => $setting_bank_id_certificate,
@@ -57,34 +94,28 @@ else
 	);
 }
 
-$user_ssn = $obj_bank_id->filter_ssn($user_ssn);
-
 $json_output = array();
 
 switch($action)
 {
+	// Can be removed when v6 is in use
+	#######################
 	case 'ssc_init':
 		$json_output['error'] = 0;
 
-		$_SESSION['personelnumber'] = $user_ssn;
-
 		if(!empty($user_ssn))
 		{
+			$_SESSION['sesPersonelNumber'] = $user_ssn;
+
 			$bankIDService = new BankIDService($api_url, get_current_visitor_ip(), $arr_params);
 
 			try
 			{
 				$response = $bankIDService->getAuthResponse($user_ssn);
-				$_SESSION['start_token'] = $response->autoStartToken;
-				$_SESSION['orderRef'] = $response->orderRef;
+				$_SESSION['sesAutoStartToken'] = $response->autoStartToken;
+				$_SESSION['sesOrderRef'] = $response->orderRef;
 
 				$json_output['msg'] = sprintf(__("I am trying to open the %s application. If it does not open automatically you have to do it manually", 'lang_bank_id'), "BankID");
-
-				// This will result in timeout anyway...
-				/*if($response->autoStartToken != '')
-				{
-					$json_output['msg'] .= " <a href='bankid:///?autostarttoken=".$response->autoStartToken."&redirect=null'>".sprintf(__("Click to open %s app...", 'lang_bank_id'), "BankID")."</a>";
-				}*/
 			}
 
 			catch(Exception $e)
@@ -98,21 +129,21 @@ switch($action)
 	break;
 
 	case 'ssc_check':
-		$orderref = (isset($_SESSION['orderRef']) ? $_SESSION['orderRef'] : '');
-		$user_ssn = (isset($_SESSION['personelnumber']) ? $_SESSION['personelnumber'] : '');
+		$order_ref = check_var('sesOrderRef');
+		$user_ssn = check_var('sesPersonelNumber');
 
 		$bankIDService = new BankIDService($api_url, get_current_visitor_ip(), $arr_params);
 
 		try
 		{
-			$result = $bankIDService->collectResponse($orderref);
+			$response = $bankIDService->collectResponse($order_ref);
 
-			switch($result->status)
+			switch($response->status)
 			{
 				case 'pending':
 					$json_output['error'] = 1;
 					$json_output['retry'] = 1;
-					$json_output['msg'] = $result->hintCode;
+					$json_output['msg'] = $response->hintCode;
 				break;
 
 				case 'complete':
@@ -130,7 +161,7 @@ switch($action)
 				default:
 					$json_output['error'] = 1;
 					$json_output['retry'] = 1;
-					$json_output['msg'] = $result->status;
+					$json_output['msg'] = $response->status;
 				break;
 			}
 		}
@@ -143,27 +174,23 @@ switch($action)
 			$json_output['msg'] = $message_arr->response;
 		}
 	break;
+	#######################
 
 	case 'qr_init':
-		list($upload_path_qr, $upload_url_qr) = get_uploads_folder($obj_bank_id->post_type);
-
-		include_once("../lib/phpqrcode/qrlib.php");
-
 		$bankIDService = new BankIDService($api_url, get_current_visitor_ip(), $arr_params);
 
 		try
 		{
 			$response = $bankIDService->getAuthResponse();
-			$_SESSION['start_token'] = $response->autoStartToken;
-			$_SESSION['orderRef'] = $response->orderRef;
 
-			$qr_content = "bankid:///?autostarttoken=".$response->autoStartToken;
-			$qr_file = "qr_code_".md5($qr_content).".png";
+			$_SESSION['sesAutoStartToken'] = $response->autoStartToken;
+			$_SESSION['sesOrderRef'] = $response->orderRef;
+			$_SESSION['sesStartToken'] = $response->qrStartToken;
+			$_SESSION['sesTimeCreated'] = time();
+			$_SESSION['sesStartSecret'] = $response->qrStartSecret;
 
-			QRcode::png($qr_content, $upload_path_qr.$qr_file);
-
+			$json_output = $obj_bank_id->get_qr_code(array('json_output' => $json_output)); //'response' => $response, 
 			$json_output['success'] = 1;
-			$json_output['html'] = "<img src='".$upload_url_qr.$qr_file."'>";
 		}
 
 		catch(Exception $e)
@@ -176,15 +203,13 @@ switch($action)
 	break;
 
 	case 'connected_init':
-		include_once("../lib/phpqrcode/qrlib.php");
-
 		$bankIDService = new BankIDService($api_url, get_current_visitor_ip(), $arr_params);
 
 		try
 		{
 			$response = $bankIDService->getAuthResponse();
-			$_SESSION['start_token'] = $response->autoStartToken;
-			$_SESSION['orderRef'] = $response->orderRef;
+			$_SESSION['sesAutoStartToken'] = $response->autoStartToken;
+			$_SESSION['sesOrderRef'] = $response->orderRef;
 
 			$connected_url = "bankid:///?autostarttoken=".$response->autoStartToken."&redirect=null";
 
@@ -203,39 +228,46 @@ switch($action)
 
 	case 'qr_check':
 	case 'connected_check':
-		$orderref = (isset($_SESSION['orderRef']) ? $_SESSION['orderRef'] : '');
+		$order_ref = check_var('sesOrderRef');
+		$time_created = check_var('sesTimeCreated');
 
 		$bankIDService = new BankIDService($api_url, get_current_visitor_ip(), $arr_params);
 
 		try
 		{
-			$result = $bankIDService->collectResponse($orderref);
+			$response = $bankIDService->collectResponse($order_ref);
 
-			switch($result->status)
+			switch($response->status)
 			{
 				case 'pending':
-					$json_output['error'] = 1;
-					$json_output['retry'] = 1;
-					$json_output['msg'] = $result->hintCode;
+					if($action == 'qr_check')
+					{
+						$json_output['error'] = $json_output['retry'] = 1;
+						$json_output = $obj_bank_id->get_qr_code(array('json_output' => $json_output)); //'response' => $response, 
+					}
+
+					else
+					{
+						$json_output['error'] = $json_output['retry'] = 1;
+						$json_output['msg'] = $response->hintCode;
+					}
 				break;
 
 				case 'complete':
-					$user_ssn = $result->completionData->user->personalNumber;
+					$user_ssn = $response->completionData->user->personalNumber;
 					$user_ssn = $obj_bank_id->filter_ssn($user_ssn);
 
 					$obj_bank_id->validate_and_login(array('type' => $login_type, 'ssn' => $user_ssn), $json_output);
 				break;
 
 				case 'NO_CLIENT':
-					$json_output['error'] = 1;
-					$json_output['retry'] = 1;
+					$json_output['error'] = $json_output['retry'] = 1;
 					$json_output['msg'] = __("Login attempt timed out. Please try again.", 'lang_bank_id');
 				break;
 
 				default:
-					$json_output['error'] = 1;
-					$json_output['retry'] = 1;
-					$json_output['msg'] = $result->status;
+					$json_output['error'] = $json_output['retry'] = 1;
+					$json_output['msg'] = $response->status;
 				break;
 			}
 		}

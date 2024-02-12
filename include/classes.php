@@ -7,24 +7,6 @@ class mf_bank_id
 
 	function __construct(){}
 
-	function get_login_methods_for_select()
-	{
-		return array(
-			'username' => __("Username", 'lang_bank_id'),
-			'ssc' => __("Social Security Number", 'lang_bank_id'),
-			'qr' => __("QR Code", 'lang_bank_id'),
-			'connected' => __("Same Device", 'lang_bank_id'),
-		);
-	}
-
-	function get_api_modes_for_select()
-	{
-		return array(
-			'test' => __("Test", 'lang_bank_id'),
-			'live' => __("Live", 'lang_bank_id'),
-		);
-	}
-
 	function cron_base()
 	{
 		$obj_cron = new mf_cron();
@@ -39,7 +21,7 @@ class mf_bank_id
 
 			if($setting_bank_id_certificate == '' && $option_bank_id_certificate != '' && $setting_bank_id_activate == 'yes')
 			{
-				do_log("The backup (option_bank_id_certificate: ".$option_bank_id_certificate.") was set but the setting in use (setting_bank_id_certificate) was empty even though the site was using BankID (setting_bank_id_activate: ".$setting_bank_id_activate.")");
+				do_log("The backup (option_bank_id_certificate: ".$option_bank_id_certificate.") was set, but the setting in use (setting_bank_id_certificate) was empty even though the site was using BankID (setting_bank_id_activate: ".$setting_bank_id_activate.")");
 
 				//update_site_option('setting_bank_id_certificate', $option_bank_id_certificate);
 			}
@@ -75,6 +57,7 @@ class mf_bank_id
 
 				if(get_option('setting_bank_id_activate') == 'yes')
 				{
+					$arr_settings['setting_bank_id_api_version'] = __("API Version", 'lang_bank_id');
 					$arr_settings['setting_bank_id_login_methods'] = __("Login Methods", 'lang_bank_id');
 					$arr_settings['setting_bank_id_api_mode'] = __("API Mode", 'lang_bank_id');
 				}
@@ -106,8 +89,7 @@ class mf_bank_id
 
 		if($option == '')
 		{
-			$description = sprintf(__("The file should be a %s file.", 'lang_bank_id'), ".pem")
-				." <a href='//bankid.com/foretag/anslut-foeretag'>".__("Get yours here", 'lang_bank_id')."</a>"; // //bankid.com/kontakt/foeretag/saeljare
+			$description = sprintf(__("The file should be a %s file.", 'lang_bank_id'), ".pem")." <a href='//bankid.com/foretag/anslut-foeretag'>".__("Get yours here", 'lang_bank_id')."</a>";
 		}
 
 		echo get_media_library(array('name' => $setting_key, 'value' => $option, 'description' => $description));
@@ -137,12 +119,36 @@ class mf_bank_id
 		echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'description' => sprintf(__("Use the certificate file %s", 'lang_bank_id'), $setting_bank_id_certificate)));
 	}
 
+	function setting_bank_id_api_version_callback()
+	{
+		$setting_key = get_setting_key(__FUNCTION__);
+		$option = get_option_or_default($setting_key, 5);
+
+		$arr_data = array(
+			5 => "v5 (".sprintf(__("Will be discontinued %s", 'lang_bank_id'), "2024-05-01").")",
+			6 => "v6",
+		);
+
+		echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option));
+	}
+
 	function setting_bank_id_login_methods_callback()
 	{
 		$setting_key = get_setting_key(__FUNCTION__);
 		$option = get_option($setting_key, array());
 
-		echo show_select(array('data' => $this->get_login_methods_for_select(), 'name' => $setting_key."[]", 'value' => $option));
+		$arr_data = array();
+		$arr_data['username'] = __("Username", 'lang_bank_id');
+
+		if(get_option('setting_bank_id_api_version', 5) == 5)
+		{
+			$arr_data['ssc'] = __("Social Security Number", 'lang_bank_id');
+		}
+
+		$arr_data['qr'] = __("QR Code", 'lang_bank_id');
+		$arr_data['connected'] = __("Same Device", 'lang_bank_id');
+
+		echo show_select(array('data' => $arr_data, 'name' => $setting_key."[]", 'value' => $option));
 	}
 
 	function setting_bank_id_api_mode_callback()
@@ -150,7 +156,12 @@ class mf_bank_id
 		$setting_key = get_setting_key(__FUNCTION__);
 		$option = get_option($setting_key, 'live');
 
-		echo show_select(array('data' => $this->get_api_modes_for_select(), 'name' => $setting_key, 'value' => $option));
+		$arr_data = array(
+			'test' => __("Test", 'lang_bank_id'),
+			'live' => __("Live", 'lang_bank_id'),
+		);
+
+		echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option));
 	}
 
 	function admin_init()
@@ -218,6 +229,37 @@ class mf_bank_id
 		}
 
 		return $out;
+	}
+
+	function get_qr_code($data)
+	{
+		switch(get_option('setting_bank_id_api_version'))
+		{
+			default:
+			case 5:
+				$qr_content = "bankid:///?autostarttoken=".check_var('sesAutoStartToken')."&redirect=null";
+			break;
+
+			case 6:
+				$qrStartToken = check_var('sesStartToken');
+				$elapsedTime = (time() - check_var('sesTimeCreated', 'char', true, time()));
+				$qrStartSecret = check_var('sesStartSecret');
+
+				$qr_content = sprintf('bankid.%s.%d.%s', $qrStartToken, $elapsedTime, hash_hmac('sha256', $elapsedTime, $qrStartSecret));
+			break;
+		}
+
+		$qr_file = "qr_code_".md5($qr_content).".png";
+
+		list($upload_path_qr, $upload_url_qr) = get_uploads_folder($this->post_type);
+
+		include_once("lib/phpqrcode/qrlib.php");
+
+		QRcode::png($qr_content, $upload_path_qr.$qr_file, QR_ECLEVEL_H, 2, 4);
+
+		$data['json_output']['html'] = "<img class='qr_code' src='".$upload_url_qr.$qr_file."'>";
+
+		return $data['json_output'];
 	}
 
 	function get_message($action = '')
@@ -655,7 +697,7 @@ class mf_bank_id
 	{
 		global $post;
 
-		if(is_user_logged_in() == false && isset($post->ID) && apply_filters('filter_is_password_protected', false, array('post_id' => $post->ID, 'check_login' => true)) == true)
+		if(isset($post->ID) && is_user_logged_in() == false && apply_filters('filter_is_password_protected', false, array('post_id' => $post->ID, 'check_login' => true)) == true)
 		{
 			$this->login_init(array('login_type' => 'address'));
 
@@ -737,11 +779,6 @@ class mf_bank_id
 		if($has_ssc_login)
 		{
 			$field_required = ($this->allow_username_login() == false);
-
-			/*if($add_login_or == true)
-			{
-				$out .= "<p class='login_or'><label>".__("or", 'lang_bank_id')."</label></p>";
-			}*/
 
 			$out .= "<div id='login_ssn' class='flex_flow'>
 				<img src='".$plugin_include_url."images/bankid.svg' class='logo'>"

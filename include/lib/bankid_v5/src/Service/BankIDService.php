@@ -1,7 +1,5 @@
 <?php
 
-
-
 use Dimafe6\BankID\Model\CollectResponse;
 use Dimafe6\BankID\Model\OrderResponse;
 use GuzzleHttp\Client;
