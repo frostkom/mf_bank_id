@@ -758,7 +758,8 @@ class mf_bank_id
 
 		$setting_bank_id_login_methods = get_option_or_default('setting_bank_id_login_methods', array());
 
-		$has_username_login = $add_login_or = $this->allow_username_login();
+		$add_login_or = false;
+		$has_username_login = $this->allow_username_login();
 		$has_ssc_login = (count($setting_bank_id_login_methods) == 0 || in_array('ssc', $setting_bank_id_login_methods));
 		$has_qr_login = (count($setting_bank_id_login_methods) == 0 || in_array('qr', $setting_bank_id_login_methods));
 		$has_connected_login = (count($setting_bank_id_login_methods) == 0 || in_array('connected', $setting_bank_id_login_methods));
@@ -792,14 +793,14 @@ class mf_bank_id
 		{
 			$plugin_include_url = plugin_dir_url(__FILE__);
 
-			if($add_login_or == true)
+			/*if($add_login_or == true)
 			{
 				$out .= "<p class='login_or'><label>".__("or", 'lang_bank_id')."</label></p>";
-			}
+			}*/
 
 			$out .= "<div id='login_qr' class='bankid_button'>
-				<span>".__("Get QR Code", 'lang_bank_id')."</span>
 				<img src='".$plugin_include_url."images/bankid_black.svg' class='logo'>
+				<span>".__("Mobile BankID", 'lang_bank_id')."</span>
 			</div>";
 
 			$add_login_or = true;
@@ -815,8 +816,7 @@ class mf_bank_id
 			}
 
 			$out .= "<div id='login_connected' class='bankid_button'>
-				<span>".__("Same Device", 'lang_bank_id')."</span>
-				<img src='".$plugin_include_url."images/bankid_black.svg' class='logo'>
+				<span>".__("BankID on This Device", 'lang_bank_id')."</span>
 			</div>";
 
 			$add_login_or = true;

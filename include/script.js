@@ -185,6 +185,11 @@ jQuery(function($)
 		}, timeout_time);
 	}
 
+	if(dom_obj_choice.length == 0)
+	{
+		$(".login_actions").remove();
+	}
+
 	if(script_bank_id.disable_default_login == 'yes')
 	{
 		dom_obj_form.attr({'action': '#'});
