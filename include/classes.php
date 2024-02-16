@@ -45,14 +45,18 @@ class mf_bank_id
 
 			$arr_settings = array();
 
-			if(get_site_option('setting_bank_id_certificate') == '' || get_option('setting_bank_id_activate') != 'yes')
+			if((!is_multisite() || is_main_site()) && (get_site_option('setting_bank_id_certificate') == '' || get_option('setting_bank_id_activate') != 'yes'))
 			{
 				$arr_settings['setting_bank_id_certificate'] = __("Certificate File", 'lang_bank_id');
 			}
 
 			if(get_site_option('setting_bank_id_certificate') != '')
 			{
-				$arr_settings['setting_bank_id_certificate_expiry_date'] = __("Expiry Date", 'lang_bank_id');
+				if(!is_multisite() || is_main_site())
+				{
+					$arr_settings['setting_bank_id_certificate_expiry_date'] = __("Expiry Date", 'lang_bank_id');
+				}
+
 				$arr_settings['setting_bank_id_activate'] = __("Activate", 'lang_bank_id');
 
 				if(get_option('setting_bank_id_activate') == 'yes')
@@ -124,12 +128,18 @@ class mf_bank_id
 		$setting_key = get_setting_key(__FUNCTION__);
 		$option = get_option_or_default($setting_key, 5);
 
-		$arr_data = array(
-			5 => "v5 (".sprintf(__("Will be discontinued %s", 'lang_bank_id'), "2024-05-01").")",
-			6 => "v6",
-		);
+		$arr_data = array();
 
-		echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option));
+		$date_expiry = "2024-05-01";
+
+		if(date("Y-m-d", strtotime("+1 month")) < $date_expiry)
+		{
+			$arr_data[5] = "v5 (".sprintf(__("Will be discontinued %s", 'lang_bank_id'), $date_expiry).")";
+		}
+
+		$arr_data[6] = "v6";
+
+		echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'allow_hidden_field' => false));
 	}
 
 	function setting_bank_id_login_methods_callback()

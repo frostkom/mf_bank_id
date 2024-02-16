@@ -185,9 +185,9 @@ switch($action)
 
 			$_SESSION['sesAutoStartToken'] = $response->autoStartToken;
 			$_SESSION['sesOrderRef'] = $response->orderRef;
-			$_SESSION['sesStartToken'] = $response->qrStartToken;
+			$_SESSION['sesStartToken'] = (isset($response->qrStartToken) ? $response->qrStartToken : '');
 			$_SESSION['sesTimeCreated'] = time();
-			$_SESSION['sesStartSecret'] = $response->qrStartSecret;
+			$_SESSION['sesStartSecret'] = (isset($response->qrStartSecret) ? $response->qrStartSecret : '');
 
 			$json_output = $obj_bank_id->get_qr_code(array('json_output' => $json_output)); //'response' => $response, 
 			$json_output['success'] = 1;
