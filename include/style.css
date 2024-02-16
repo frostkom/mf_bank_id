@@ -90,7 +90,7 @@
 
 	#loginform #login_qr .qr_code
 	{
-		height: 30vh;
+		height: 20vh;
 	}
 
 	#loginform #login_loading, #loginform #notification
