@@ -240,15 +240,15 @@ switch($action)
 			switch($response->status)
 			{
 				case 'pending':
+					$json_output['error'] = $json_output['retry'] = 1;
+
 					if($action == 'qr_check')
 					{
-						$json_output['error'] = $json_output['retry'] = 1;
 						$json_output = $obj_bank_id->get_qr_code(array('json_output' => $json_output)); //'response' => $response, 
 					}
 
 					else
 					{
-						$json_output['error'] = $json_output['retry'] = 1;
 						$json_output['msg'] = $response->hintCode;
 					}
 				break;

@@ -793,7 +793,7 @@ class mf_bank_id
 
 			$out .= "<div id='login_ssn' class='flex_flow'>
 				<img src='".$plugin_include_url."images/bankid.svg' class='logo'>"
-				.show_textfield(array('custom_tag' => 'p', 'name' => 'user_ssn', 'required' => $field_required, 'placeholder' => __("Social Security Number", 'lang_bank_id'), 'xtra' => "class='input' autocomplete='off'")) //, 'text' => "BankID <a href='//support.bankid.com/sv'>(".sprintf(__("Get %s", 'lang_bank_id'), "BankID").")</a>"
+				.show_textfield(array('custom_tag' => 'p', 'name' => 'user_ssn', 'required' => $field_required, 'placeholder' => __("Social Security Number", 'lang_bank_id'), 'xtra' => "class='input' autocomplete='off'"))
 			."</div>";
 
 			$add_login_or = true;
@@ -802,11 +802,6 @@ class mf_bank_id
 		if($has_qr_login)
 		{
 			$plugin_include_url = plugin_dir_url(__FILE__);
-
-			/*if($add_login_or == true)
-			{
-				$out .= "<p class='login_or'><label>".__("or", 'lang_bank_id')."</label></p>";
-			}*/
 
 			$out .= "<div id='login_qr' class='bankid_button'>
 				<img src='".$plugin_include_url."images/bankid_black.svg' class='logo'>
