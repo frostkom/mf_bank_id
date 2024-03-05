@@ -278,7 +278,7 @@ class mf_bank_id
 
 		QRcode::png($qr_content, $upload_path_qr.$qr_file, QR_ECLEVEL_H, 2, 4);
 
-		$data['json_output']['html'] = "<img class='qr_code' src='".$upload_url_qr.$qr_file."'>";
+		$data['json_output']['html'] = "<p>".__("Open your BankID app and scan the QR code", 'lang_bank_id')."</p><img class='qr_code' src='".$upload_url_qr.$qr_file."'>";
 
 		return $data['json_output'];
 	}

@@ -41,11 +41,11 @@ jQuery(function($)
 			switch(type)
 			{
 				case 'success':
-					dom_obj_notification.html("<div class='success'>" + message + "</div>").removeClass('hide');
+					dom_obj_notification.html("<div class='success updated'>" + message + "</div>").removeClass('hide');
 				break;
 
 				case 'error':
-					dom_obj_notification.html("<div id='login_error'><p>" + message + "</p></div>").removeClass('hide');
+					dom_obj_notification.html("<div id='login_error' class='error'><p>" + message + "</p></div>").removeClass('hide');
 				break;
 
 				/*default:
@@ -209,22 +209,25 @@ jQuery(function($)
 
 	dom_obj_form.on('submit', function(e)
 	{
-		var user_ssn = dom_obj_user_ssn.val();
-
-		if(user_ssn != '')
+		if(dom_obj_fields.length > 0)
 		{
-			e.preventDefault();
+			var user_ssn = dom_obj_user_ssn.val();
 
-			bankid_login(user_ssn);
+			if(user_ssn != '')
+			{
+				e.preventDefault();
 
-			return false;
-		}
+				bankid_login(user_ssn);
 
-		else if(script_bank_id.disable_default_login == 'yes')
-		{
-			e.preventDefault();
+				return false;
+			}
 
-			return false;
+			else if(script_bank_id.disable_default_login == 'yes')
+			{
+				e.preventDefault();
+
+				return false;
+			}
 		}
 	});
 
