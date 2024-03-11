@@ -3,9 +3,12 @@
 class mf_bank_id
 {
 	var $post_type = 'mf_bank_id';
-	var $meta_prefix = 'mf_bank_id_';
+	var $meta_prefix;
 
-	function __construct(){}
+	function __construct()
+	{
+		$this->meta_prefix = $this->post_type.'_';
+	}
 
 	function cron_base()
 	{
@@ -445,7 +448,7 @@ class mf_bank_id
 		}
 	}
 
-	/* The same as used in Custom Login*/
+	// The same as used in Custom Login
 	function login($username)
 	{
 		if(is_user_logged_in())
@@ -650,7 +653,6 @@ class mf_bank_id
 			'text' => __("Social Security Number", 'lang_bank_id'),
 			//'placeholder' => __("YYMMDD-XXXX", 'lang_bank_id'),
 			'required' => true,
-			//'attributes' => " maxlength='12'",
 			'attributes' => array(
 				'maxlength' => 12,
 			),
@@ -697,7 +699,7 @@ class mf_bank_id
 	function login_address()
 	{
 		$cookie_name = $this->meta_prefix.COOKIEHASH;
-		$cookie_value = 'address_ssn_'.get_current_visitor_ip(); //$data['ssn']
+		$cookie_value = 'address_ssn_'.get_current_visitor_ip();
 
 		setcookie($cookie_name, md5($cookie_value), strtotime("+1 week"), COOKIEPATH);
 
@@ -707,7 +709,7 @@ class mf_bank_id
 	function is_address_logged_in()
 	{
 		$cookie_name = $this->meta_prefix.COOKIEHASH;
-		$cookie_value = 'address_ssn_'.get_current_visitor_ip(); //$data['ssn']
+		$cookie_value = 'address_ssn_'.get_current_visitor_ip();
 
 		$cookie_value_md5 = (isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : '');
 
