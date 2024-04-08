@@ -89,10 +89,51 @@
 			text-decoration: none;
 		}
 
+	#loginform #login_qr p
+	{
+		margin-bottom: 1em;
+	}
+
 	#loginform #login_qr .qr_code
 	{
-		height: 20vh;
+		padding-bottom: .5em;
+		position: relative;
 	}
+
+		#loginform #login_qr .qr_code img
+		{
+			width: 300px;
+		}
+
+		#loginform #login_qr .qr_code svg
+		{
+			height: 300px;
+			left: 0;
+			margin: 0 auto;
+			position: absolute;
+			right: 0;
+			width: 300px;
+		}
+
+			#loginform #login_qr .qr_code svg path:nth-child(1)
+			{
+				transform: translate(19px, 4px) rotate(0deg);
+			}
+
+			#loginform #login_qr .qr_code svg path:nth-child(2)
+			{
+				transform: translate(280px, 295px) rotate(180deg);
+			}
+
+			#loginform #login_qr .qr_code svg path:nth-child(3)
+			{
+				transform: translate(4px, 280px) rotate(-90deg);
+			}
+
+			#loginform #login_qr .qr_code svg path:nth-child(4)
+			{
+				transform: translate(295px, 19px) rotate(90deg);
+			}
 
 	#loginform #login_loading, #loginform #notification
 	{

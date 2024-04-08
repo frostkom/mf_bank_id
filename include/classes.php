@@ -279,9 +279,20 @@ class mf_bank_id
 
 		include_once("lib/phpqrcode/qrlib.php");
 
-		QRcode::png($qr_content, $upload_path_qr.$qr_file, QR_ECLEVEL_H, 2, 4);
+		QRcode::png($qr_content, $upload_path_qr.$qr_file, QR_ECLEVEL_H, 5, 7); // L/M/Q/H
 
-		$data['json_output']['html'] = "<p>".__("Open your BankID app and scan the QR code", 'lang_bank_id')."</p><img class='qr_code' src='".$upload_url_qr.$qr_file."'>";
+		$data['json_output']['html'] = "<p>".__("Open your BankID app and scan the QR code", 'lang_bank_id')."</p>
+		<div class='qr_code'>
+			<img src='".$upload_url_qr.$qr_file."'>
+			<svg>";
+
+				for($i = 0; $i < 4; $i++)
+				{
+					$data['json_output']['html'] .= "<path d='M216,0h48a12,12,0,0,1,12,12V60.762' fill='none' stroke='#1d3a8f' stroke-linecap='round' stroke-width='8'></path>";
+				}
+
+			$data['json_output']['html'] .= "</svg>
+		</div>";
 
 		return $data['json_output'];
 	}
