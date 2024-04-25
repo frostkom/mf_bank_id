@@ -696,7 +696,7 @@ class mf_bank_id
 
 		if($in != '')
 		{
-			$emlAddressEmail = $wpdb->get_var($wpdb->prepare("SELECT addressEmail FROM ".get_address_table_prefix()."address WHERE addressBirthDate = %s", $in));
+			$emlAddressEmail = $wpdb->get_var($wpdb->prepare("SELECT addressEmail FROM ".$wpdb->prefix."address WHERE addressBirthDate = %s", $in));
 
 			return ($emlAddressEmail != '');
 		}
