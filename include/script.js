@@ -197,15 +197,18 @@ jQuery(function($)
 		dom_obj_username.remove();
 		dom_obj_password.remove();
 
-		dom_obj_remember.remove();
+		dom_obj_remember.addClass('hide');
+		dom_obj_submit.addClass('hide');
 		dom_obj_forgot_password_link.remove();
 	}
 
+	/*console.log("Test: " , dom_obj_username.length , dom_obj_fields.length);
+
 	if(dom_obj_username.length == 0 && dom_obj_fields.length == 0)
 	{
-		dom_obj_remember.remove();
-		dom_obj_submit.remove();
-	}
+		dom_obj_remember.addClass('hide');
+		dom_obj_submit.addClass('hide');
+	}*/
 
 	dom_obj_form.on('submit', function(e)
 	{

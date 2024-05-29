@@ -181,7 +181,7 @@ switch($action)
 
 		try
 		{
-			$response = $bankIDService->getAuthResponse();
+			$response = $bankIDService->getAuthResponse(array('intent' => get_option('setting_bank_id_login_intent')));
 
 			$_SESSION['sesAutoStartToken'] = $response->autoStartToken;
 			$_SESSION['sesOrderRef'] = $response->orderRef;
@@ -207,7 +207,8 @@ switch($action)
 
 		try
 		{
-			$response = $bankIDService->getAuthResponse();
+			$response = $bankIDService->getAuthResponse(array('intent' => get_option('setting_bank_id_login_intent')));
+
 			$_SESSION['sesAutoStartToken'] = $response->autoStartToken;
 			$_SESSION['sesOrderRef'] = $response->orderRef;
 

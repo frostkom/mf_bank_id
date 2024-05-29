@@ -25,18 +25,24 @@ class BankIDService
 		$this->client = new Client($this->options);
 	}
 
-	public function getAuthResponse($personalNumber = null)
+	public function getAuthResponse($data)
 	{
-		$parameters = [
+		$parameters = array(
 			'endUserIp' => $this->endUserIp,
-			'requirement' => [
+			//'userNonVisibleData' => base64_encode("[data]"),
+			//'returnRisk' => true,
+			'requirement' => array(
 				'pinCode' => false,
-			],
-		];
+			),
+		);
 
-		$responseData = $this->client->post('auth', ['json' => $parameters]);
+		if($data['intent'] != '')
+		{
+			$parameters['userVisibleData'] = base64_encode($data['intent']);
+			$parameters['userVisibleDataFormat'] = "simpleMarkdownV1";
+		}
 
-		$response = new OrderResponse($responseData);
+		$response = new OrderResponse($this->client->post('auth', array('json' => $parameters)));
 
 		return $response;
 	}

@@ -3,7 +3,7 @@
 Plugin Name: MF BankID
 Plugin URI: https://github.com/frostkom/mf_bank_id
 Description: Extension to login with BankID
-Version: 2.5.22
+Version: 2.6.3
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
@@ -81,7 +81,7 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 
 		mf_uninstall_plugin(array(
 			'uploads' => $obj_bank_id->post_type,
-			'options' => array('setting_bank_id_certificate', 'option_bank_id_certificate', 'setting_bank_id_certificate_expiry_date', 'setting_bank_id_activate', 'setting_bank_id_api_version', 'setting_bank_id_login_methods', 'setting_bank_id_login_fields', 'setting_bank_id_api_mode'),
+			'options' => array('setting_bank_id_certificate', 'option_bank_id_certificate', 'setting_bank_id_certificate_expiry_date', 'setting_bank_id_activate', 'setting_bank_id_api_version', 'setting_bank_id_login_methods', 'setting_bank_id_login_fields', 'setting_bank_id_api_mode', 'setting_bank_id_login_intent'),
 			'meta' => array('profile_ssn'),
 		));
 	}

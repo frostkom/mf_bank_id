@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-05 14:29+0100\n"
+"POT-Creation-Date: 2024-05-23 12:52+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -15,233 +15,282 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../include/classes.php:61
-#: ../include/classes.php:207
+#: ../include/classes.php:64
+#: ../include/classes.php:234
 msgid "Certificate File"
 msgstr "Certifikatfil"
 
-#: ../include/classes.php:68
-#: ../include/classes.php:213
+#: ../include/classes.php:71
+#: ../include/classes.php:240
 msgid "Expiry Date"
 msgstr "Utgångsdatum"
 
-#: ../include/classes.php:71
-#: ../include/classes.php:219
-#: ../include/classes.php:525
+#: ../include/classes.php:74
+#: ../include/classes.php:246
+#: ../include/classes.php:563
 msgid "Activate"
 msgstr "Aktivera"
 
-#: ../include/classes.php:75
+#: ../include/classes.php:78
 msgid "API Version"
 msgstr "API-version"
 
-#: ../include/classes.php:76
+#: ../include/classes.php:79
 msgid "Login Methods"
 msgstr "Inloggningssätt"
 
-#: ../include/classes.php:77
+#: ../include/classes.php:80
 msgid "API Mode"
 msgstr "API-läge"
 
-#: ../include/classes.php:107
+#: ../include/classes.php:81
+msgid "Intent Description"
+msgstr "Intensionsbeskrivning"
+
+#: ../include/classes.php:111
 #, php-format
 msgid "The file should be a %s file."
 msgstr "Filen bör vara en %s-fil."
 
-#: ../include/classes.php:107
+#: ../include/classes.php:111
 msgid "Get yours here"
 msgstr "Hämta din här"
 
-#: ../include/classes.php:134
+#: ../include/classes.php:138
 #, php-format
 msgid "Use the certificate file %s"
 msgstr "Använd certifikatfilen %s"
 
-#: ../include/classes.php:148
+#: ../include/classes.php:152
 #, php-format
 msgid "Will be discontinued %s"
 msgstr "Kommer att sluta fungera %s"
 
-#: ../include/classes.php:162
+#: ../include/classes.php:166
 msgid "Username"
 msgstr "Användarnamn"
 
-#: ../include/classes.php:166
-#: ../include/classes.php:491
-#: ../include/classes.php:562
-#: ../include/classes.php:608
-#: ../include/classes.php:650
-#: ../include/classes.php:807
+#: ../include/classes.php:170
+#: ../include/classes.php:529
+#: ../include/classes.php:600
+#: ../include/classes.php:646
+#: ../include/classes.php:688
+#: ../include/classes.php:844
 msgid "Social Security Number"
 msgstr "Personnummer"
 
-#: ../include/classes.php:169
+#: ../include/classes.php:173
 msgid "QR Code"
 msgstr "QR-kod"
 
-#: ../include/classes.php:170
+#: ../include/classes.php:174
 msgid "Same Device"
 msgstr "Samma enhet"
 
-#: ../include/classes.php:181
+#: ../include/classes.php:185
 msgid "Test"
 msgstr ""
 
-#: ../include/classes.php:182
+#: ../include/classes.php:186
 msgid "Live"
 msgstr ""
 
-#: ../include/classes.php:207
-#: ../include/classes.php:213
-#: ../include/classes.php:219
+#: ../include/classes.php:197
+msgid "This is used as a way for you to display to the user why they are logging."
+msgstr "Detta används som ett sätt för er att visa för användaren varför de loggar in."
+
+#: ../include/classes.php:198
+#: ../include/classes.php:201
+#: ../include/classes.php:205
+msgid "Heading"
+msgstr "Rubrik"
+
+#: ../include/classes.php:199
+msgid "Text"
+msgstr ""
+
+#: ../include/classes.php:202
+msgid "Highlight"
+msgstr "Förstärk"
+
+#: ../include/classes.php:203
+#: ../include/classes.php:204
+msgid "List Item"
+msgstr "Listobjekt"
+
+#: ../include/classes.php:206
+msgid "One"
+msgstr "Ett"
+
+#: ../include/classes.php:206
+msgid "Two"
+msgstr "Två"
+
+#: ../include/classes.php:206
+msgid "Three"
+msgstr "Tre"
+
+#: ../include/classes.php:208
+#: ../include/classes.php:209
+msgid "Row"
+msgstr "Rad"
+
+#: ../include/classes.php:208
+#: ../include/classes.php:209
+msgid "Column"
+msgstr "Kolumn"
+
+#: ../include/classes.php:234
+#: ../include/classes.php:240
+#: ../include/classes.php:246
 msgid "BankID"
 msgstr ""
 
-#: ../include/classes.php:294
+#: ../include/classes.php:308
+msgid "Open your BankID app and scan the QR code"
+msgstr "Öppna din BankID-app och scanna QR-koden"
+
+#: ../include/classes.php:332
 #, php-format
 msgid "Start your %s app"
 msgstr "Starta din %s-app"
 
-#: ../include/classes.php:298
+#: ../include/classes.php:336
 #, php-format
 msgid "The %s app is not installed. Please contact your internet bank."
 msgstr "%s-appen är inte installerad. Var vänlig kontakta din internetbank."
 
-#: ../include/classes.php:303
+#: ../include/classes.php:341
 msgid "Already in Progress. Wait a few seconds and then try again."
 msgstr "Håller redan på. Vänta en stund och försök igen."
 
-#: ../include/classes.php:308
+#: ../include/classes.php:346
 msgid "Action cancelled. Please try again."
 msgstr "Åtgärden avbröts. Var vänlig försök igen."
 
-#: ../include/classes.php:314
+#: ../include/classes.php:352
 msgid "Internal error. Please try again."
 msgstr "Internt fel. Var vänlig försök igen."
 
-#: ../include/classes.php:319
+#: ../include/classes.php:357
 msgid "Action cancelled"
 msgstr "Åtgärden avbröts"
 
-#: ../include/classes.php:324
+#: ../include/classes.php:362
 #, php-format
 msgid "The %s app is not responding. Please check that the program is started and that you have internet access. If you do not have a valid %s you can get one from your bank. Try again."
 msgstr "%s-appen svarar inte. Var vänlig se till så att programmet är startat och att du har tillgång till internet. Om du inte har ett giltigt %s så kan du hämta ett från din bank. Försök igen."
 
-#: ../include/classes.php:329
+#: ../include/classes.php:367
 #, php-format
 msgid "Enter your security code in the %s app and select Identify or Sign."
 msgstr "Fyll i din säkerhetskod i %s-appen och välj att identifiera eller signera."
 
-#: ../include/classes.php:334
+#: ../include/classes.php:372
 #, php-format
 msgid "Internal error. Update your %s app and try again."
 msgstr "Internt fel. Uppdatera din %s-app och försök igen."
 
-#: ../include/classes.php:339
+#: ../include/classes.php:377
 #, php-format
 msgid "Trying to start your %s app"
 msgstr "Försöker starta din %s-app"
 
-#: ../include/classes.php:347
+#: ../include/classes.php:385
 #, php-format
 msgid "Searching for %s, it may take a little while..."
 msgstr "Söker efter %s, det kan ta en liten stund..."
 
-#: ../include/classes.php:352
+#: ../include/classes.php:390
 #, php-format
 msgid "The %s you are trying to use is revoked or too old. Please use another %s or order a new one from your internet bank."
 msgstr "Det %s som du försöker använda är tillbakadraget eller gammalt. Använd ett annat %s eller beställ ett nytt från din internetbank."
 
-#: ../include/classes.php:357
+#: ../include/classes.php:395
 #, php-format
 msgid "The %s app could not be found on your computer or mobile device. Please install it and order a %s from your internet bank. Install the app from %s."
 msgstr "%s-appen kunde inte hittas på denna dator eller mobila enhet. Var vänlig installera den och beställ ett %s från din internetbank. Installera appen från %s."
 
-#: ../include/classes.php:361
+#: ../include/classes.php:399
 #, php-format
 msgid "Would you like to login or sign with a %s on this computer or with a Mobile %s?"
 msgstr "Vill du logga in eller signera med ett %s på denna dator eller med ett mobilt %s?"
 
-#: ../include/classes.php:365
+#: ../include/classes.php:403
 #, php-format
 msgid "Would you like to login or sign with a %s on this device or with a %s on another device?"
 msgstr "Vill du logga in eller signera med ett %s på denna dator eller med ett %s på en annan enhet?"
 
-#: ../include/classes.php:369
+#: ../include/classes.php:407
 msgid "Unknown Action"
 msgstr "Okänd händelse"
 
-#: ../include/classes.php:387
-#: ../include/classes.php:411
+#: ../include/classes.php:425
+#: ../include/classes.php:449
 msgid "The validation was successful! You are being logged in..."
 msgstr "Valideringen lyckades! Du loggas nu in..."
 
-#: ../include/classes.php:394
-#: ../include/classes.php:418
+#: ../include/classes.php:432
+#: ../include/classes.php:456
 msgid "Something went wrong when trying to login. If the problem persists, please contact an admin."
 msgstr "Något gick fel vid inloggningen. Om problemet kvarstår, var vänlig kontakta en administratör."
 
-#: ../include/classes.php:401
+#: ../include/classes.php:439
 msgid "The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there."
 msgstr "Personnumret som du försöker logga in med är inte kopplad till någon användare. Var vänlig logga in med ditt användarnamn och lösenord, gå till din profil och fyll i ditt personnummer där."
 
-#: ../include/classes.php:425
+#: ../include/classes.php:463
 msgid "The social security number that you are trying to login with is not connected to anyone. Please contact an admin."
 msgstr "Personnumret som du försöker logga in med är inte kopplad till någon. Var vänlig kontakt en administratör."
 
-#: ../include/classes.php:546
+#: ../include/classes.php:584
 msgid "You have to enter your Social Security Number to be able to login in the future"
 msgstr "Du behöver fylla i ditt personnummer för att kunna logga in i framtiden"
 
-#: ../include/classes.php:551
+#: ../include/classes.php:589
 msgid "You have to enter your Social Security Number"
 msgstr "Du behöver fylla i ditt personnummer"
 
-#: ../include/classes.php:567
-#: ../include/classes.php:614
-#: ../include/classes.php:621
+#: ../include/classes.php:605
+#: ../include/classes.php:652
+#: ../include/classes.php:659
 msgid "YYMMDD-XXXX"
 msgstr "ÅÅMMDD-XXXX"
 
-#: ../include/classes.php:599
+#: ../include/classes.php:637
 msgid "Indicates whether you are logged in"
 msgstr "Visar om du är inloggad"
 
-#: ../include/classes.php:726
+#: ../include/classes.php:763
 msgid "To view the content on this page you have to first login."
 msgstr "För att kunna se innehållet på denna sida så behöver du först logga in."
 
-#: ../include/classes.php:729
+#: ../include/classes.php:766
 msgid "Log in"
 msgstr "Logga in"
 
-#: ../include/classes.php:765
+#: ../include/classes.php:802
 msgid "The login took too long. Please try again."
 msgstr "Inloggningen tog för lång tid. Var vänlig försök igen."
 
-#: ../include/classes.php:793
+#: ../include/classes.php:830
 #, php-format
 msgid "Use %s"
 msgstr "Använd %s"
 
-#: ../include/classes.php:796
+#: ../include/classes.php:833
 msgid "Use e-mail & password"
 msgstr "Använd e-post och lösenord"
 
-#: ../include/classes.php:818
-msgid "Open your BankID app and scan the QR code"
-msgstr "Öppna din BankID-app och scanna QR-koden"
-
-#: ../include/classes.php:820
+#: ../include/classes.php:856
 msgid "Mobile BankID"
 msgstr "Mobilt BankID"
 
-#: ../include/classes.php:832
+#: ../include/classes.php:868
 msgid "or"
 msgstr "eller"
 
-#: ../include/classes.php:836
+#: ../include/classes.php:872
 msgid "BankID on This Device"
 msgstr "BankID på denna enhet"
 
@@ -252,17 +301,17 @@ msgstr "Jag försöker öppna %s-applikationen. Om den inte öppnas automatiskt 
 
 #: ../include/api/index.php:126
 #: ../include/api/index.php:201
-#: ../include/api/index.php:225
-#: ../include/api/index.php:280
+#: ../include/api/index.php:226
+#: ../include/api/index.php:281
 msgid "Unknown Error"
 msgstr "Okänt fel"
 
 #: ../include/api/index.php:158
-#: ../include/api/index.php:265
+#: ../include/api/index.php:266
 msgid "Login attempt timed out. Please try again."
 msgstr "Inloggningsförsöket tog för lång tid. Var vänlig försök igen."
 
-#: ../include/api/index.php:217
+#: ../include/api/index.php:218
 #, php-format
 msgid "Click to open %s app..."
 msgstr "Klicka för att öppna %s-appen..."

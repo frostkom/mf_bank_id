@@ -78,6 +78,7 @@ class mf_bank_id
 					$arr_settings['setting_bank_id_api_version'] = __("API Version", 'lang_bank_id');
 					$arr_settings['setting_bank_id_login_methods'] = __("Login Methods", 'lang_bank_id');
 					$arr_settings['setting_bank_id_api_mode'] = __("API Mode", 'lang_bank_id');
+					$arr_settings['setting_bank_id_login_intent'] = __("Intent Description", 'lang_bank_id');
 				}
 			}
 
@@ -186,6 +187,29 @@ class mf_bank_id
 		);
 
 		echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option));
+	}
+
+	function setting_bank_id_login_intent_callback()
+	{
+		$setting_key = get_setting_key(__FUNCTION__);
+		$option = get_option($setting_key);
+
+		$description = __("This is used as a way for you to display to the user why they are logging.", 'lang_bank_id')."<br><code>
+			# ".__("Heading", 'lang_bank_id')." 1<br>
+			".__("Text", 'lang_bank_id')."<br>
+			---<br>
+			## ".__("Heading", 'lang_bank_id')." 2<br>
+			*".__("Highlight", 'lang_bank_id')."*<br>
+			+ ".__("List Item", 'lang_bank_id')." 1<br>
+			+ ".__("List Item", 'lang_bank_id')." 2<br>
+			### ".__("Heading", 'lang_bank_id')." 3<br>
+			| ".__("One", 'lang_bank_id')." | ".__("Two", 'lang_bank_id')." | ".__("Three", 'lang_bank_id')." |<br>
+			|-|-|-|<br>
+			| ".__("Row", 'lang_bank_id')." 1, ".__("Column", 'lang_bank_id')." 1 | ".__("Row", 'lang_bank_id')." 1, ".__("Column", 'lang_bank_id')." 2 | ".__("Row", 'lang_bank_id')." 1, ".__("Column", 'lang_bank_id')." 3 |<br>
+			| ".__("Row", 'lang_bank_id')." 2, ".__("Column", 'lang_bank_id')." 1 | ".__("Row", 'lang_bank_id')." 2, ".__("Column", 'lang_bank_id')." 2 | ".__("Row", 'lang_bank_id')." 2, ".__("Column", 'lang_bank_id')." 3 |
+		</code>";
+
+		echo show_textarea(array('name' => $setting_key, 'value' => $option, 'description' => $description));
 	}
 
 	function admin_init()
