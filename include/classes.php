@@ -579,14 +579,14 @@ class mf_bank_id
 
 		if($pagenow == 'profile.php' && get_the_author_meta('profile_ssn', get_current_user_id()) == '')
 		{
-			if($this->allow_username_login() == false)
+			if($this->allow_username_login())
 			{
-				$error_text = __("You have to enter your Social Security Number to be able to login in the future", 'lang_bank_id');
+				$error_text = __("You have to enter your Social Security Number", 'lang_bank_id');
 			}
 
 			else
 			{
-				$error_text = __("You have to enter your Social Security Number", 'lang_bank_id');
+				$error_text = __("You have to enter your Social Security Number to be able to login in the future", 'lang_bank_id');
 			}
 
 			echo get_notification();
@@ -797,7 +797,7 @@ class mf_bank_id
 		mf_enqueue_style('style_bank_id', $plugin_include_url."style.css", $plugin_version);
 		mf_enqueue_script('script_bank_id', $plugin_include_url."script.js", array(
 			'plugin_url' => $plugin_include_url,
-			'disable_default_login' => ($this->allow_username_login() ? 'no' : 'yes'),
+			'allow_username_login' => $this->allow_username_login(),
 			'login_type' => $data['login_type'],
 			'took_too_long_text' => __("The login took too long. Please try again.", 'lang_bank_id'),
 		), $plugin_version);
@@ -817,12 +817,11 @@ class mf_bank_id
 		$setting_bank_id_login_methods = get_option_or_default('setting_bank_id_login_methods', array());
 
 		$add_login_or = false;
-		$has_username_login = $this->allow_username_login();
 		$has_ssc_login = (count($setting_bank_id_login_methods) == 0 || in_array('ssc', $setting_bank_id_login_methods));
 		$has_qr_login = (count($setting_bank_id_login_methods) == 0 || in_array('qr', $setting_bank_id_login_methods));
 		$has_connected_login = (count($setting_bank_id_login_methods) == 0 || in_array('connected', $setting_bank_id_login_methods));
 
-		if($has_username_login && ($has_ssc_login || $has_qr_login || $has_connected_login))
+		if($this->allow_username_login() && ($has_ssc_login || $has_qr_login || $has_connected_login))
 		{
 			$out .= "<div id='login_choice'>
 				<div class='login_choice_bankid bankid_button'>
@@ -837,11 +836,9 @@ class mf_bank_id
 
 		if($has_ssc_login)
 		{
-			$field_required = ($this->allow_username_login() == false);
-
 			$out .= "<div id='login_ssn' class='flex_flow'>
 				<img src='".$plugin_include_url."images/bankid.svg' class='logo'>"
-				.show_textfield(array('custom_tag' => 'p', 'name' => 'user_ssn', 'required' => $field_required, 'placeholder' => __("Social Security Number", 'lang_bank_id'), 'xtra' => "class='input' autocomplete='off'"))
+				.show_textfield(array('custom_tag' => 'p', 'name' => 'user_ssn', 'required' => ($this->allow_username_login() == false), 'placeholder' => __("Social Security Number", 'lang_bank_id'), 'xtra' => "class='input' autocomplete='off'"))
 			."</div>";
 
 			$add_login_or = true;

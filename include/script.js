@@ -187,28 +187,19 @@ jQuery(function($)
 
 	if(dom_obj_choice.length == 0)
 	{
-		$(".login_actions").remove();
+		$(".login_actions").addClass('hide');
 	}
 
-	if(script_bank_id.disable_default_login == 'yes')
+	if(script_bank_id.allow_username_login == false)
 	{
 		dom_obj_form.attr({'action': '#'});
 
-		dom_obj_username.remove();
-		dom_obj_password.remove();
-
+		dom_obj_username.addClass('hide');
+		dom_obj_password.addClass('hide');
 		dom_obj_remember.addClass('hide');
 		dom_obj_submit.addClass('hide');
-		dom_obj_forgot_password_link.remove();
+		dom_obj_forgot_password_link.addClass('hide');
 	}
-
-	/*console.log("Test: " , dom_obj_username.length , dom_obj_fields.length);
-
-	if(dom_obj_username.length == 0 && dom_obj_fields.length == 0)
-	{
-		dom_obj_remember.addClass('hide');
-		dom_obj_submit.addClass('hide');
-	}*/
 
 	dom_obj_form.on('submit', function(e)
 	{
@@ -225,7 +216,7 @@ jQuery(function($)
 				return false;
 			}
 
-			else if(script_bank_id.disable_default_login == 'yes')
+			else if(script_bank_id.allow_username_login == false)
 			{
 				e.preventDefault();
 
@@ -241,7 +232,6 @@ jQuery(function($)
 		dom_obj_password.addClass('hide');
 		dom_obj_remember.addClass('hide');
 		dom_obj_submit.addClass('hide');
-
 		dom_obj_or.addClass('hide');
 		dom_obj_fields.addClass('hide');
 		dom_obj_user_ssn.addClass('hide');
