@@ -12,7 +12,7 @@ class BankIDService
 	private $options;
 	private $endUserIp;
 
-	public function __construct($apiUrl, $endUserIp, $options = [])
+	public function __construct($apiUrl, $endUserIp, $options = array())
 	{
 		$this->apiUrl = $apiUrl;
 		$this->endUserIp = $endUserIp;
@@ -49,7 +49,7 @@ class BankIDService
 
 	public function collectResponse($orderRef)
 	{
-		$responseData = $this->client->post('collect', ['json' => ['orderRef' => $orderRef]]);
+		$responseData = $this->client->post('collect', array('json' => array('orderRef' => $orderRef)));
 
 		return new CollectResponse($responseData);
 	}
