@@ -16,6 +16,16 @@
 		}
 
 	/* Admin */
+	#login
+	{
+		min-width: 380px;
+	}
+
+	#login #loginform
+	{
+		min-width: 330px;
+	}
+
 	#loginform .login_or
 	{
 		margin-bottom: .5em;

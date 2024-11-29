@@ -307,7 +307,6 @@ class mf_bank_id
 
 		$data['json_output']['html'] = "<p>".__("Open your BankID app and scan the QR code", 'lang_bank_id')."</p>
 		<div class='qr_code'>
-			<img src='".$upload_url_qr.$qr_file."'>
 			<svg>";
 
 				for($i = 0; $i < 4; $i++)
@@ -316,6 +315,7 @@ class mf_bank_id
 				}
 
 			$data['json_output']['html'] .= "</svg>
+			<img src='".$upload_url_qr.$qr_file."'>
 		</div>";
 
 		return $data['json_output'];
