@@ -7,7 +7,7 @@ jQuery(function($)
 		var dom_obj_username = $("#user_login").parent(".form_textfield"),
 			dom_obj_password = $("#user_pass").parent(".form_password"),
 			dom_obj_remember = dom_obj_form.find("#rememberme").parent(".form_checkbox"),
-			dom_obj_submit = dom_obj_form.find(".form_button"),
+			dom_obj_submit = dom_obj_form.find(".form_button, .wp-block-button"),
 			dom_obj_forgot_password_link = dom_obj_form.next("p#lost_password_link");
 	}
 

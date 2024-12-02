@@ -9,7 +9,7 @@
 		max-width: 400px;
 	}
 
-		#wrapper #loginform .form_button
+		#wrapper #loginform .form_button, #wrapper #loginform .wp-block-button
 		{
 			margin-top: 1em;
 			text-align: right;

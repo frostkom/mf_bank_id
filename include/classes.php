@@ -762,7 +762,7 @@ class mf_bank_id
 			$html = "<form id='loginform' class='mf_form' action='#' method='post'>
 				<p>".__("To view the content on this page you have to first login.", 'lang_bank_id')."</p>"
 				.$this->login_form(array('print' => false))
-				."<div class='form_button'>"
+				."<div".get_form_button_classes().">"
 					.show_button(array('name' => 'btnBankIDLogin', 'text' => __("Log in", 'lang_bank_id')))
 				."</div>
 			</form>";
