@@ -336,7 +336,7 @@ jQuery(function($)
 			});
 		}
 
-		dom_obj_qr.on('click', function() /*.children("span")*/
+		dom_obj_qr.on('click', function()
 		{
 			display_loading();
 

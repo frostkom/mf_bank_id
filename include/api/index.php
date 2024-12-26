@@ -13,19 +13,19 @@ session_start();
 
 include_once("../classes.php");
 
-switch(get_option('setting_bank_id_api_version'))
+/*switch(get_option('setting_bank_id_api_version'))
 {
-	default:
 	case 5:
 		include_once("../lib/bankid_v5/vendor/autoload.php");
 		include_once("../lib/bankid_v5/src/Service/BankIDService.php");
 	break;
 
-	case 6:
+	default:
+	case 6:*/
 		include_once("../lib/bankid_v6/vendor/autoload.php");
 		include_once("../lib/bankid_v6/src/Service/BankIDService.php");
-	break;
-}
+	/*break;
+}*/
 
 if(!isset($obj_bank_id))
 {
@@ -49,9 +49,8 @@ if(!file_exists($setting_bank_id_certificate))
 
 if(get_option('setting_bank_id_api_mode') == 'test')
 {
-	switch(get_option('setting_bank_id_api_version'))
+	/*switch(get_option('setting_bank_id_api_version'))
 	{
-		default:
 		case 5:
 			$api_url = "https://appapi.test.bankid.com/rp/v5/";
 
@@ -59,10 +58,11 @@ if(get_option('setting_bank_id_api_mode') == 'test')
 			$user_ssn = $obj_bank_id->filter_ssn($user_ssn);
 		break;
 
-		case 6:
+		default:
+		case 6:*/
 			$api_url = "https://appapi.test.bankid.com/rp/v6.0/";
-		break;
-	}
+		/*break;
+	}*/
 
 	$arr_params = array(
 		'cert' => __DIR__."/certs/certname.pem",
@@ -72,9 +72,8 @@ if(get_option('setting_bank_id_api_mode') == 'test')
 
 else
 {
-	switch(get_option('setting_bank_id_api_version'))
+	/*switch(get_option('setting_bank_id_api_version'))
 	{
-		default:
 		case 5:
 			$api_url = "https://appapi2.bankid.com/rp/v5/";
 
@@ -82,10 +81,11 @@ else
 			$user_ssn = $obj_bank_id->filter_ssn($user_ssn);
 		break;
 
-		case 6:
+		default:
+		case 6:*/
 			$api_url = "https://appapi2.bankid.com/rp/v6.0/";
-		break;
-	}
+		/*break;
+	}*/
 
 	$arr_params = array(
 		'cert' => $setting_bank_id_certificate,
@@ -100,7 +100,7 @@ switch($action)
 {
 	// Can be removed when v6 is in use
 	#######################
-	case 'ssc_init':
+	/*case 'ssc_init':
 		$json_output['error'] = 0;
 
 		if(!empty($user_ssn))
@@ -173,7 +173,7 @@ switch($action)
 			$json_output['error'] = 1;
 			$json_output['msg'] = $message_arr->response;
 		}
-	break;
+	break;*/
 	#######################
 
 	case 'qr_init':
@@ -189,7 +189,7 @@ switch($action)
 			$_SESSION['sesTimeCreated'] = time();
 			$_SESSION['sesStartSecret'] = (isset($response->qrStartSecret) ? $response->qrStartSecret : '');
 
-			$json_output = $obj_bank_id->get_qr_code(array('json_output' => $json_output)); //'response' => $response, 
+			$json_output = $obj_bank_id->get_qr_code(array('json_output' => $json_output));
 			$json_output['success'] = 1;
 		}
 
@@ -245,7 +245,7 @@ switch($action)
 
 					if($action == 'qr_check')
 					{
-						$json_output = $obj_bank_id->get_qr_code(array('json_output' => $json_output)); //'response' => $response, 
+						$json_output = $obj_bank_id->get_qr_code(array('json_output' => $json_output));
 					}
 
 					else

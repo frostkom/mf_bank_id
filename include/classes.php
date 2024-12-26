@@ -82,7 +82,7 @@ class mf_bank_id
 
 				if(get_option('setting_bank_id_activate') == 'yes')
 				{
-					$arr_settings['setting_bank_id_api_version'] = __("API Version", 'lang_bank_id');
+					//$arr_settings['setting_bank_id_api_version'] = __("API Version", 'lang_bank_id');
 					$arr_settings['setting_bank_id_login_methods'] = __("Login Methods", 'lang_bank_id');
 					$arr_settings['setting_bank_id_api_mode'] = __("API Mode", 'lang_bank_id');
 					$arr_settings['setting_bank_id_login_intent'] = __("Intent Description", 'lang_bank_id');
@@ -145,7 +145,7 @@ class mf_bank_id
 		echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'description' => sprintf(__("Use the certificate file %s", 'lang_bank_id'), $setting_bank_id_certificate)));
 	}
 
-	function setting_bank_id_api_version_callback()
+	/*function setting_bank_id_api_version_callback()
 	{
 		$setting_key = get_setting_key(__FUNCTION__);
 		$option = get_option_or_default($setting_key, 5);
@@ -162,7 +162,7 @@ class mf_bank_id
 		$arr_data[6] = "v6";
 
 		echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'allow_hidden_field' => false));
-	}
+	}*/
 
 	function setting_bank_id_login_methods_callback()
 	{
@@ -172,10 +172,10 @@ class mf_bank_id
 		$arr_data = array();
 		$arr_data['username'] = __("Username", 'lang_bank_id');
 
-		if(get_option('setting_bank_id_api_version', 5) == 5)
+		/*if(get_option('setting_bank_id_api_version', 5) == 5)
 		{
 			$arr_data['ssc'] = __("Social Security Number", 'lang_bank_id');
-		}
+		}*/
 
 		$arr_data['qr'] = __("QR Code", 'lang_bank_id');
 		$arr_data['connected'] = __("Same Device", 'lang_bank_id');
@@ -288,21 +288,21 @@ class mf_bank_id
 
 	function get_qr_code($data)
 	{
-		switch(get_option('setting_bank_id_api_version'))
+		/*switch(get_option('setting_bank_id_api_version'))
 		{
-			default:
 			case 5:
 				$qr_content = "bankid:///?autostarttoken=".check_var('sesAutoStartToken')."&redirect=null";
 			break;
 
-			case 6:
+			default:
+			case 6:*/
 				$qrStartToken = check_var('sesStartToken');
 				$elapsedTime = (time() - check_var('sesTimeCreated', 'char', true, time()));
 				$qrStartSecret = check_var('sesStartSecret');
 
 				$qr_content = sprintf('bankid.%s.%d.%s', $qrStartToken, $elapsedTime, hash_hmac('sha256', $elapsedTime, $qrStartSecret));
-			break;
-		}
+			/*break;
+		}*/
 
 		$qr_file = "qr_code_".md5($qr_content).".png";
 
