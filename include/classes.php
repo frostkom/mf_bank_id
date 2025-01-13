@@ -312,6 +312,72 @@ class mf_bank_id
 
 		QRcode::png($qr_content, $upload_path_qr.$qr_file, QR_ECLEVEL_H, 5, 7); // L/M/Q/H
 
+		$site_icon = get_option('site_icon');
+
+		if($site_icon > 0)
+		{
+			list($upload_path, $upload_url) = get_uploads_folder();
+
+			//do_log(__FUNCTION__.": ".$site_icon." -> ".mf_get_post_content($site_icon)." -> ".str_replace($upload_url, $upload_path, mf_get_post_content($site_icon)));
+
+			$logo_file = str_replace($upload_url, $upload_path, mf_get_post_content($site_icon, 'guid'));
+			$logo_fraction = 6;
+			$logo_padding = 2; // Adjust this value to control padding
+
+			// Load QR code image
+			$qr_image = imagecreatefrompng($upload_path_qr.$qr_file);
+
+			// Create white background for logo
+			##########################
+			$qr_size = imagesx($qr_image);
+			$logo_size = ($qr_size / $logo_fraction - 2 * $logo_padding); // Logo size calculated from QR code size
+			$bg_size = ($qr_size / $logo_fraction);
+
+			$white_bg = imagecreatetruecolor($bg_size, $bg_size);
+			$white = imagecolorallocate($white_bg, 255, 255, 255);
+			imagefill($white_bg, 0, 0, $white);
+			##########################
+
+			// Load & resize logo
+			##########################
+			$logo = imagecreatefrompng($logo_file);
+			$logo_width = imagesx($logo);
+			$logo_height = imagesy($logo);
+
+			// Create a new image with white background
+			$white_logo_bg = imagecreatetruecolor($logo_width, $logo_height);
+			$white_logo = imagecolorallocate($white_logo_bg, 255, 255, 255);
+			imagefill($white_logo_bg, 0, 0, $white_logo);
+
+			// Copy the logo onto the white background
+			imagecopy($white_logo_bg, $logo, 0, 0, 0, 0, $logo_width, $logo_height);
+			$logo = $white_logo_bg;
+
+			$logo_resized = imagecreatetruecolor($logo_size, $logo_size);
+			imagecopyresampled($logo_resized, $logo, 0, 0, 0, 0, $logo_size, $logo_size, imagesx($logo), imagesy($logo));
+			##########################
+
+			// Center logo on white background
+			$logo_pos = $logo_padding;
+			imagecopy($white_bg, $logo_resized, $logo_pos, $logo_pos, 0, 0, imagesx($logo_resized), imagesy($logo_resized));
+
+			// Calculate position to center logo on QR code
+			$logo_qr_pos = (($qr_size - $bg_size) / 2);
+
+			// Merge logo with white background onto QR code
+			imagecopy($qr_image, $white_bg, $logo_qr_pos, $logo_qr_pos, 0, 0, $bg_size, $bg_size);
+
+			// Save the final image
+			imagepng($qr_image, $upload_path_qr.$qr_file);
+
+			// Clean up
+			imagedestroy($qr_image);
+			imagedestroy($logo);
+			imagedestroy($logo_resized);
+			imagedestroy($white_bg);
+			imagedestroy($white_logo_bg);
+		}
+
 		$data['json_output']['html'] = "<p>".__("Open your BankID app and scan the QR code", 'lang_bank_id')."</p>
 		<div class='qr_code'>
 			<svg>";
@@ -799,15 +865,14 @@ class mf_bank_id
 		if(!isset($data['login_type'])){	$data['login_type'] = 'user';}
 
 		$plugin_include_url = plugin_dir_url(__FILE__);
-		$plugin_version = get_plugin_version(__FILE__);
 
-		mf_enqueue_style('style_bank_id', $plugin_include_url."style.css", $plugin_version);
+		mf_enqueue_style('style_bank_id', $plugin_include_url."style.css");
 		mf_enqueue_script('script_bank_id', $plugin_include_url."script.js", array(
 			'plugin_url' => $plugin_include_url,
 			'allow_username_login' => $this->allow_username_login(),
 			'login_type' => $data['login_type'],
 			'took_too_long_text' => __("The login took too long. Please try again.", 'lang_bank_id'),
-		), $plugin_version);
+		));
 	}
 
 	function login_form($data = array())
