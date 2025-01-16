@@ -370,12 +370,30 @@ class mf_bank_id
 			// Save the final image
 			imagepng($qr_image, $upload_path_qr.$qr_file);
 
-			// Clean up
-			imagedestroy($qr_image);
-			imagedestroy($logo);
-			imagedestroy($logo_resized);
-			imagedestroy($white_bg);
-			imagedestroy($white_logo_bg);
+			if(is_resource($qr_image) && get_resource_type($qr_image) === 'gd')
+			{
+				imagedestroy($qr_image);
+			}
+
+			if(is_resource($logo) && get_resource_type($logo) === 'gd')
+			{
+				imagedestroy($logo);
+			}
+
+			if(is_resource($logo_resized) && get_resource_type($logo_resized) === 'gd')
+			{
+				imagedestroy($logo_resized);
+			}
+
+			if(is_resource($white_bg) && get_resource_type($white_bg) === 'gd')
+			{
+				imagedestroy($white_bg);
+			}
+
+			if(is_resource($white_logo_bg) && get_resource_type($white_logo_bg) === 'gd')
+			{
+				imagedestroy($white_logo_bg);
+			}
 		}
 
 		$data['json_output']['html'] = "<p>".__("Open your BankID app and scan the QR code", 'lang_bank_id')."</p>
