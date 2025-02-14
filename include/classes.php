@@ -798,7 +798,8 @@ class mf_bank_id
 		{
 			if($data['check_login'] == true && $this->is_address_logged_in())
 			{
-				$is_protected = false;
+				// Do nothing
+				//$is_protected = false;
 			}
 
 			else
