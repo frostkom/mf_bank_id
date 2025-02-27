@@ -3,7 +3,7 @@
 Plugin Name: MF BankID
 Plugin URI: https://github.com/frostkom/mf_bank_id
 Description: Extension to login with BankID
-Version: 2.6.15
+Version: 2.6.17
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
@@ -24,10 +24,12 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 
 	$obj_bank_id = new mf_bank_id();
 
+	add_action('cron_base', 'activate_bank_id', mt_rand(1, 10));
 	add_action('cron_base', array($obj_bank_id, 'cron_base'), mt_rand(1, 10));
 
 	if(is_admin())
 	{
+		register_activation_hook(__FILE__, 'activate_bank_id');
 		register_uninstall_hook(__FILE__, 'uninstall_bank_id');
 
 		add_filter('site_transient_update_plugins', array($obj_bank_id, 'site_transient_update_plugins'));
@@ -62,7 +64,7 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 	{
 		if(get_site_option('setting_bank_id_certificate') != '' && get_option('setting_bank_id_activate') == 'yes')
 		{
-			add_action('login_init', array($obj_bank_id, 'login_init'), 0);
+			//add_action('login_init', array($obj_bank_id, 'login_init'), 0);
 			add_action('login_form', array($obj_bank_id, 'login_form'));
 		}
 
@@ -75,6 +77,13 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 		add_filter('the_content', array($obj_bank_id, 'the_content'));
 	}
 
+	function activate_bank_id()
+	{
+		mf_uninstall_plugin(array(
+			'options' => array('setting_bank_id_api_version'),
+		));
+	}
+
 	function uninstall_bank_id()
 	{
 		include_once("include/classes.php");
@@ -83,7 +92,7 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 
 		mf_uninstall_plugin(array(
 			'uploads' => $obj_bank_id->post_type,
-			'options' => array('setting_bank_id_certificate', 'option_bank_id_certificate', 'setting_bank_id_certificate_expiry_date', 'setting_bank_id_activate', 'setting_bank_id_api_version', 'setting_bank_id_login_methods', 'setting_bank_id_login_fields', 'setting_bank_id_api_mode', 'setting_bank_id_login_intent'),
+			'options' => array('setting_bank_id_certificate', 'option_bank_id_certificate', 'setting_bank_id_certificate_expiry_date', 'setting_bank_id_activate', 'setting_bank_id_login_methods', 'setting_bank_id_login_fields', 'setting_bank_id_api_mode', 'setting_bank_id_login_intent', 'setting_bank_id_sign_intent'),
 			'meta' => array('profile_ssn'),
 		));
 	}

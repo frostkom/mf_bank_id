@@ -47,6 +47,33 @@ class BankIDService
 		return $response;
 	}
 
+	public function getSignResponse($data)
+	{
+		$parameters = array(
+			'endUserIp' => $this->endUserIp,
+			//'userNonVisibleData' => base64_encode("[data]"),
+			//'returnRisk' => true,
+			'requirement' => array(
+				'pinCode' => false,
+			),
+		);
+
+		if($data['intent'] != '')
+		{
+			$parameters['userVisibleData'] = base64_encode($data['intent']);
+			$parameters['userVisibleDataFormat'] = "simpleMarkdownV1";
+		}
+
+		else
+		{
+			do_log(__FUNCTION__." has to have an intent");
+		}
+
+		$response = new OrderResponse($this->client->post('sign', array('json' => $parameters)));
+
+		return $response;
+	}
+
 	public function collectResponse($orderRef)
 	{
 		$responseData = $this->client->post('collect', array('json' => array('orderRef' => $orderRef)));

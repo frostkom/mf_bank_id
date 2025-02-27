@@ -2,7 +2,7 @@ jQuery(function($)
 {
 	var dom_obj_form = $("#loginform");
 
-	if($("body > #wrapper").length > 0)
+	if($(".widget.login_form").length > 0)
 	{
 		var dom_obj_username = $("#user_login").parent(".form_textfield"),
 			dom_obj_password = $("#user_pass").parent(".form_password"),
@@ -456,6 +456,111 @@ jQuery(function($)
 					setTimeout(function()
 					{
 						check_connected_response();
+					}, timeout_time);
+				}
+
+				else
+				{
+					update_notification('error', data.msg);
+
+					reset_form_on_error();
+				}
+			});
+
+			return false;
+		});
+	}
+
+	/* Sign */
+	var dom_obj_sign = dom_obj_form.children("#login_sign");
+
+	if(dom_obj_sign.length > 0)
+	{
+		function check_sign_response()
+		{
+			$.ajax(
+			{
+				url: script_bank_id.plugin_url + 'api/?action=sign_check&login_type=' + script_bank_id.login_type,
+				type: 'POST',
+				cache: false,
+				dataType: 'json'
+			})
+			.done(function(data, textStatus)
+			{
+				if(data.success == 1)
+				{
+					checkstatus = 0;
+
+					dom_obj_loading.addClass('hide');
+
+					update_notification('success', data.msg);
+
+					if(typeof data.redirect !== 'undefined' && data.redirect != '')
+					{
+						location.href = data.redirect;
+					}
+
+					else
+					{
+						reset_form_on_error();
+					}
+				}
+
+				else if(data.retry == 1 && checkstatus < checkstatus_limit)
+				{
+					checkstatus++;
+
+					if(data.html)
+					{
+						dom_obj_sign.html(data.html);
+					}
+
+					setTimeout(function()
+					{
+						check_sign_response();
+					}, timeout_time);
+				}
+
+				else if(data.error == 1 && checkstatus >= checkstatus_limit)
+				{
+					dom_obj_loading.addClass('hide');
+
+					update_notification('error', script_bank_id.took_too_long_text);
+
+					reset_form_on_error();
+				}
+
+				else if(typeof data.msg !== 'undefined')
+				{
+					update_notification('error', data.msg);
+
+					reset_form_on_error();
+				}
+			});
+		}
+
+		dom_obj_sign.on('click', function()
+		{
+			display_loading();
+
+			$.ajax(
+			{
+				url: script_bank_id.plugin_url + 'api/?action=sign_init',
+				type: 'POST',
+				cache: false,
+				dataType: 'json'
+			})
+			.done(function(data, textStatus)
+			{
+				dom_obj_loading.addClass('hide');
+
+				if(data.success == 1)
+				{
+					dom_obj_sign.html(data.html).removeClass('flex_flow hide');
+
+					setTimeout(function()
+					{
+						check_sign_response();
 					}, timeout_time);
 				}
 

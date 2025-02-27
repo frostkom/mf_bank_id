@@ -1,7 +1,7 @@
 @media all
 {
 	/* Public */
-	#wrapper #loginform
+	.widget.login_form #loginform
 	{
 		background: rgba(0, 0, 0, .05);
 		border-radius: .5em;
@@ -9,7 +9,7 @@
 		max-width: 400px;
 	}
 
-		#wrapper #loginform .form_button, #wrapper #loginform .wp-block-button
+		.widget.login_form #loginform .form_button, .widget.login_form #loginform .wp-block-button
 		{
 			margin-top: 1em;
 			text-align: right;

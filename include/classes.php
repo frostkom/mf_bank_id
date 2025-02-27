@@ -82,10 +82,10 @@ class mf_bank_id
 
 				if(get_option('setting_bank_id_activate') == 'yes')
 				{
-					//$arr_settings['setting_bank_id_api_version'] = __("API Version", 'lang_bank_id');
 					$arr_settings['setting_bank_id_login_methods'] = __("Login Methods", 'lang_bank_id');
 					$arr_settings['setting_bank_id_api_mode'] = __("API Mode", 'lang_bank_id');
-					$arr_settings['setting_bank_id_login_intent'] = __("Intent Description", 'lang_bank_id');
+					$arr_settings['setting_bank_id_login_intent'] = __("Login Intent", 'lang_bank_id');
+					$arr_settings['setting_bank_id_sign_intent'] = __("Signature Intent", 'lang_bank_id');
 				}
 			}
 
@@ -145,25 +145,6 @@ class mf_bank_id
 		echo show_select(array('data' => get_yes_no_for_select(), 'name' => $setting_key, 'value' => $option, 'description' => sprintf(__("Use the certificate file %s", 'lang_bank_id'), $setting_bank_id_certificate)));
 	}
 
-	/*function setting_bank_id_api_version_callback()
-	{
-		$setting_key = get_setting_key(__FUNCTION__);
-		$option = get_option_or_default($setting_key, 5);
-
-		$arr_data = array();
-
-		$date_expiry = "2024-05-01";
-
-		if(date("Y-m-d", strtotime("+1 month")) < $date_expiry)
-		{
-			$arr_data[5] = "v5 (".sprintf(__("Will be discontinued %s", 'lang_bank_id'), $date_expiry).")";
-		}
-
-		$arr_data[6] = "v6";
-
-		echo show_select(array('data' => $arr_data, 'name' => $setting_key, 'value' => $option, 'allow_hidden_field' => false));
-	}*/
-
 	function setting_bank_id_login_methods_callback()
 	{
 		$setting_key = get_setting_key(__FUNCTION__);
@@ -171,12 +152,6 @@ class mf_bank_id
 
 		$arr_data = array();
 		$arr_data['username'] = __("Username", 'lang_bank_id');
-
-		/*if(get_option('setting_bank_id_api_version', 5) == 5)
-		{
-			$arr_data['ssc'] = __("Social Security Number", 'lang_bank_id');
-		}*/
-
 		$arr_data['qr'] = __("QR Code", 'lang_bank_id');
 		$arr_data['connected'] = __("Same Device", 'lang_bank_id');
 
@@ -217,6 +192,34 @@ class mf_bank_id
 		</code>";
 
 		echo show_textarea(array('name' => $setting_key, 'value' => $option, 'description' => $description));
+	}
+
+	function setting_bank_id_sign_intent_callback()
+	{
+		$setting_key = get_setting_key(__FUNCTION__);
+		$option = get_option($setting_key);
+
+		echo show_textarea(array('name' => $setting_key, 'value' => $option));
+
+		if(IS_SUPER_ADMIN && $option != '')
+		{
+			echo "<div class='widget login_form'>
+				<div id='loginform'>";
+
+					$this->login_init(array('login_type' => 'user'));
+
+					$plugin_include_url = plugin_dir_url(__FILE__);
+
+					echo "<div id='login_sign' class='bankid_button'>
+						<img src='".$plugin_include_url."images/bankid_black.svg' class='logo'>
+						<span>".__("Sign with Mobile BankID", 'lang_bank_id')."</span>
+					</div>
+					<div id='login_loading' class='hide'><i class='fa fa-spinner fa-spin fa-3x'></i></div>
+					<div id='notification' class='hide'></div>";
+
+				echo "</div>
+			</div>";
+		}
 	}
 
 	function admin_init()
@@ -288,27 +291,20 @@ class mf_bank_id
 
 	function get_qr_code($data)
 	{
-		/*switch(get_option('setting_bank_id_api_version'))
+		if(!class_exists('QRcode'))
 		{
-			case 5:
-				$qr_content = "bankid:///?autostarttoken=".check_var('sesAutoStartToken')."&redirect=null";
-			break;
+			include_once("lib/phpqrcode/qrlib.php");
+		}
 
-			default:
-			case 6:*/
-				$qrStartToken = check_var('sesStartToken');
-				$elapsedTime = (time() - check_var('sesTimeCreated', 'char', true, time()));
-				$qrStartSecret = check_var('sesStartSecret');
+		$qrStartToken = check_var('sesStartToken');
+		$elapsedTime = (time() - check_var('sesTimeCreated', 'char', true, time()));
+		$qrStartSecret = check_var('sesStartSecret');
 
-				$qr_content = sprintf('bankid.%s.%d.%s', $qrStartToken, $elapsedTime, hash_hmac('sha256', $elapsedTime, $qrStartSecret));
-			/*break;
-		}*/
+		$qr_content = sprintf('bankid.%s.%d.%s', $qrStartToken, $elapsedTime, hash_hmac('sha256', $elapsedTime, $qrStartSecret));
 
 		$qr_file = "qr_code_".md5($qr_content).".png";
 
 		list($upload_path_qr, $upload_url_qr) = get_uploads_folder($this->post_type);
-
-		include_once("lib/phpqrcode/qrlib.php");
 
 		QRcode::png($qr_content, $upload_path_qr.$qr_file, QR_ECLEVEL_H, 5, 7); // L/M/Q/H
 
@@ -527,7 +523,7 @@ class mf_bank_id
 				else
 				{
 					$json_output['error'] = 1;
-					$json_output['msg'] = __("The social security number that you are trying to login with is not connected to any user. Please login with you username and password, go to your Profile and add your social security number there.", 'lang_bank_id');
+					$json_output['msg'] = __("The social security number that you are trying to login with is not connected to any user. Please login with your username and password, go to your Profile and add your social security number there.", 'lang_bank_id');
 				}
 			break;
 
@@ -895,7 +891,7 @@ class mf_bank_id
 			'plugin_url' => $plugin_include_url,
 			'allow_username_login' => $this->allow_username_login(),
 			'login_type' => $data['login_type'],
-			'took_too_long_text' => __("The login took too long. Please try again.", 'lang_bank_id'),
+			'took_too_long_text' => sprintf(__("The login took too long. %sPlease try again%s.", 'lang_bank_id'), "<a href='?try_again'>", "</a>"),
 		));
 	}
 
@@ -905,6 +901,8 @@ class mf_bank_id
 
 		if(!is_array($data)){			$data = array();}
 		if(!isset($data['print'])){		$data['print'] = true;}
+
+		$this->login_init(array('login_type' => 'user'));
 
 		$out = "";
 
