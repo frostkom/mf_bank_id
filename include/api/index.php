@@ -153,7 +153,7 @@ switch($action)
 				case 'pending':
 					$json_output['error'] = $json_output['retry'] = 1;
 
-					if($action == 'qr_check' || $action == 'sign_check')
+					if($action == 'qr_check')
 					{
 						$json_output = $obj_bank_id->get_qr_code(array('json_output' => $json_output));
 					}
@@ -207,15 +207,7 @@ switch($action)
 				case 'pending':
 					$json_output['error'] = $json_output['retry'] = 1;
 
-					if($action == 'qr_check' || $action == 'sign_check')
-					{
-						$json_output = $obj_bank_id->get_qr_code(array('json_output' => $json_output));
-					}
-
-					else
-					{
-						$json_output['msg'] = $response->hintCode;
-					}
+					$json_output = $obj_bank_id->get_qr_code(array('json_output' => $json_output));
 				break;
 
 				case 'complete':
@@ -226,6 +218,8 @@ switch($action)
 
 					if($obj_bank_id->user_exists($user_ssn))
 					{
+						//$response->completionData->user->name, $response->completionData->user->givenName, $response->completionData->user->surname, $response->completionData->device->ipAddress, $response->completionData->signature, $response->completionData->ocspResponse
+
 						$json_output['success'] = 1;
 						$json_output['msg'] = __("The signature was successful!", 'lang_bank_id');
 					}
