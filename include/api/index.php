@@ -111,32 +111,6 @@ switch($action)
 		}
 	break;
 
-	case 'sign_init':
-		$bankIDService = new BankIDService($api_url, get_current_visitor_ip(), $arr_params);
-
-		try
-		{
-			$response = $bankIDService->getSignResponse(array('intent' => get_option('setting_bank_id_sign_intent')));
-
-			$_SESSION['sesAutoStartToken'] = $response->autoStartToken;
-			$_SESSION['sesOrderRef'] = $response->orderRef;
-			$_SESSION['sesStartToken'] = (isset($response->qrStartToken) ? $response->qrStartToken : '');
-			$_SESSION['sesTimeCreated'] = time();
-			$_SESSION['sesStartSecret'] = (isset($response->qrStartSecret) ? $response->qrStartSecret : '');
-
-			$json_output = $obj_bank_id->get_qr_code(array('json_output' => $json_output));
-			$json_output['success'] = 1;
-		}
-
-		catch(Exception $e)
-		{
-			$message_arr = json_decode($e->getMessage());
-
-			$json_output['error'] = 1;
-			$json_output['msg'] = (isset($message_arr->response) ? $message_arr->response : __("Unknown Error", 'lang_bank_id'));
-		}
-	break;
-
 	case 'qr_check':
 	case 'connected_check':
 		$order_ref = check_var('sesOrderRef');
@@ -192,7 +166,59 @@ switch($action)
 		}
 	break;
 
-	case 'sign_check':
+	case 'sign_qr_init':
+		$bankIDService = new BankIDService($api_url, get_current_visitor_ip(), $arr_params);
+
+		try
+		{
+			$response = $bankIDService->getSignResponse(array('intent' => get_option('setting_bank_id_sign_intent')));
+
+			$_SESSION['sesAutoStartToken'] = $response->autoStartToken;
+			$_SESSION['sesOrderRef'] = $response->orderRef;
+			$_SESSION['sesStartToken'] = (isset($response->qrStartToken) ? $response->qrStartToken : '');
+			$_SESSION['sesTimeCreated'] = time();
+			$_SESSION['sesStartSecret'] = (isset($response->qrStartSecret) ? $response->qrStartSecret : '');
+
+			$json_output = $obj_bank_id->get_qr_code(array('json_output' => $json_output));
+			$json_output['success'] = 1;
+		}
+
+		catch(Exception $e)
+		{
+			$message_arr = json_decode($e->getMessage());
+
+			$json_output['error'] = 1;
+			$json_output['msg'] = (isset($message_arr->response) ? $message_arr->response : __("Unknown Error", 'lang_bank_id'));
+		}
+	break;
+
+	case 'sign_connected_init':
+		$bankIDService = new BankIDService($api_url, get_current_visitor_ip(), $arr_params);
+
+		try
+		{
+			$response = $bankIDService->getSignResponse(array('intent' => get_option('setting_bank_id_sign_intent')));
+
+			$_SESSION['sesAutoStartToken'] = $response->autoStartToken;
+			$_SESSION['sesOrderRef'] = $response->orderRef;
+
+			$connected_url = "bankid:///?autostarttoken=".$response->autoStartToken."&redirect=null";
+
+			$json_output['success'] = 1;
+			$json_output['html'] = "<a href='".$connected_url."'>".sprintf(__("Click to open %s app...", 'lang_bank_id'), "BankID")."</a>";
+		}
+
+		catch(Exception $e)
+		{
+			$message_arr = json_decode($e->getMessage());
+
+			$json_output['error'] = 1;
+			$json_output['msg'] = (isset($message_arr->response) ? $message_arr->response : __("Unknown Error", 'lang_bank_id'));
+		}
+	break;
+
+	case 'sign_qr_check':
+	case 'sign_connected_check':
 		$order_ref = check_var('sesOrderRef');
 		$time_created = check_var('sesTimeCreated');
 
@@ -207,7 +233,15 @@ switch($action)
 				case 'pending':
 					$json_output['error'] = $json_output['retry'] = 1;
 
-					$json_output = $obj_bank_id->get_qr_code(array('json_output' => $json_output));
+					if($action == 'sign_qr_check')
+					{
+						$json_output = $obj_bank_id->get_qr_code(array('json_output' => $json_output));
+					}
+
+					else
+					{
+						$json_output['msg'] = $response->hintCode;
+					}
 				break;
 
 				case 'complete':

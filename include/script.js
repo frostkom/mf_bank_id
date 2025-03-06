@@ -472,15 +472,18 @@ jQuery(function($)
 	}
 
 	/* Sign */
-	var dom_obj_sign = dom_obj_form.children("#login_sign");
+	var dom_obj_sign = dom_obj_form.children("#sign_form");
 
 	if(dom_obj_sign.length > 0)
 	{
-		function check_sign_response()
+		var dom_obj_sign_qr = dom_obj_sign.children("#sign_qr"),
+			dom_obj_sign_connected = dom_obj_sign.children("#sign_connected");
+
+		function check_sign_response(dom_obj, type)
 		{
 			$.ajax(
 			{
-				url: script_bank_id.plugin_url + 'api/?action=sign_check&login_type=' + script_bank_id.login_type,
+				url: script_bank_id.plugin_url + 'api/?action=' + type + '&login_type=' + script_bank_id.login_type,
 				type: 'POST',
 				cache: false,
 				dataType: 'json'
@@ -512,12 +515,12 @@ jQuery(function($)
 
 					if(data.html)
 					{
-						dom_obj_sign.html(data.html);
+						dom_obj.html(data.html);
 					}
 
 					setTimeout(function()
 					{
-						check_sign_response();
+						check_sign_response(dom_obj, type);
 					}, timeout_time);
 				}
 
@@ -539,13 +542,15 @@ jQuery(function($)
 			});
 		}
 
-		dom_obj_sign.on('click', function()
+		function sign_init(e, type_init, type_check)
 		{
+			var dom_obj = $(e.currentTarget);
+
 			display_loading();
 
 			$.ajax(
 			{
-				url: script_bank_id.plugin_url + 'api/?action=sign_init',
+				url: script_bank_id.plugin_url + 'api/?action=' + type_init,
 				type: 'POST',
 				cache: false,
 				dataType: 'json'
@@ -556,11 +561,11 @@ jQuery(function($)
 
 				if(data.success == 1)
 				{
-					dom_obj_sign.html(data.html).removeClass('flex_flow hide');
+					dom_obj.html(data.html).removeClass('flex_flow hide');
 
 					setTimeout(function()
 					{
-						check_sign_response();
+						check_sign_response(dom_obj, type_check);
 					}, timeout_time);
 				}
 
@@ -573,6 +578,16 @@ jQuery(function($)
 			});
 
 			return false;
+		}
+
+		dom_obj_sign_qr.on('click', function(e)
+		{
+			sign_init(e, 'sign_qr_init', 'sign_qr_check');
+		});
+
+		dom_obj_sign_connected.on('click', function(e)
+		{
+			sign_init(e, 'sign_connected_init', 'sign_connected_check');
 		});
 	}
 });

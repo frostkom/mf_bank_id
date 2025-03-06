@@ -210,12 +210,19 @@ class mf_bank_id
 
 					$plugin_include_url = plugin_dir_url(__FILE__);
 
-					echo "<div id='login_sign' class='bankid_button'>
-						<img src='".$plugin_include_url."images/bankid_black.svg' class='logo'>
-						<span>".__("Sign with Mobile BankID", 'lang_bank_id')."</span>
-					</div>
-					<div id='login_loading' class='hide'><i class='fa fa-spinner fa-spin fa-3x'></i></div>
-					<div id='notification' class='hide'></div>";
+					echo "<div id='login_loading' class='hide'><i class='fa fa-spinner fa-spin fa-3x'></i></div>
+					<div id='notification' class='hide'></div>
+						<div id='sign_form'>
+						<h3 class='sign_heading'>".__("Sign", 'lang_bank_id')."</h3>
+						<div id='sign_qr' class='bankid_button'>
+							<img src='".$plugin_include_url."images/bankid_black.svg' class='logo'>
+							<span>".__("Mobile BankID", 'lang_bank_id')."</span>
+						</div>
+						<p class='sign_or'><label>".__("or", 'lang_bank_id')."</label></p>
+						<div id='sign_connected' class='bankid_button'>
+							<span>".__("BankID on This Device", 'lang_bank_id')."</span>
+						</div>
+					</div>";
 
 				echo "</div>
 			</div>";
@@ -915,6 +922,12 @@ class mf_bank_id
 		$has_qr_login = (count($setting_bank_id_login_methods) == 0 || in_array('qr', $setting_bank_id_login_methods));
 		$has_connected_login = (count($setting_bank_id_login_methods) == 0 || in_array('connected', $setting_bank_id_login_methods));
 
+		if($has_ssc_login || $has_qr_login || $has_connected_login)
+		{
+			$out .= "<div id='login_loading' class='hide'><i class='fa fa-spinner fa-spin fa-3x'></i></div>
+			<div id='notification' class='hide'></div>";
+		}
+
 		if($this->allow_username_login() && ($has_ssc_login || $has_qr_login || $has_connected_login))
 		{
 			$out .= "<div id='login_choice'>
@@ -964,12 +977,6 @@ class mf_bank_id
 			</div>";
 
 			$add_login_or = true;
-		}
-
-		if($has_ssc_login || $has_qr_login || $has_connected_login)
-		{
-			$out .= "<div id='login_loading' class='hide'><i class='fa fa-spinner fa-spin fa-3x'></i></div>
-			<div id='notification' class='hide'></div>";
 		}
 
 		if($data['print'] == true)
