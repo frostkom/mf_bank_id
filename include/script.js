@@ -21,13 +21,14 @@ jQuery(function($)
 	}
 
 	var dom_obj_choice = dom_obj_form.children("#login_choice"),
-		dom_obj_or = dom_obj_form.children(".login_or"),
+		dom_obj_loading = dom_obj_form.children(".login_loading"),
+		dom_obj_notification = dom_obj_form.children(".notification"),
+		/*dom_obj_or = dom_obj_form.children(".login_or"),*/
 		dom_obj_fields = dom_obj_form.children("#login_ssn"),
 			dom_obj_user_ssn = dom_obj_fields.find("#user_ssn"),
 		dom_obj_qr = dom_obj_form.children("#login_qr"),
 		dom_obj_connected = dom_obj_form.children("#login_connected"),
-		dom_obj_loading = dom_obj_form.children("#login_loading"),
-		dom_obj_notification = dom_obj_form.children("#notification"),
+		dom_obj_sign = dom_obj_form.children("#sign_form"),
 		checkstatus = 0,
 		checkstatus_limit = 7,
 		timeout_time = 3000;
@@ -59,7 +60,7 @@ jQuery(function($)
 	{
 		dom_obj_loading.removeClass('hide');
 
-		dom_obj_or.addClass('hide');
+		/*dom_obj_or.addClass('hide');*/
 		dom_obj_fields.addClass('hide');
 		dom_obj_qr.addClass('hide');
 		dom_obj_connected.addClass('hide');
@@ -68,7 +69,7 @@ jQuery(function($)
 
 	function reset_form_on_error()
 	{
-		dom_obj_or.removeClass('hide');
+		/*dom_obj_or.removeClass('hide');*/
 		dom_obj_fields.removeClass('hide');
 		dom_obj_qr.removeClass('hide');
 		dom_obj_connected.removeClass('hide');
@@ -132,6 +133,19 @@ jQuery(function($)
 		});
 	}
 
+	/*function auto_launch(autostarttoken, orderref, user_ssn)
+	{
+		var url = 'bankid:///?autostarttoken=' + autostarttoken + '&redirect=null',
+			login_iframe = $('<iframe src="' + url + '"></iframe>');
+
+		dom_obj_form.append(login_iframe);
+
+		setTimeout(function()
+		{
+			check_ssc_response(orderref, user_ssn);
+		}, timeout_time);
+	}
+	
 	function bankid_login(user_ssn)
 	{
 		checkstatus = 0;
@@ -170,20 +184,7 @@ jQuery(function($)
 				auto_launch(data.start_token, data.orderref, user_ssn);
 			}
 		});
-	}
-
-	function auto_launch(autostarttoken, orderref, user_ssn)
-	{
-		var url = 'bankid:///?autostarttoken=' + autostarttoken + '&redirect=null',
-			login_iframe = $('<iframe src="' + url + '"></iframe>');
-
-		dom_obj_form.append(login_iframe);
-
-		setTimeout(function()
-		{
-			check_ssc_response(orderref, user_ssn);
-		}, timeout_time);
-	}
+	}*/
 
 	if(dom_obj_choice.length == 0)
 	{
@@ -201,7 +202,7 @@ jQuery(function($)
 		dom_obj_forgot_password_link.addClass('hide');
 	}
 
-	dom_obj_form.on('submit', function(e)
+	/*dom_obj_form.on('submit', function(e)
 	{
 		if(dom_obj_fields.length > 0)
 		{
@@ -223,7 +224,7 @@ jQuery(function($)
 				return false;
 			}
 		}
-	});
+	});*/
 
 	/* Choice */
 	if(dom_obj_choice.length > 0)
@@ -232,43 +233,43 @@ jQuery(function($)
 		dom_obj_password.addClass('hide');
 		dom_obj_remember.addClass('hide');
 		dom_obj_submit.addClass('hide');
-		dom_obj_or.addClass('hide');
+		/*dom_obj_or.addClass('hide');*/
 		dom_obj_fields.addClass('hide');
 		dom_obj_user_ssn.addClass('hide');
 		dom_obj_qr.addClass('hide');
 		dom_obj_connected.addClass('hide');
-	}
 
-	dom_obj_choice.children(".login_choice_bankid").on('click', function()
-	{
-		dom_obj_choice.addClass('hide');
-
-		if(dom_obj_fields.length > 0)
+		dom_obj_choice.children(".login_choice_bankid").on('click', function()
 		{
+			dom_obj_choice.addClass('hide');
+
+			if(dom_obj_fields.length > 0)
+			{
+				dom_obj_remember.removeClass('hide');
+				dom_obj_submit.removeClass('hide');
+			}
+
+			/*dom_obj_or.removeClass('hide');*/
+			dom_obj_fields.removeClass('hide');
+			dom_obj_user_ssn.removeClass('hide');
+			dom_obj_qr.removeClass('hide');
+			dom_obj_connected.removeClass('hide');
+
+			return false;
+		});
+
+		dom_obj_choice.children(".login_choice_username").on('click', function()
+		{
+			dom_obj_choice.addClass('hide');
+
+			dom_obj_username.removeClass('hide');
+			dom_obj_password.removeClass('hide');
 			dom_obj_remember.removeClass('hide');
 			dom_obj_submit.removeClass('hide');
-		}
 
-		dom_obj_or.removeClass('hide');
-		dom_obj_fields.removeClass('hide');
-		dom_obj_user_ssn.removeClass('hide');
-		dom_obj_qr.removeClass('hide');
-		dom_obj_connected.removeClass('hide');
-
-		return false;
-	});
-
-	dom_obj_choice.children(".login_choice_username").on('click', function()
-	{
-		dom_obj_choice.addClass('hide');
-
-		dom_obj_username.removeClass('hide');
-		dom_obj_password.removeClass('hide');
-		dom_obj_remember.removeClass('hide');
-		dom_obj_submit.removeClass('hide');
-
-		return false;
-	});
+			return false;
+		});
+	}
 
 	/* QR */
 	if(dom_obj_qr.length > 0)
@@ -451,6 +452,11 @@ jQuery(function($)
 
 				if(data.success == 1)
 				{
+					if(typeof data.redirect !== 'undefined' && data.redirect != '')
+					{
+						location.href = data.redirect;
+					}
+
 					dom_obj_connected.html(data.html).removeClass('hide');
 
 					setTimeout(function()
@@ -472,8 +478,6 @@ jQuery(function($)
 	}
 
 	/* Sign */
-	var dom_obj_sign = dom_obj_form.children("#sign_form");
-
 	if(dom_obj_sign.length > 0)
 	{
 		var dom_obj_sign_qr = dom_obj_sign.children("#sign_qr"),
@@ -561,6 +565,11 @@ jQuery(function($)
 
 				if(data.success == 1)
 				{
+					if(typeof data.redirect !== 'undefined' && data.redirect != '')
+					{
+						location.href = data.redirect;
+					}
+
 					dom_obj.html(data.html).removeClass('flex_flow hide');
 
 					setTimeout(function()

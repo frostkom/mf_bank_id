@@ -1,48 +1,6 @@
 @media all
 {
-	/* Public */
-	.widget.login_form #loginform
-	{
-		background: rgba(0, 0, 0, .05);
-		border-radius: .5em;
-		padding: 1.5em 1.5em 1em;
-		max-width: 400px;
-	}
-
-		.widget.login_form #loginform .form_button, .widget.login_form #loginform .wp-block-button
-		{
-			margin-top: 1em;
-			text-align: right;
-		}
-
-	/* Admin */
-	#login
-	{
-		min-width: 380px;
-	}
-
-	#login #loginform
-	{
-		min-width: 330px;
-	}
-
-	#loginform .sign_heading
-	{
-		margin-bottom: .5em;
-		text-align: center;
-	}
-
-	#loginform .login_or, #loginform .sign_or
-	{
-		margin-bottom: .5em;
-		text-align: center;
-	}
-
-		#loginform .login_or label, #loginform .sign_or label
-		{
-			font-size: 1.4em !important;
-		}
-
+	/* General */
 	#loginform #login_ssn
 	{
 		margin-bottom: .5em;
@@ -53,14 +11,14 @@
 			margin-bottom: .2em;
 		}
 
-		#loginform #login_ssn img.logo
+		/*#loginform #login_ssn img.logo
 		{
 			filter: drop-shadow(0 0 .5em rgba(0, 0, 0, .5));
 			height: 40px;
 			margin-right: 1em;
 			width: 40px;
 			max-width: 40px;
-		}
+		}*/
 
 	#loginform .bankid_button
 	{
@@ -75,7 +33,12 @@
 
 		#loginform .bankid_button + .bankid_button
 		{
-			margin-top: 1.5em;
+			background: none;
+			box-shadow: none;
+			font-size: .8em;
+			/*margin-top: 1.5em;*/
+			margin-bottom: 0;
+			text-decoration: underline;
 		}
 
 		#loginform .bankid_button:hover
@@ -83,27 +46,26 @@
 			box-shadow: 0 0 .5em rgba(0, 0, 0, .2);
 		}
 
-		#loginform .bankid_button span
-		{
-			font-size: 1.3em;
-			line-height: 1.7;
-		}
+			#loginform .bankid_button + .bankid_button:hover
+			{
+				box-shadow: none;
+			}
 
-		#loginform .bankid_button img.logo
+		/*#loginform .bankid_button img.logo
 		{
 			height: 40px;
 			margin: -1em 0;
 			width: 40px;
 			max-width: 40px;
-		}
+		}*/
 
-		#loginform .bankid_button a
+		/*#loginform .bankid_button a
 		{
 			color: inherit;
 			font-size: 1.3em;
 			line-height: 1.7;
 			text-decoration: none;
-		}
+		}*/
 
 	#loginform #login_qr p
 	{
@@ -113,7 +75,7 @@
 	#loginform #login_qr .qr_code
 	{
 		height: 300px;
-		padding-bottom: .5em;
+		margin-bottom: .5em;
 		position: relative;
 	}
 
@@ -152,15 +114,53 @@
 				transform: translate(295px, 19px) rotate(90deg);
 			}
 
-	#loginform #login_loading, #loginform #notification
+	#loginform .login_loading, #loginform .notification
 	{
 		margin: .5em 0;
 	}
 
-	#loginform iframe
+	/*#loginform iframe
 	{
 		border: 0;
 		height: 0;
 		width: 0;
+	}*/
+	
+	/* Public */
+	.widget.login_form #loginform
+	{
+		background: rgba(0, 0, 0, .05);
+		border-radius: .5em;
+		padding: 1.5em 1.5em 1em;
+		width: 400px;
+	}
+
+		.widget.login_form #loginform .form_button, .widget.login_form #loginform .wp-block-button
+		{
+			margin-top: 1em;
+			text-align: right;
+		}
+
+	.widget.login_form #loginform + p
+	{
+		margin-top: 1em;
+	}
+
+	/* Admin */
+	#login
+	{
+		min-width: 380px;
+	}
+
+	#login #loginform
+	{
+		min-width: 330px;
+	}
+
+	/* Theme */
+	#wrapper #loginform .bankid_button span
+	{
+		font-size: 1.3em;
+		line-height: 1.7;
 	}
 }

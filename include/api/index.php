@@ -100,6 +100,7 @@ switch($action)
 
 			$json_output['success'] = 1;
 			$json_output['html'] = "<a href='".$connected_url."'>".sprintf(__("Click to open %s app...", 'lang_bank_id'), "BankID")."</a>";
+			$json_output['redirect'] = $connected_url;
 		}
 
 		catch(Exception $e)
@@ -206,6 +207,7 @@ switch($action)
 
 			$json_output['success'] = 1;
 			$json_output['html'] = "<a href='".$connected_url."'>".sprintf(__("Click to open %s app...", 'lang_bank_id'), "BankID")."</a>";
+			$json_output['redirect'] = $connected_url;
 		}
 
 		catch(Exception $e)

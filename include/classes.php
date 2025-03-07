@@ -203,22 +203,21 @@ class mf_bank_id
 
 		if(IS_SUPER_ADMIN && $option != '')
 		{
-			echo "<div class='widget login_form'>
+			echo "<h3>".__("Sign", 'lang_bank_id')."</h3>
+			<div class='widget login_form'>
 				<div id='loginform'>";
 
 					$this->login_init(array('login_type' => 'user'));
 
-					$plugin_include_url = plugin_dir_url(__FILE__);
+					//$plugin_include_url = plugin_dir_url(__FILE__);
 
-					echo "<div id='login_loading' class='hide'><i class='fa fa-spinner fa-spin fa-3x'></i></div>
-					<div id='notification' class='hide'></div>
-						<div id='sign_form'>
-						<h3 class='sign_heading'>".__("Sign", 'lang_bank_id')."</h3>
-						<div id='sign_qr' class='bankid_button'>
-							<img src='".$plugin_include_url."images/bankid_black.svg' class='logo'>
-							<span>".__("Mobile BankID", 'lang_bank_id')."</span>
+					echo "<div class='login_loading hide'><i class='fa fa-spinner fa-spin fa-3x'></i></div>
+					<div class='notification hide'></div>
+					<div id='sign_form'>
+						<div id='sign_qr' class='bankid_button'>"
+							//."<img src='".$plugin_include_url."images/bankid_black.svg' class='logo'>"
+							."<span>".__("Mobile BankID", 'lang_bank_id')."</span>
 						</div>
-						<p class='sign_or'><label>".__("or", 'lang_bank_id')."</label></p>
 						<div id='sign_connected' class='bankid_button'>
 							<span>".__("BankID on This Device", 'lang_bank_id')."</span>
 						</div>
@@ -913,27 +912,27 @@ class mf_bank_id
 
 		$out = "";
 
-		$plugin_include_url = plugin_dir_url(__FILE__);
+		//$plugin_include_url = plugin_dir_url(__FILE__);
 
 		$setting_bank_id_login_methods = get_option_or_default('setting_bank_id_login_methods', array());
 
-		$add_login_or = false;
-		$has_ssc_login = (count($setting_bank_id_login_methods) == 0 || in_array('ssc', $setting_bank_id_login_methods));
+		//$add_login_or = false;
+		//$has_ssc_login = (count($setting_bank_id_login_methods) == 0 || in_array('ssc', $setting_bank_id_login_methods));
 		$has_qr_login = (count($setting_bank_id_login_methods) == 0 || in_array('qr', $setting_bank_id_login_methods));
 		$has_connected_login = (count($setting_bank_id_login_methods) == 0 || in_array('connected', $setting_bank_id_login_methods));
 
-		if($has_ssc_login || $has_qr_login || $has_connected_login)
+		if($has_qr_login || $has_connected_login) //$has_ssc_login || 
 		{
-			$out .= "<div id='login_loading' class='hide'><i class='fa fa-spinner fa-spin fa-3x'></i></div>
-			<div id='notification' class='hide'></div>";
+			$out .= "<div class='login_loading hide'><i class='fa fa-spinner fa-spin fa-3x'></i></div>
+			<div class='notification hide'></div>";
 		}
 
-		if($this->allow_username_login() && ($has_ssc_login || $has_qr_login || $has_connected_login))
+		if($this->allow_username_login() && ($has_qr_login || $has_connected_login)) //$has_ssc_login || 
 		{
 			$out .= "<div id='login_choice'>
-				<div class='login_choice_bankid bankid_button'>
-					<img src='".$plugin_include_url."images/bankid_black.svg' class='logo'>
-					<span>".sprintf(__("Use %s", 'lang_bank_id'), "BankID")."</span>
+				<div class='login_choice_bankid bankid_button'>"
+					//."<img src='".$plugin_include_url."images/bankid_black.svg' class='logo'>"
+					."<span>".sprintf(__("Use %s", 'lang_bank_id'), "BankID")."</span>
 				</div>
 				<div class='login_choice_username bankid_button'>
 					<span>".__("Use e-mail & password", 'lang_bank_id')."</span>
@@ -941,42 +940,36 @@ class mf_bank_id
 			</div>";
 		}
 
-		if($has_ssc_login)
+		/*if($has_ssc_login)
 		{
-			$out .= "<div id='login_ssn' class='flex_flow'>
-				<img src='".$plugin_include_url."images/bankid.svg' class='logo'>"
+			$out .= "<div id='login_ssn' class='flex_flow'>"
+				//."<img src='".$plugin_include_url."images/bankid.svg' class='logo'>"
 				.show_textfield(array('custom_tag' => 'p', 'name' => 'user_ssn', 'required' => ($this->allow_username_login() == false), 'placeholder' => __("Social Security Number", 'lang_bank_id'), 'xtra' => "class='input' autocomplete='off'"))
 			."</div>";
 
-			$add_login_or = true;
-		}
+			//$add_login_or = true;
+		}*/
 
 		if($has_qr_login)
 		{
-			$plugin_include_url = plugin_dir_url(__FILE__);
-
-			$out .= "<div id='login_qr' class='bankid_button'>
-				<img src='".$plugin_include_url."images/bankid_black.svg' class='logo'>
-				<span>".__("Mobile BankID", 'lang_bank_id')."</span>
+			$out .= "<div id='login_qr' class='bankid_button'>"
+				//."<img src='".$plugin_include_url."images/bankid_black.svg' class='logo'>"
+				."<span>".__("Mobile BankID", 'lang_bank_id')."</span>
 			</div>";
 
-			$add_login_or = true;
+			//$add_login_or = true;
 		}
 
 		if($has_connected_login)
 		{
-			$plugin_include_url = plugin_dir_url(__FILE__);
-
-			if($add_login_or == true)
+			/*if($add_login_or == true)
 			{
 				$out .= "<p class='login_or'><label>".__("or", 'lang_bank_id')."</label></p>";
-			}
+			}*/
 
 			$out .= "<div id='login_connected' class='bankid_button'>
 				<span>".__("BankID on This Device", 'lang_bank_id')."</span>
 			</div>";
-
-			$add_login_or = true;
 		}
 
 		if($data['print'] == true)
