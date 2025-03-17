@@ -145,7 +145,7 @@ jQuery(function($)
 			check_ssc_response(orderref, user_ssn);
 		}, timeout_time);
 	}
-	
+
 	function bankid_login(user_ssn)
 	{
 		checkstatus = 0;
