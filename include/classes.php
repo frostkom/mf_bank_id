@@ -102,7 +102,7 @@ class mf_bank_id
 	{
 		$setting_key = get_setting_key(__FUNCTION__);
 
-		echo settings_header($setting_key, "BankID");
+		echo settings_header($setting_key, __("BankID", 'lang_bank_id'));
 	}
 
 	function setting_bank_id_certificate_callback()
@@ -203,20 +203,16 @@ class mf_bank_id
 
 		if(IS_SUPER_ADMIN && $option != '')
 		{
+			$this->login_init(array('login_type' => 'user'));
+
 			echo "<h3>".__("Sign", 'lang_bank_id')."</h3>
 			<div class='widget login_form'>
-				<div id='loginform'>";
-
-					$this->login_init(array('login_type' => 'user'));
-
-					//$plugin_include_url = plugin_dir_url(__FILE__);
-
-					echo "<div class='login_loading hide'><i class='fa fa-spinner fa-spin fa-3x'></i></div>
+				<div id='loginform'>
+					<div class='login_loading hide'><i class='fa fa-spinner fa-spin fa-3x'></i></div>
 					<div class='notification hide'></div>
 					<div id='sign_form'>
-						<div id='sign_qr' class='bankid_button'>"
-							//."<img src='".$plugin_include_url."images/bankid_black.svg' class='logo'>"
-							."<span>".__("Mobile BankID", 'lang_bank_id')."</span>
+						<div id='sign_qr' class='bankid_button'>
+							<span>".__("Mobile BankID", 'lang_bank_id')."</span>
 						</div>
 						<div id='sign_connected' class='bankid_button'>
 							<span>".__("BankID on This Device", 'lang_bank_id')."</span>
@@ -422,27 +418,27 @@ class mf_bank_id
 			case 'RFA18':
 			case 'OUTSTANDING_TRANSACTION':
 			case 'NO_CLIENT':
-				$out = sprintf(__("Start your %s app", 'lang_bank_id'), "BankID");
+				$out = __("Start your BankID app", 'lang_bank_id');
 			break;
 
 			case 'RFA2':
-				$out = sprintf(__("The %s app is not installed. Please contact your internet bank.", 'lang_bank_id'), "BankID");
+				$out = __("The BankID app is not installed. Please contact your internet bank", 'lang_bank_id');
 			break;
 
 			case 'RFA3':
 			case 'ALREADY_IN_PROGRESS':
-				$out = __("Already in Progress. Wait a few seconds and then try again.", 'lang_bank_id');
+				$out = __("Already in Progress. Wait a few seconds and then try again", 'lang_bank_id');
 			break;
 
 			case 'RFA3':
 			case 'CANCELLED':
-				$out = __("Action cancelled. Please try again.", 'lang_bank_id');
+				$out = __("Action cancelled. Please try again", 'lang_bank_id');
 			break;
 
 			case 'RFA5':
 			case 'RETRY':
 			case 'INTERNAL_ERROR':
-				$out = __("Internal error. Please try again.", 'lang_bank_id');
+				$out = __("Internal error. Please try again", 'lang_bank_id');
 			break;
 
 			case 'RFA6':
@@ -452,22 +448,22 @@ class mf_bank_id
 
 			case 'RFA8':
 			case 'EXPIRED_TRANSACTION':
-				$out = sprintf(__("The %s app is not responding. Please check that the program is started and that you have internet access. If you do not have a valid %s you can get one from your bank. Try again.", 'lang_bank_id'), "BankID", "BankID");
+				$out = __("The BankID app is not responding. Please check that the program is started and that you have internet access. If you do not have a valid BankID you can get one from your bank. Try again", 'lang_bank_id');
 			break;
 
 			case 'RFA9':
 			case 'USER_SIGN':
-				$out = sprintf(__("Enter your security code in the %s app and select Identify or Sign.", 'lang_bank_id'), "BankID");
+				$out = __("Enter your security code in the BankID app and select Identify or Sign", 'lang_bank_id');
 			break;
 
 			case 'RFA12':
 			case 'CLIENT_ERR':
-				$out = sprintf(__("Internal error. Update your %s app and try again.", 'lang_bank_id'), "BankID");
+				$out = __("Internal error. Update your BankID app and try again", 'lang_bank_id');
 			break;
 
 			case 'RFA13':
 			case 'OUTSTANDING_TRANSACTION':
-				$out = sprintf(__("Trying to start your %s app", 'lang_bank_id'), "BankID");
+				$out = __("Trying to start your BankID app", 'lang_bank_id');
 			break;
 
 			case 'RFA14(A)':
@@ -475,25 +471,25 @@ class mf_bank_id
 			case 'RFA15(A)':
 			case 'RFA15(B)':
 			case 'STARTED':
-				$out = sprintf(__("Searching for %s, it may take a little while...", 'lang_bank_id'), "BankID"); //If a few seconds have passed and still no BankID has been found, you probably don't have a BankID which can be used for this login/signature on this computer. If you have a BankID card, please insert it into your card reader. If you don't have a BankID you can order one from your internet bank. If you have a BankID on another device you can start the BankID app on that device.
+				$out = __("Searching for BankID. It may take a little while...", 'lang_bank_id');
 			break;
 
 			case 'RFA16':
 			case 'CERTIFICATE_ERR':
-				$out = sprintf(__("The %s you are trying to use is revoked or too old. Please use another %s or order a new one from your internet bank.", 'lang_bank_id'), "BankID", "BankID");
+				$out = __("The BankID you are trying to use is revoked or too old. Please use another BankID or order a new one from your internet bank", 'lang_bank_id');
 			break;
 
 			case 'RFA17':
 			case 'START_FAILED':
-				$out = sprintf(__("The %s app could not be found on your computer or mobile device. Please install it and order a %s from your internet bank. Install the app from %s.", 'lang_bank_id'), "BankID", "BankID", "<a href='//install.bankid.com'>install.bankid.com</a>");
+				$out = sprintf(__("The BankID app could not be found on your computer or mobile device. Please install it and order a BankID from your internet bank. Install the app from %s.", 'lang_bank_id'), "<a href='//install.bankid.com'>install.bankid.com</a>");
 			break;
 
 			case 'RFA19':
-				$out = sprintf(__("Would you like to login or sign with a %s on this computer or with a Mobile %s?", 'lang_bank_id'), "BankID", "BankID");
+				$out = __("Would you like to login or sign with a BankID on this computer or with a Mobile BankID?", 'lang_bank_id');
 			break;
 
 			case 'RFA20':
-				$out = sprintf(__("Would you like to login or sign with a %s on this device or with a %s on another device?", 'lang_bank_id'), "BankID", "BankID");
+				$out = __("Would you like to login or sign with a BankID on this device or with a BankID on another device?", 'lang_bank_id');
 			break;
 
 			default:
@@ -647,7 +643,7 @@ class mf_bank_id
 		{
 			$meta_boxes[] = array(
 				'id' => $this->meta_prefix.'settings',
-				'title' => "BankID",
+				'title' => __("BankID", 'lang_bank_id'),
 				'post_types' => array('page'),
 				'context' => 'side',
 				'priority' => 'low',
@@ -856,15 +852,15 @@ class mf_bank_id
 
 		if(isset($post->ID) && is_user_logged_in() == false && apply_filters('filter_is_password_protected', false, array('post_id' => $post->ID, 'check_login' => true)) == true)
 		{
-			$this->login_init(array('login_type' => 'address'));
-
-			$html = "<form id='loginform' class='mf_form' action='#' method='post'>
-				<p>".__("To view the content on this page you have to first login.", 'lang_bank_id')."</p>"
-				.$this->login_form(array('print' => false))
-				."<div".get_form_button_classes().">"
-					.show_button(array('name' => 'btnBankIDLogin', 'text' => __("Log in", 'lang_bank_id')))
-				."</div>
-			</form>";
+			$html = "<div class='widget login_form'>
+				<form id='loginform' class='mf_form' action='#' method='post'>
+					<p>".__("To view the content on this page you have to first login.", 'lang_bank_id')."</p>"
+					.$this->login_form(array('login_type' => 'address', 'print' => false))
+					."<div".get_form_button_classes().">"
+						.show_button(array('name' => 'btnBankIDLogin', 'text' => __("Log in", 'lang_bank_id')))
+					."</div>
+				</form>
+			</div>";
 		}
 
 		return $html;
@@ -905,68 +901,47 @@ class mf_bank_id
 	{
 		global $error_text;
 
-		if(!is_array($data)){			$data = array();}
-		if(!isset($data['print'])){		$data['print'] = true;}
+		//if(!is_array($data)){			$data = array();}
 
-		$this->login_init(array('login_type' => 'user'));
+		if(!isset($data['login_type'])){	$data['login_type'] = 'user';}
+		if(!isset($data['print'])){			$data['print'] = true;}
+
+		$this->login_init(array('login_type' => $data['login_type']));
 
 		$out = "";
 
-		//$plugin_include_url = plugin_dir_url(__FILE__);
-
 		$setting_bank_id_login_methods = get_option_or_default('setting_bank_id_login_methods', array());
 
-		//$add_login_or = false;
-		//$has_ssc_login = (count($setting_bank_id_login_methods) == 0 || in_array('ssc', $setting_bank_id_login_methods));
 		$has_qr_login = (count($setting_bank_id_login_methods) == 0 || in_array('qr', $setting_bank_id_login_methods));
 		$has_connected_login = (count($setting_bank_id_login_methods) == 0 || in_array('connected', $setting_bank_id_login_methods));
 
-		if($has_qr_login || $has_connected_login) //$has_ssc_login || 
+		if($has_qr_login || $has_connected_login)
 		{
 			$out .= "<div class='login_loading hide'><i class='fa fa-spinner fa-spin fa-3x'></i></div>
 			<div class='notification hide'></div>";
 		}
 
-		if($this->allow_username_login() && ($has_qr_login || $has_connected_login)) //$has_ssc_login || 
+		if($this->allow_username_login() && ($has_qr_login || $has_connected_login))
 		{
 			$out .= "<div id='login_choice'>
-				<div class='login_choice_bankid bankid_button'>"
-					//."<img src='".$plugin_include_url."images/bankid_black.svg' class='logo'>"
-					."<span>".sprintf(__("Use %s", 'lang_bank_id'), "BankID")."</span>
+				<div class='login_choice_bankid bankid_button'>
+					<span>".__("Use BankID", 'lang_bank_id')."</span>
 				</div>
 				<div class='login_choice_username bankid_button'>
-					<span>".__("Use e-mail & password", 'lang_bank_id')."</span>
+					<span>".__("Use E-mail & Password", 'lang_bank_id')."</span>
 				</div>
 			</div>";
 		}
 
-		/*if($has_ssc_login)
-		{
-			$out .= "<div id='login_ssn' class='flex_flow'>"
-				//."<img src='".$plugin_include_url."images/bankid.svg' class='logo'>"
-				.show_textfield(array('custom_tag' => 'p', 'name' => 'user_ssn', 'required' => ($this->allow_username_login() == false), 'placeholder' => __("Social Security Number", 'lang_bank_id'), 'xtra' => "class='input' autocomplete='off'"))
-			."</div>";
-
-			//$add_login_or = true;
-		}*/
-
 		if($has_qr_login)
 		{
-			$out .= "<div id='login_qr' class='bankid_button'>"
-				//."<img src='".$plugin_include_url."images/bankid_black.svg' class='logo'>"
-				."<span>".__("Mobile BankID", 'lang_bank_id')."</span>
+			$out .= "<div id='login_qr' class='bankid_button'>
+				<span>".__("Mobile BankID", 'lang_bank_id')."</span>
 			</div>";
-
-			//$add_login_or = true;
 		}
 
 		if($has_connected_login)
 		{
-			/*if($add_login_or == true)
-			{
-				$out .= "<p class='login_or'><label>".__("or", 'lang_bank_id')."</label></p>";
-			}*/
-
 			$out .= "<div id='login_connected' class='bankid_button'>
 				<span>".__("BankID on This Device", 'lang_bank_id')."</span>
 			</div>";
