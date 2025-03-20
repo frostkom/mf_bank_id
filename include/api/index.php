@@ -21,8 +21,7 @@ if(!isset($obj_bank_id))
 }
 
 $action = check_var('action');
-$login_type = check_var('login_type');
-$order_ref = check_var('orderref');
+//$order_ref = check_var('orderref');
 
 list($upload_path, $upload_url) = get_uploads_folder();
 
@@ -65,7 +64,7 @@ switch($action)
 
 		try
 		{
-			$response = $bankIDService->getAuthResponse(array('intent' => get_option('setting_bank_id_login_intent')));
+			$response = $bankIDService->getAuthResponse(array('intent' => $obj_bank_id->get_intent()));
 
 			$_SESSION['sesAutoStartToken'] = $response->autoStartToken;
 			$_SESSION['sesOrderRef'] = $response->orderRef;
@@ -91,7 +90,7 @@ switch($action)
 
 		try
 		{
-			$response = $bankIDService->getAuthResponse(array('intent' => get_option('setting_bank_id_login_intent')));
+			$response = $bankIDService->getAuthResponse(array('intent' => $obj_bank_id->get_intent()));
 
 			$_SESSION['sesAutoStartToken'] = $response->autoStartToken;
 			$_SESSION['sesOrderRef'] = $response->orderRef;
@@ -140,6 +139,8 @@ switch($action)
 				break;
 
 				case 'complete':
+					$login_type = check_var('login_type');
+
 					$user_ssn = $response->completionData->user->personalNumber;
 					$user_ssn = $obj_bank_id->filter_ssn($user_ssn);
 
@@ -249,8 +250,6 @@ switch($action)
 				case 'complete':
 					$user_ssn = $response->completionData->user->personalNumber;
 					$user_ssn = $obj_bank_id->filter_ssn($user_ssn);
-
-					//$obj_bank_id->validate_and_login(array('type' => $login_type, 'ssn' => $user_ssn), $json_output);
 
 					if($obj_bank_id->user_exists($user_ssn))
 					{

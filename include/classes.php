@@ -637,6 +637,23 @@ class mf_bank_id
 		return $value;
 	}
 
+	function get_intent()
+	{
+		$post_id = check_var('post_id', 'int');
+
+		if($post_id > 0)
+		{
+			$out = get_post_meta($post_id, $this->meta_prefix.'intent', true);
+		}
+
+		else
+		{
+			$out = get_option('setting_bank_id_login_intent');
+		}
+
+		return $out;
+	}
+
 	function rwmb_meta_boxes($meta_boxes)
 	{
 		if(is_plugin_active("mf_address/index.php"))
@@ -654,6 +671,11 @@ class mf_bank_id
 						'type' => 'select',
 						'options' => get_yes_no_for_select(),
 						'std' => 'no',
+					),
+					array(
+						'name' => __("Intent", 'lang_bank_id'),
+						'id' => $this->meta_prefix.'intent',
+						'type' => 'textarea',
 					),
 				)
 			);
@@ -855,7 +877,7 @@ class mf_bank_id
 			$html = "<div class='widget login_form'>
 				<form id='loginform' class='mf_form' action='#' method='post'>
 					<p>".__("To view the content on this page you have to first login.", 'lang_bank_id')."</p>"
-					.$this->login_form(array('login_type' => 'address', 'print' => false))
+					.$this->login_form(array('login_type' => 'address', 'post_id' => $post->ID, 'print' => false))
 					."<div".get_form_button_classes().">"
 						.show_button(array('name' => 'btnBankIDLogin', 'text' => __("Log in", 'lang_bank_id')))
 					."</div>
@@ -885,6 +907,7 @@ class mf_bank_id
 	{
 		if(!is_array($data)){				$data = array();}
 		if(!isset($data['login_type'])){	$data['login_type'] = 'user';}
+		if(!isset($data['post_id'])){		$data['post_id'] = '';}
 
 		$plugin_include_url = plugin_dir_url(__FILE__);
 
@@ -893,6 +916,7 @@ class mf_bank_id
 			'plugin_url' => $plugin_include_url,
 			'allow_username_login' => $this->allow_username_login(),
 			'login_type' => $data['login_type'],
+			'post_id' => $data['post_id'],
 			'took_too_long_text' => sprintf(__("The login took too long. %sPlease try again%s.", 'lang_bank_id'), "<a href='?try_again'>", "</a>"),
 		));
 	}
@@ -901,12 +925,12 @@ class mf_bank_id
 	{
 		global $error_text;
 
-		//if(!is_array($data)){			$data = array();}
+		if(!is_array($data)){				$data = array();} // It might come from add_action() and then it is no array
 
 		if(!isset($data['login_type'])){	$data['login_type'] = 'user';}
 		if(!isset($data['print'])){			$data['print'] = true;}
 
-		$this->login_init(array('login_type' => $data['login_type']));
+		$this->login_init($data);
 
 		$out = "";
 

@@ -23,7 +23,6 @@ jQuery(function($)
 	var dom_obj_choice = dom_obj_form.children("#login_choice"),
 		dom_obj_loading = dom_obj_form.children(".login_loading"),
 		dom_obj_notification = dom_obj_form.children(".notification"),
-		/*dom_obj_or = dom_obj_form.children(".login_or"),*/
 		dom_obj_fields = dom_obj_form.children("#login_ssn"),
 			dom_obj_user_ssn = dom_obj_fields.find("#user_ssn"),
 		dom_obj_qr = dom_obj_form.children("#login_qr"),
@@ -60,7 +59,6 @@ jQuery(function($)
 	{
 		dom_obj_loading.removeClass('hide');
 
-		/*dom_obj_or.addClass('hide');*/
 		dom_obj_fields.addClass('hide');
 		dom_obj_qr.addClass('hide');
 		dom_obj_connected.addClass('hide');
@@ -69,7 +67,6 @@ jQuery(function($)
 
 	function reset_form_on_error()
 	{
-		/*dom_obj_or.removeClass('hide');*/
 		dom_obj_fields.removeClass('hide');
 		dom_obj_qr.removeClass('hide');
 		dom_obj_connected.removeClass('hide');
@@ -79,10 +76,16 @@ jQuery(function($)
 	{
 		$.ajax(
 		{
-			url: script_bank_id.plugin_url + 'api/?action=ssc_check&login_type=' + script_bank_id.login_type + '&orderref=' + orderref,
-			type: 'POST',
-			cache: false,
-			dataType: 'json'
+			url: script_bank_id.plugin_url + 'api/',
+			type: 'post',
+			/*cache: false,*/
+			dataType: 'json',
+			data: {
+				action: 'ssc_check',
+				login_type: script_bank_id.login_type,
+				post_id: script_bank_id.post_id,
+				orderref: orderref
+			}
 		})
 		.done(function(data, textStatus)
 		{
@@ -133,59 +136,6 @@ jQuery(function($)
 		});
 	}
 
-	/*function auto_launch(autostarttoken, orderref, user_ssn)
-	{
-		var url = 'bankid:///?autostarttoken=' + autostarttoken + '&redirect=null',
-			login_iframe = $('<iframe src="' + url + '"></iframe>');
-
-		dom_obj_form.append(login_iframe);
-
-		setTimeout(function()
-		{
-			check_ssc_response(orderref, user_ssn);
-		}, timeout_time);
-	}
-
-	function bankid_login(user_ssn)
-	{
-		checkstatus = 0;
-
-		display_loading();
-
-		$.ajax(
-		{
-			url: script_bank_id.plugin_url + 'api/?action=ssc_init&user_ssn=' + user_ssn,
-			type: 'POST',
-			cache: false,
-			dataType: 'json'
-		})
-		.done(function(data, textStatus)
-		{
-			if(data.success == 1)
-			{
-				dom_obj_loading.addClass('hide');
-
-				update_notification('success', data.msg);
-			}
-
-			else if(data.error == 1)
-			{
-				dom_obj_loading.addClass('hide');
-
-				update_notification('error', data.msg);
-
-				reset_form_on_error();
-			}
-
-			else
-			{
-				update_notification('success', data.msg);
-
-				auto_launch(data.start_token, data.orderref, user_ssn);
-			}
-		});
-	}*/
-
 	if(dom_obj_choice.length == 0)
 	{
 		$(".login_actions").addClass('hide');
@@ -202,30 +152,6 @@ jQuery(function($)
 		dom_obj_forgot_password_link.addClass('hide');
 	}
 
-	/*dom_obj_form.on('submit', function(e)
-	{
-		if(dom_obj_fields.length > 0)
-		{
-			var user_ssn = dom_obj_user_ssn.val();
-
-			if(user_ssn != '')
-			{
-				e.preventDefault();
-
-				bankid_login(user_ssn);
-
-				return false;
-			}
-
-			else if(script_bank_id.allow_username_login == false)
-			{
-				e.preventDefault();
-
-				return false;
-			}
-		}
-	});*/
-
 	/* Choice */
 	if(dom_obj_choice.length > 0)
 	{
@@ -233,7 +159,6 @@ jQuery(function($)
 		dom_obj_password.addClass('hide');
 		dom_obj_remember.addClass('hide');
 		dom_obj_submit.addClass('hide');
-		/*dom_obj_or.addClass('hide');*/
 		dom_obj_fields.addClass('hide');
 		dom_obj_user_ssn.addClass('hide');
 		dom_obj_qr.addClass('hide');
@@ -249,7 +174,6 @@ jQuery(function($)
 				dom_obj_submit.removeClass('hide');
 			}
 
-			/*dom_obj_or.removeClass('hide');*/
 			dom_obj_fields.removeClass('hide');
 			dom_obj_user_ssn.removeClass('hide');
 			dom_obj_qr.removeClass('hide');
@@ -278,10 +202,15 @@ jQuery(function($)
 		{
 			$.ajax(
 			{
-				url: script_bank_id.plugin_url + 'api/?action=qr_check&login_type=' + script_bank_id.login_type,
-				type: 'POST',
-				cache: false,
-				dataType: 'json'
+				url: script_bank_id.plugin_url + 'api/',
+				type: 'post',
+				/*cache: false,*/
+				dataType: 'json',
+				data: {
+					action: 'qr_check',
+					login_type: script_bank_id.login_type,
+					post_id: script_bank_id.post_id
+				}
 			})
 			.done(function(data, textStatus)
 			{
@@ -343,10 +272,14 @@ jQuery(function($)
 
 			$.ajax(
 			{
-				url: script_bank_id.plugin_url + 'api/?action=qr_init',
-				type: 'POST',
-				cache: false,
-				dataType: 'json'
+				url: script_bank_id.plugin_url + 'api/',
+				type: 'post',
+				/*cache: false,*/
+				dataType: 'json',
+				data: {
+					action: 'qr_init',
+					post_id: script_bank_id.post_id
+				}
 			})
 			.done(function(data, textStatus)
 			{
@@ -381,10 +314,15 @@ jQuery(function($)
 		{
 			$.ajax(
 			{
-				url: script_bank_id.plugin_url + 'api/?action=connected_check&login_type=' + script_bank_id.login_type,
-				type: 'POST',
-				cache: false,
-				dataType: 'json'
+				url: script_bank_id.plugin_url + 'api/',
+				type: 'post',
+				/*cache: false,*/
+				dataType: 'json',
+				data: {
+					action: 'connected_check',
+					login_type: script_bank_id.login_type,
+					post_id: script_bank_id.post_id
+				}
 			})
 			.done(function(data, textStatus)
 			{
@@ -441,10 +379,14 @@ jQuery(function($)
 
 			$.ajax(
 			{
-				url: script_bank_id.plugin_url + 'api/?action=connected_init',
-				type: 'POST',
-				cache: false,
-				dataType: 'json'
+				url: script_bank_id.plugin_url + 'api/',
+				type: 'post',
+				/*cache: false,*/
+				dataType: 'json',
+				data: {
+					action: 'connected_init',
+					post_id: script_bank_id.post_id
+				}
 			})
 			.done(function(data, textStatus)
 			{
@@ -487,10 +429,15 @@ jQuery(function($)
 		{
 			$.ajax(
 			{
-				url: script_bank_id.plugin_url + 'api/?action=' + type + '&login_type=' + script_bank_id.login_type,
-				type: 'POST',
-				cache: false,
-				dataType: 'json'
+				url: script_bank_id.plugin_url + 'api/',
+				type: 'post',
+				/*cache: false,*/
+				dataType: 'json',
+				data: {
+					action: type,
+					login_type: script_bank_id.login_type,
+					post_id: script_bank_id.post_id
+				}
 			})
 			.done(function(data, textStatus)
 			{
@@ -554,10 +501,13 @@ jQuery(function($)
 
 			$.ajax(
 			{
-				url: script_bank_id.plugin_url + 'api/?action=' + type_init,
-				type: 'POST',
-				cache: false,
-				dataType: 'json'
+				url: script_bank_id.plugin_url + 'api/',
+				type: 'post',
+				/*cache: false,*/
+				dataType: 'json',
+				data: {
+					action: type_init
+				}
 			})
 			.done(function(data, textStatus)
 			{
