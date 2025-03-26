@@ -60,7 +60,7 @@ $json_output = array();
 switch($action)
 {
 	case 'qr_init':
-		$bankIDService = new BankIDService($api_url, get_current_visitor_ip(), $arr_params);
+		$bankIDService = new BankIDService($api_url, apply_filters('get_current_visitor_ip', $_SERVER['REMOTE_ADDR']), $arr_params);
 
 		try
 		{
@@ -86,7 +86,7 @@ switch($action)
 	break;
 
 	case 'connected_init':
-		$bankIDService = new BankIDService($api_url, get_current_visitor_ip(), $arr_params);
+		$bankIDService = new BankIDService($api_url, apply_filters('get_current_visitor_ip', $_SERVER['REMOTE_ADDR']), $arr_params);
 
 		try
 		{
@@ -116,7 +116,7 @@ switch($action)
 		$order_ref = check_var('sesOrderRef');
 		$time_created = check_var('sesTimeCreated');
 
-		$bankIDService = new BankIDService($api_url, get_current_visitor_ip(), $arr_params);
+		$bankIDService = new BankIDService($api_url, apply_filters('get_current_visitor_ip', $_SERVER['REMOTE_ADDR']), $arr_params);
 
 		try
 		{
@@ -169,7 +169,7 @@ switch($action)
 	break;
 
 	case 'sign_qr_init':
-		$bankIDService = new BankIDService($api_url, get_current_visitor_ip(), $arr_params);
+		$bankIDService = new BankIDService($api_url, apply_filters('get_current_visitor_ip', $_SERVER['REMOTE_ADDR']), $arr_params);
 
 		try
 		{
@@ -195,7 +195,7 @@ switch($action)
 	break;
 
 	case 'sign_connected_init':
-		$bankIDService = new BankIDService($api_url, get_current_visitor_ip(), $arr_params);
+		$bankIDService = new BankIDService($api_url, apply_filters('get_current_visitor_ip', $_SERVER['REMOTE_ADDR']), $arr_params);
 
 		try
 		{
@@ -225,7 +225,7 @@ switch($action)
 		$order_ref = check_var('sesOrderRef');
 		$time_created = check_var('sesTimeCreated');
 
-		$bankIDService = new BankIDService($api_url, get_current_visitor_ip(), $arr_params);
+		$bankIDService = new BankIDService($api_url, apply_filters('get_current_visitor_ip', $_SERVER['REMOTE_ADDR']), $arr_params);
 
 		try
 		{
