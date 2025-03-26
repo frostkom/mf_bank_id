@@ -756,7 +756,7 @@ class mf_bank_id
 		$meta_value = check_var($meta_key);
 		$meta_text = __("Social Security Number", 'lang_bank_id');
 
-		$post_id = (int)apply_filters('get_block_search', 'mf/custom_registration');
+		$post_id = apply_filters('get_block_search', 0, 'mf/custom_registration');
 
 		if(!($post_id > 0))
 		{
