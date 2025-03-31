@@ -228,11 +228,16 @@ class mf_bank_id
 	{
 		global $pagenow;
 
-		if($pagenow != 'profile.php' && get_option('setting_bank_id_activate') == 'yes' && get_the_author_meta('profile_ssn', get_current_user_id()) == '')
+		if($pagenow != 'profile.php' && get_option('setting_bank_id_activate') == 'yes')
 		{
-			$profile_redirect = admin_url("profile.php");
+			$user_id = get_current_user_id();
 
-			mf_redirect($profile_redirect);
+			if($user_id > 0 && get_the_author_meta('profile_ssn', $user_id) == '')
+			{
+				$profile_redirect = admin_url("profile.php");
+
+				mf_redirect($profile_redirect);
+			}
 		}
 	}
 
