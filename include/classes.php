@@ -17,6 +17,10 @@ class mf_bank_id
 
 		if($obj_cron->is_running == false)
 		{
+			mf_uninstall_plugin(array(
+				'options' => array('setting_bank_id_api_version'),
+			));
+
 			// Check certificate
 			#######################
 			$setting_bank_id_certificate = get_site_option('setting_bank_id_certificate');
