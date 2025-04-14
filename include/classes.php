@@ -43,10 +43,13 @@ class mf_bank_id
 
 			// Delete old uploads
 			#######################
-			list($upload_path, $upload_url) = get_uploads_folder($this->post_type);
+			list($upload_path, $upload_url) = get_uploads_folder($this->post_type, true, false);
 
-			get_file_info(array('path' => $upload_path, 'callback' => 'delete_files_callback', 'time_limit' => WEEK_IN_SECONDS));
-			get_file_info(array('path' => $upload_path, 'folder_callback' => 'delete_empty_folder_callback'));
+			if($upload_path != '')
+			{
+				get_file_info(array('path' => $upload_path, 'callback' => 'delete_files_callback', 'time_limit' => WEEK_IN_SECONDS));
+				get_file_info(array('path' => $upload_path, 'folder_callback' => 'delete_empty_folder_callback'));
+			}
 			#######################
 		}
 
