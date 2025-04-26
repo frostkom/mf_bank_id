@@ -512,6 +512,23 @@ class mf_bank_id
 		return $out;
 	}
 
+	function address_exists($in)
+	{
+		global $wpdb;
+
+		if($in != '')
+		{
+			$intAddressID = $wpdb->get_var($wpdb->prepare("SELECT addressID FROM ".$wpdb->prefix."address WHERE addressBirthDate = %s", $in));
+
+			return ($intAddressID > 0);
+		}
+
+		else
+		{
+			return false;
+		}
+	}
+
 	function validate_and_login($data, &$json_output)
 	{
 		switch($data['type'])
@@ -841,23 +858,6 @@ class mf_bank_id
 		}
 
 		return $is_protected;
-	}
-
-	function address_exists($in)
-	{
-		global $wpdb;
-
-		if($in != '')
-		{
-			$emlAddressEmail = $wpdb->get_var($wpdb->prepare("SELECT addressEmail FROM ".$wpdb->prefix."address WHERE addressBirthDate = %s", $in));
-
-			return ($emlAddressEmail != '');
-		}
-
-		else
-		{
-			return false;
-		}
 	}
 
 	function login_address()
