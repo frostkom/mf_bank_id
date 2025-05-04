@@ -512,6 +512,55 @@ class mf_bank_id
 		return $out;
 	}
 
+	function user_exists($in)
+	{
+		global $wpdb;
+
+		if($in != '')
+		{
+			$this->user_login = $wpdb->get_var($wpdb->prepare("SELECT user_login FROM ".$wpdb->users." INNER JOIN ".$wpdb->usermeta." ON ".$wpdb->users.".ID = ".$wpdb->usermeta.".user_id WHERE meta_key = %s AND meta_value = %s", 'profile_ssn', $in));
+
+			return ($this->user_login != '');
+		}
+
+		else
+		{
+			return false;
+		}
+	}
+
+	function allow_programmatic_login($user, $username, $password)
+	{
+		return get_user_by('login', $username);
+	}
+
+	// The same as used in Custom Login
+	function login($username)
+	{
+		if(is_user_logged_in())
+		{
+			wp_logout();
+		}
+
+		add_filter('authenticate', array($this, 'allow_programmatic_login'), 10, 3); // hook in earlier than other callbacks to short-circuit them
+		$user = wp_signon(array('user_login' => $username, 'remember' => true));
+		remove_filter('authenticate', array($this, 'allow_programmatic_login'), 10);
+
+		if(is_a($user, 'WP_User'))
+		{
+			//wp_clear_auth_cookie();
+			wp_set_current_user($user->ID);
+			//wp_set_auth_cookie($user->ID, true);
+
+			if(is_user_logged_in())
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	function address_exists($in)
 	{
 		global $wpdb;
@@ -582,55 +631,6 @@ class mf_bank_id
 				}
 			break;
 		}
-	}
-
-	function user_exists($in)
-	{
-		global $wpdb;
-
-		if($in != '')
-		{
-			$this->user_login = $wpdb->get_var($wpdb->prepare("SELECT user_login FROM ".$wpdb->users." INNER JOIN ".$wpdb->usermeta." ON ".$wpdb->users.".ID = ".$wpdb->usermeta.".user_id WHERE meta_key = %s AND meta_value = %s", 'profile_ssn', $in));
-
-			return ($this->user_login != '');
-		}
-
-		else
-		{
-			return false;
-		}
-	}
-
-	// The same as used in Custom Login
-	function login($username)
-	{
-		if(is_user_logged_in())
-		{
-			wp_logout();
-		}
-
-		add_filter('authenticate', array($this, 'allow_programmatic_login'), 10, 3); // hook in earlier than other callbacks to short-circuit them
-		$user = wp_signon(array('user_login' => $username, 'remember' => true));
-		remove_filter('authenticate', array($this, 'allow_programmatic_login'), 10);
-
-		if(is_a($user, 'WP_User'))
-		{
-			//wp_clear_auth_cookie();
-			wp_set_current_user($user->ID);
-			//wp_set_auth_cookie($user->ID, true);
-
-			if(is_user_logged_in())
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	function allow_programmatic_login($user, $username, $password)
-	{
-		return get_user_by('login', $username);
 	}
 
 	function upload_mimes($existing_mimes = array())
@@ -898,6 +898,36 @@ class mf_bank_id
 		}
 
 		return $html;
+	}
+
+	function filter_user_allowed_to_login($is_allowed, $username)
+	{
+		if($is_allowed == true)
+		{
+			$user = get_user_by('login', $username);
+
+			if(isset($user->ID) && $user->ID > 0)
+			{
+				$setting_bank_id_login_methods = get_option_or_default('setting_bank_id_login_methods', array());
+
+				if((count($setting_bank_id_login_methods) == 0 || in_array('username', $setting_bank_id_login_methods)))
+				{
+					// Do nothing
+				}
+
+				else
+				{
+					$is_allowed = user_can($user->ID, 'manage_options');
+				}
+			}
+
+			else
+			{
+				$is_allowed = false;
+			}
+		}
+
+		return $is_allowed;
 	}
 
 	function allow_username_login()
