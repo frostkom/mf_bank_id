@@ -241,9 +241,7 @@ class mf_bank_id
 
 			if($user_id > 0 && get_the_author_meta('profile_ssn', $user_id) == '')
 			{
-				$profile_redirect = admin_url("profile.php");
-
-				mf_redirect($profile_redirect);
+				mf_redirect(admin_url("profile.php"));
 			}
 		}
 	}
