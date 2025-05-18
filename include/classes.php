@@ -785,11 +785,6 @@ class mf_bank_id
 
 		$post_id = apply_filters('get_block_search', 0, 'mf/custom_registration');
 
-		if(!($post_id > 0))
-		{
-			$post_id = (int)apply_filters('get_widget_search', 'registration-widget');
-		}
-
 		if($post_id > 0)
 		{
 			echo show_textfield(array('name' => $meta_key, 'text' => $meta_text, 'value' => $meta_value, 'placeholder' => __("YYMMDD-XXXX", 'lang_bank_id'), 'required' => true, 'xtra' => "maxlength='12'"));
