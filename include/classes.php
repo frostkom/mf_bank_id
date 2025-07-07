@@ -215,7 +215,7 @@ class mf_bank_id
 			echo "<h3>".__("Sign", 'lang_bank_id')."</h3>
 			<div class='widget login_form'>
 				<div id='loginform'>
-					<div class='login_loading hide'><i class='fa fa-spinner fa-spin fa-3x'></i></div>
+					<div class='login_loading hide'>".apply_filters('get_loading_animation', '', ['class' => "fa-3x"])."</div>
 					<div class='notification hide'></div>
 					<div id='sign_form'>
 						<div id='sign_qr' class='bankid_button'>
@@ -976,7 +976,7 @@ class mf_bank_id
 
 		if($has_qr_login || $has_connected_login)
 		{
-			$out .= "<div class='login_loading hide'><i class='fa fa-spinner fa-spin fa-3x'></i></div>
+			$out .= "<div class='login_loading hide'>".apply_filters('get_loading_animation', '', ['class' => "fa-3x"])."</div>
 			<div class='notification hide'></div>";
 		}
 
