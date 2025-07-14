@@ -4,6 +4,7 @@ class mf_bank_id
 {
 	var $post_type = 'mf_bank_id';
 	var $meta_prefix;
+	var $user_login;
 
 	function __construct()
 	{

@@ -28,7 +28,7 @@ class AbstractResponseModel
 
             foreach($responseArray as $key => $value)
 			{
-                $this->$key = $value;
+				@$this->$key = $value;
             }
         }
     }
