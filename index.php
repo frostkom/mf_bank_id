@@ -2,8 +2,8 @@
 /*
 Plugin Name: MF BankID
 Plugin URI: https://github.com/frostkom/mf_bank_id
-Description: Extension to login with BankID
-Version: 2.7.18
+Description: Extension to use BankID
+Version: 2.7.19
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
@@ -11,9 +11,6 @@ Text Domain: lang_bank_id
 Domain Path: /lang
 
 Credit URI: https://github.com/dimafe6/bank-id
-
-Depends: MF Base
-GitHub Plugin URI: frostkom/mf_bank_id
 */
 
 if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') && is_plugin_active("mf_base/index.php"))
