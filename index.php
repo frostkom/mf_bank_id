@@ -3,12 +3,14 @@
 Plugin Name: MF BankID
 Plugin URI: https://github.com/frostkom/mf_bank_id
 Description: Extension to use BankID
-Version: 2.7.19
+Version: 2.7.20
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
 Text Domain: lang_bank_id
 Domain Path: /lang
+
+Requires Plugins: meta-box
 
 Credit URI: https://github.com/dimafe6/bank-id
 */
