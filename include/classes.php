@@ -38,7 +38,7 @@ class mf_bank_id
 
 			if($setting_bank_id_certificate_expiry_date > DEFAULT_DATE && $setting_bank_id_certificate_expiry_date < date("Y-m-d", strtotime("+2 month")))
 			{
-				do_log("The certificate is expiring ".$setting_bank_id_certificate_expiry_date);
+				do_log("The BankID certificate is expiring ".$setting_bank_id_certificate_expiry_date, 'publish', false);
 			}
 			#######################
 
