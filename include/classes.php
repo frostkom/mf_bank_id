@@ -57,13 +57,6 @@ class mf_bank_id
 		$obj_cron->end();
 	}
 
-	function site_transient_update_plugins($arr_plugins)
-	{
-		unset($arr_plugins->response['backwpup/backwpup.php']);
-
-		return $arr_plugins;
-	}
-
 	function settings_bank_id()
 	{
 		if(IS_SUPER_ADMIN)
