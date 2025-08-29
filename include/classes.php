@@ -830,7 +830,9 @@ class mf_bank_id
 
 	function filter_is_password_protected($is_protected, $data)
 	{
-		if($is_protected == false && get_post_meta($data['post_id'], $this->meta_prefix.'activate', true) == 'yes')
+		if(!isset($data['type'])){		$data['type'] = 'bool';}
+
+		if(($is_protected == false || $is_protected == '') && get_post_meta($data['post_id'], $this->meta_prefix.'activate', true) == 'yes')
 		{
 			if($data['check_login'] == true && $this->is_address_logged_in())
 			{
@@ -840,7 +842,17 @@ class mf_bank_id
 
 			else
 			{
-				$is_protected = true;
+				switch($data['type'])
+				{
+					default:
+					case 'bool':
+						$is_protected = true;
+					break;
+
+					case 'text':
+						$is_protected = 'bank_id';
+					break;
+				}
 			}
 		}
 
@@ -871,7 +883,7 @@ class mf_bank_id
 	{
 		global $post;
 
-		if(isset($post->ID) && is_user_logged_in() == false && apply_filters('filter_is_password_protected', false, array('post_id' => $post->ID, 'check_login' => true)) == true)
+		if(isset($post->ID) && is_user_logged_in() == false && apply_filters('filter_is_password_protected', false, array('post_id' => $post->ID, 'check_login' => true, 'type' => 'bool')) == true)
 		{
 			$html = "<div class='widget login_form'>
 				<form id='loginform' class='mf_form' action='#' method='post'>
