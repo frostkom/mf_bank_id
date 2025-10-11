@@ -320,9 +320,9 @@ class mf_bank_id
 		{
 			list($upload_path, $upload_url) = get_uploads_folder();
 
-			//do_log(__FUNCTION__.": ".$site_icon." -> ".mf_get_post_content($site_icon)." -> ".str_replace($upload_url, $upload_path, mf_get_post_content($site_icon)));
+			//do_log(__FUNCTION__.": ".$site_icon." -> ".get_post_field('post_content', $site_icon)." -> ".str_replace($upload_url, $upload_path, get_post_field('post_content', $site_icon)));
 
-			$logo_file = str_replace($upload_url, $upload_path, mf_get_post_content($site_icon, 'guid'));
+			$logo_file = str_replace($upload_url, $upload_path, get_post_field('guid', $site_icon));
 			$logo_fraction = 6;
 			$logo_padding = 2; // Adjust this value to control padding
 
