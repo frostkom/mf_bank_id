@@ -57,6 +57,11 @@ class mf_bank_id
 		$obj_cron->end();
 	}
 
+	function init()
+	{
+		load_plugin_textdomain('lang_bank_id', false, str_replace("/include", "", dirname(plugin_basename(__FILE__)))."/lang/");
+	}
+
 	function settings_bank_id()
 	{
 		if(IS_SUPER_ADMIN)
@@ -266,13 +271,13 @@ class mf_bank_id
 		return $arr_settings;
 	}
 
-	function filter_ssn($in)
+	function filter_ssn($ssn)
 	{
 		$out = '';
 
-		if($in != '')
+		if($ssn != '')
 		{
-			$out = str_replace("-", "", $in);
+			$out = str_replace("-", "", $ssn);
 
 			switch(strlen($out))
 			{
@@ -504,15 +509,37 @@ class mf_bank_id
 		return $out;
 	}
 
-	function user_exists($in)
+	function user_exists($ssn)
 	{
 		global $wpdb;
 
-		if($in != '')
-		{
-			$this->user_login = $wpdb->get_var($wpdb->prepare("SELECT user_login FROM ".$wpdb->users." INNER JOIN ".$wpdb->usermeta." ON ".$wpdb->users.".ID = ".$wpdb->usermeta.".user_id WHERE meta_key = %s AND meta_value = %s", 'profile_ssn', $in));
+		$this->user_login = "";
 
-			return ($this->user_login != '');
+		if($ssn != '')
+		{
+			$result = $wpdb->get_results($wpdb->prepare("SELECT ID, user_login, meta_value FROM ".$wpdb->users." INNER JOIN ".$wpdb->usermeta." ON ".$wpdb->users.".ID = ".$wpdb->usermeta.".user_id AND meta_key = %s WHERE meta_value != ''", 'profile_ssn'));
+
+			foreach($result as $r)
+			{
+				$user_id = $r->ID;
+				$user_login = $r->user_login;
+				$user_ssn = $r->meta_value;
+
+				if(strlen($user_ssn) > 12)
+				{
+					$obj_encryption = new mf_encryption('user');
+					$user_ssn = $obj_encryption->decrypt($user_ssn, md5(AUTH_KEY."_".$user_id));
+				}
+
+				if($ssn == $user_ssn)
+				{
+					$this->user_login = $user_login;
+
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		else
@@ -553,13 +580,13 @@ class mf_bank_id
 		return false;
 	}
 
-	function address_exists($in)
+	function address_exists($birth_date)
 	{
 		global $wpdb;
 
-		if($in != '')
+		if($birth_date != '')
 		{
-			$intAddressID = $wpdb->get_var($wpdb->prepare("SELECT addressID FROM ".$wpdb->prefix."address WHERE addressBirthDate = %s", $in));
+			$intAddressID = $wpdb->get_var($wpdb->prepare("SELECT addressID FROM ".$wpdb->prefix."address WHERE addressBirthDate = %s", $birth_date));
 
 			return ($intAddressID > 0);
 		}
@@ -632,25 +659,31 @@ class mf_bank_id
 		return $existing_mimes;
 	}
 
-	function manage_users_columns($cols)
+	function manage_users_columns($columns)
 	{
-		unset($cols['posts']);
+		unset($columns['posts']);
 
-		$cols['profile_ssn'] = __("Social Security Number", 'lang_bank_id');
+		$columns['profile_ssn'] = __("Social Security Number", 'lang_bank_id');
 
-		return $cols;
+		return $columns;
 	}
 
-	function manage_users_custom_column($value, $col, $id)
+	function manage_users_custom_column($value, $column, $user_id)
 	{
-		switch($col)
+		switch($column)
 		{
 			case 'profile_ssn':
-				$author_meta = get_the_author_meta($col, $id);
+				$meta_value = get_the_author_meta($column, $user_id);
 
-				if($author_meta != '')
+				if($meta_value != '')
 				{
-					return substr($author_meta, 0, 8)."&hellip;";
+					if(strlen($meta_value) > 12)
+					{
+						$obj_encryption = new mf_encryption('user');
+						$meta_value = $obj_encryption->decrypt($meta_value, md5(AUTH_KEY."_".$user_id));
+					}
+
+					return substr($meta_value, 0, 8)."<span class='grey'>&hellip;</span>";
 				}
 			break;
 		}
@@ -731,6 +764,12 @@ class mf_bank_id
 		$meta_value = get_the_author_meta($meta_key, $user->ID);
 		$meta_text = __("Social Security Number", 'lang_bank_id');
 
+		if($meta_value != '' && strlen($meta_value) > 12)
+		{
+			$obj_encryption = new mf_encryption('user');
+			$meta_value = $obj_encryption->decrypt($meta_value, md5(AUTH_KEY."_".$user->ID));
+		}
+
 		echo "<table class='form-table'>
 			<tr class='".str_replace("_", "-", $meta_key)."-wrap'>
 				<th><label for='".$meta_key."'>".$meta_text."</label></th>
@@ -774,14 +813,14 @@ class mf_bank_id
 	function register_form()
 	{
 		$meta_key = 'profile_ssn';
-		$meta_value = check_var($meta_key);
+		$meta_value = $this->filter_ssn(check_var($meta_key));
 		$meta_text = __("Social Security Number", 'lang_bank_id');
 
 		$post_id = apply_filters('get_block_search', 0, 'mf/custom_registration');
 
 		if($post_id > 0)
 		{
-			echo show_textfield(array('name' => $meta_key, 'text' => $meta_text, 'value' => $meta_value, 'placeholder' => __("YYMMDD-XXXX", 'lang_bank_id'), 'required' => true, 'xtra' => "maxlength='12'"));
+			echo show_textfield(array('name' => $meta_key, 'text' => $meta_text, 'value' => $meta_value, 'placeholder' => __("YYMMDD-XXXX", 'lang_bank_id'), 'required' => true, 'maxlength' => 12));
 		}
 
 		else
@@ -809,6 +848,12 @@ class mf_bank_id
 			$meta_value = '';
 		}
 
+		if($meta_value != '')
+		{
+			$obj_encryption = new mf_encryption('user');
+			$meta_value = $obj_encryption->encrypt($meta_value, md5(AUTH_KEY."_".$user_id));
+		}
+
 		update_user_meta($user_id, $meta_key, $meta_value);
 	}
 
@@ -818,11 +863,12 @@ class mf_bank_id
 			'type' => 'text',
 			'name' => 'profile_ssn',
 			'text' => __("Social Security Number", 'lang_bank_id'),
-			//'placeholder' => __("YYMMDD-XXXX", 'lang_bank_id'),
+			'placeholder' => __("YYMMDD-XXXX", 'lang_bank_id'),
 			'required' => true,
 			'attributes' => array(
 				'maxlength' => 12,
 			),
+			'encrypted' => true,
 		);
 
 		return $arr_fields;
@@ -982,8 +1028,8 @@ class mf_bank_id
 
 		if($has_qr_login || $has_connected_login)
 		{
-			$out .= "<div class='login_loading hide'>".apply_filters('get_loading_animation', '', ['class' => "fa-3x"])."</div>
-			<div class='notification hide'></div>";
+			$out .= "<div class='login_loading hide'>".apply_filters('get_loading_animation', '', ['class' => "fa-3x"])."</div>";
+			$out .= "<div class='notification hide'></div>";
 		}
 
 		if($this->allow_username_login() && ($has_qr_login || $has_connected_login))
