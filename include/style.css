@@ -1,133 +1,130 @@
-@media all
+/* General */
+#loginform #login_ssn
 {
-	/* General */
-	#loginform #login_ssn
+	margin-bottom: .5em;
+}
+
+	#loginform #login_ssn input
 	{
-		margin-bottom: .5em;
+		margin-bottom: .2em;
 	}
 
-		#loginform #login_ssn input
-		{
-			margin-bottom: .2em;
-		}
+#loginform .bankid_button
+{
+	background: #fff;
+	border-radius: .5em;
+	box-shadow: 0 0 .5em rgba(0, 0, 0, .5);
+	cursor: pointer;
+	margin-bottom: .5em;
+	padding: .5em 1em;
+	text-align: center;
+}
 
-	#loginform .bankid_button
+	#loginform .bankid_button + .bankid_button
 	{
-		background: #fff;
-		border-radius: .5em;
-		box-shadow: 0 0 .5em rgba(0, 0, 0, .5);
-		cursor: pointer;
-		margin-bottom: .5em;
-		padding: .5em 1em;
-		text-align: center;
+		background: none;
+		box-shadow: none;
+		font-size: .8em;
+		margin-bottom: 0;
+		text-decoration: underline;
 	}
 
-		#loginform .bankid_button + .bankid_button
+	#loginform .bankid_button:hover
+	{
+		box-shadow: 0 0 .5em rgba(0, 0, 0, .2);
+	}
+
+		#loginform .bankid_button + .bankid_button:hover
 		{
-			background: none;
 			box-shadow: none;
-			font-size: .8em;
-			margin-bottom: 0;
-			text-decoration: underline;
 		}
 
-		#loginform .bankid_button:hover
-		{
-			box-shadow: 0 0 .5em rgba(0, 0, 0, .2);
-		}
+#loginform #login_qr p
+{
+	margin-bottom: 1em;
+}
 
-			#loginform .bankid_button + .bankid_button:hover
-			{
-				box-shadow: none;
-			}
+#loginform #login_qr .qr_code
+{
+	height: 300px;
+	margin-bottom: .5em;
+	position: relative;
+}
 
-	#loginform #login_qr p
+	#loginform #login_qr .qr_code img
 	{
-		margin-bottom: 1em;
+		width: 300px;
 	}
 
-	#loginform #login_qr .qr_code
+	#loginform #login_qr .qr_code svg
 	{
-		height: 300px;
-		margin-bottom: .5em;
-		position: relative;
+		height: 100%;
+		left: 0;
+		margin: 0 auto;
+		position: absolute;
+		right: 0;
+		width: 300px;
 	}
 
-		#loginform #login_qr .qr_code img
+		#loginform #login_qr .qr_code svg path:nth-child(1)
 		{
-			width: 300px;
+			transform: translate(19px, 4px) rotate(0deg);
 		}
 
-		#loginform #login_qr .qr_code svg
+		#loginform #login_qr .qr_code svg path:nth-child(2)
 		{
-			height: 100%;
-			left: 0;
-			margin: 0 auto;
-			position: absolute;
-			right: 0;
-			width: 300px;
+			transform: translate(280px, 295px) rotate(180deg);
 		}
 
-			#loginform #login_qr .qr_code svg path:nth-child(1)
-			{
-				transform: translate(19px, 4px) rotate(0deg);
-			}
-
-			#loginform #login_qr .qr_code svg path:nth-child(2)
-			{
-				transform: translate(280px, 295px) rotate(180deg);
-			}
-
-			#loginform #login_qr .qr_code svg path:nth-child(3)
-			{
-				transform: translate(4px, 280px) rotate(-90deg);
-			}
-
-			#loginform #login_qr .qr_code svg path:nth-child(4)
-			{
-				transform: translate(295px, 19px) rotate(90deg);
-			}
-
-	#loginform .login_loading, #loginform .notification
-	{
-		margin: .5em 0;
-	}
-
-	/* Public */
-	.widget.login_form #loginform
-	{
-		background: rgba(0, 0, 0, .05);
-		border-radius: .5em;
-		padding: 1.5em 1.5em 1em;
-		width: 400px;
-	}
-
-		.widget.login_form #loginform .form_button, .widget.login_form #loginform .wp-block-button
+		#loginform #login_qr .qr_code svg path:nth-child(3)
 		{
-			margin-top: 1em;
-			text-align: right;
+			transform: translate(4px, 280px) rotate(-90deg);
 		}
 
-	.widget.login_form #loginform + p
+		#loginform #login_qr .qr_code svg path:nth-child(4)
+		{
+			transform: translate(295px, 19px) rotate(90deg);
+		}
+
+#loginform .login_loading, #loginform .notification
+{
+	margin: .5em 0;
+}
+
+/* Public */
+.widget.login_form #loginform
+{
+	background: rgba(0, 0, 0, .05);
+	border-radius: .5em;
+	padding: 1.5em 1.5em 1em;
+	width: 400px;
+}
+
+	.widget.login_form #loginform .form_button, .widget.login_form #loginform .wp-block-button
 	{
 		margin-top: 1em;
+		text-align: right;
 	}
 
-	/* Admin */
-	#login
-	{
-		min-width: 380px;
-	}
+.widget.login_form #loginform + p
+{
+	margin-top: 1em;
+}
 
-	#login #loginform
-	{
-		min-width: 330px;
-	}
+/* Admin */
+#login
+{
+	min-width: 380px;
+}
 
-	/* Theme */
-	#wrapper #loginform .bankid_button span
-	{
-		font-size: 1.3em;
-		line-height: 1.7;
-	}
+#login #loginform
+{
+	min-width: 330px;
+}
+
+/* Theme */
+#wrapper #loginform .bankid_button span
+{
+	font-size: 1.3em;
+	line-height: 1.7;
 }
