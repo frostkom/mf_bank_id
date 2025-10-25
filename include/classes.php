@@ -932,7 +932,7 @@ class mf_bank_id
 		if(isset($post->ID) && is_user_logged_in() == false && apply_filters('filter_is_password_protected', false, array('post_id' => $post->ID, 'check_login' => true, 'type' => 'bool')) == true)
 		{
 			$html = "<div class='widget login_form'>
-				<form id='loginform' class='mf_form' action='#' method='post'>
+				<form".apply_filters('get_form_attr', " id='loginform' action='#'").">
 					<p>".__("To view the content on this page you have to first login.", 'lang_bank_id')."</p>"
 					.$this->login_form(array('login_type' => 'address', 'post_id' => $post->ID, 'print' => false))
 					."<div".get_form_button_classes().">"
