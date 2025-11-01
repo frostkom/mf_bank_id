@@ -2,7 +2,7 @@
 
 class mf_bank_id
 {
-	var $post_type = 'mf_bank_id';
+	var $post_type = __CLASS__;
 	var $meta_prefix;
 	var $user_login;
 
