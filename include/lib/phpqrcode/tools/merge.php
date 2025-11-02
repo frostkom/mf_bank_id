@@ -43,7 +43,8 @@
         $QR_BASEDIR.'qrsplit.php',
         $QR_BASEDIR.'qrrscode.php',
         $QR_BASEDIR.'qrmask.php',
-        $QR_BASEDIR.'qrencode.php'
+        $QR_BASEDIR.'qrencode.php',
+        $QR_BASEDIR.'qrvect.php'
     );
     
     $headerFile = $QR_TOOLSDIR.'merged_header.php';
@@ -60,9 +61,11 @@
     }
     
 	$versionDataEx = explode("\n", file_get_contents($versionFile));
-
+	
     $outputContents = file_get_contents($headerFile);
     $outputContents .= "\n\n/*\n * Version: ".trim($versionDataEx[0])."\n * Build: ".trim($versionDataEx[1])."\n */\n\n";
     $outputContents .= $outputCode;
     
-    file_put_contents($outputFile, $outputContents);    
+    file_put_contents($outputFile, $outputContents);
+    
+    

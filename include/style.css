@@ -1,4 +1,9 @@
-/* General */
+.widget.login_form form#loginform
+{
+	text-align: center;
+	width: auto;
+}
+
 #loginform #login_ssn
 {
 	margin-bottom: .5em;
@@ -15,9 +20,9 @@
 	border-radius: .5em;
 	box-shadow: 0 0 .5em rgba(0, 0, 0, .5);
 	cursor: pointer;
-	margin-bottom: .5em;
+	margin: 0 auto .5em;
 	padding: .5em 1em;
-	text-align: center;
+	max-width: 18em;
 }
 
 	#loginform .bankid_button + .bankid_button
@@ -46,45 +51,42 @@
 
 #loginform #login_qr .qr_code
 {
-	height: 300px;
-	margin-bottom: .5em;
 	position: relative;
 }
 
-	#loginform #login_qr .qr_code img
+	#loginform #login_qr .qr_code svg.qr_borders
 	{
-		width: 300px;
-	}
-
-	#loginform #login_qr .qr_code svg
-	{
-		height: 100%;
 		left: 0;
 		margin: 0 auto;
 		position: absolute;
 		right: 0;
-		width: 300px;
 	}
 
-		#loginform #login_qr .qr_code svg path:nth-child(1)
+		#loginform #login_qr .qr_code svg.qr_borders path:nth-child(1)
 		{
 			transform: translate(19px, 4px) rotate(0deg);
 		}
 
-		#loginform #login_qr .qr_code svg path:nth-child(2)
+		#loginform #login_qr .qr_code svg.qr_borders path:nth-child(2)
 		{
 			transform: translate(280px, 295px) rotate(180deg);
 		}
 
-		#loginform #login_qr .qr_code svg path:nth-child(3)
+		#loginform #login_qr .qr_code svg.qr_borders path:nth-child(3)
 		{
 			transform: translate(4px, 280px) rotate(-90deg);
 		}
 
-		#loginform #login_qr .qr_code svg path:nth-child(4)
+		#loginform #login_qr .qr_code svg.qr_borders path:nth-child(4)
 		{
 			transform: translate(295px, 19px) rotate(90deg);
 		}
+
+	#loginform #login_qr .qr_code img, #loginform #login_qr .qr_code svg:not(.qr_borders)
+	{
+		height: 100%;
+		width: 100%;
+	}
 
 #loginform .login_loading, #loginform .notification
 {

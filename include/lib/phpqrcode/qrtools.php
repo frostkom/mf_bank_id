@@ -79,7 +79,7 @@
         public static function buildCache()
         {
 			QRtools::markTime('before_build_cache');
-
+			
 			$mask = new QRmask();
             for ($a=1; $a <= QRSPEC_VERSION_MAX; $a++) {
                 $frame = QRspec::newFrame($a);
@@ -87,13 +87,13 @@
                     $fileName = QR_CACHE_DIR.'frame_'.$a.'.png';
                     QRimage::png(self::binarize($frame), $fileName, 1, 0);
                 }
-
+				
 				$width = count($frame);
 				$bitMask = array_fill(0, $width, array_fill(0, $width, 0));
 				for ($maskNo=0; $maskNo<8; $maskNo++)
 					$mask->makeMaskNo($maskNo, $width, $frame, $bitMask, true);
             }
-
+			
 			QRtools::markTime('after_build_cache');
         }
 
@@ -162,6 +162,19 @@
                 <tr style="border-top:2px solid black"><th style="text-align:right">TOTAL: </th><td>'.number_format($lastTime-$startTime, 6).'s</td></tr>
             </tfoot>
             </table>';
+        }
+        
+        public static function save($content, $filename_path)
+        {           
+            try {
+                $handle = fopen($filename_path, "w");
+                fwrite($handle, $content);
+                fclose($handle);
+                return true;
+            } catch (Exception $e) {
+                echo 'Exception reçue : ',  $e->getMessage(), "\n";
+            }      
+            
         }
         
     }

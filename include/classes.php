@@ -313,9 +313,48 @@ class mf_bank_id
 
 		$qr_content = sprintf('bankid.%s.%d.%s', $qrStartToken, $elapsedTime, hash_hmac('sha256', $elapsedTime, $qrStartSecret));
 
-		$qr_file = "qr_code_".md5($qr_content).".png";
-
 		list($upload_path_qr, $upload_url_qr) = get_uploads_folder($this->post_type);
+
+		$qr_file = "qr_code_".md5($qr_content).".svg";
+
+		ob_start();
+
+		QRcode::svg($qr_content, false, QR_ECLEVEL_H, 5, 7); // L/M/Q/H
+
+		$svg = ob_get_contents();
+		ob_end_clean();
+
+		$site_icon = get_option('site_icon');
+
+		if($site_icon > 0)
+		{
+			list($upload_path, $upload_url) = get_uploads_folder();
+
+			$logo_file = get_post_field('guid', $site_icon);
+
+			$size = 50;
+			$position = 160;
+
+			$logoSvg = "<image href='".$logo_file."' x='".$position."' y='".$position."' width='".$size."' height='".$size."'/>";
+
+			$pos = strripos($svg, '</svg>');
+			$svg = substr_replace($svg, $logoSvg . '</svg>', $pos, 6);
+		}
+
+		$data['json_output']['html'] = "<p>".__("Open your BankID app and scan the QR code", 'lang_bank_id')."</p>
+		<div class='qr_code'>
+			<svg class='qr_borders' viewBox='0 0 300 300'>";
+
+				for($i = 0; $i < 4; $i++)
+				{
+					$data['json_output']['html'] .= "<path d='M216,0h48a12,12,0,0,1,12,12V60.762' fill='none' stroke='#1d3a8f' stroke-linecap='round' stroke-width='8'></path>";
+				}
+
+			$data['json_output']['html'] .= "</svg>"
+			.$svg
+		."</div>";
+
+		/*$qr_file = "qr_code_".md5($qr_content).".png";
 
 		QRcode::png($qr_content, $upload_path_qr.$qr_file, QR_ECLEVEL_H, 5, 7); // L/M/Q/H
 
@@ -325,13 +364,10 @@ class mf_bank_id
 		{
 			list($upload_path, $upload_url) = get_uploads_folder();
 
-			//do_log(__FUNCTION__.": ".$site_icon." -> ".get_post_field('post_content', $site_icon)." -> ".str_replace($upload_url, $upload_path, get_post_field('post_content', $site_icon)));
-
 			$logo_file = str_replace($upload_url, $upload_path, get_post_field('guid', $site_icon));
 			$logo_fraction = 6;
-			$logo_padding = 2; // Adjust this value to control padding
+			$logo_padding = 2;
 
-			// Load QR code image
 			$qr_image = imagecreatefrompng($upload_path_qr.$qr_file);
 
 			// Create white background for logo
@@ -414,7 +450,7 @@ class mf_bank_id
 
 			$data['json_output']['html'] .= "</svg>
 			<img src='".$upload_url_qr.$qr_file."'>
-		</div>";
+		</div>";*/
 
 		return $data['json_output'];
 	}
