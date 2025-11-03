@@ -333,7 +333,7 @@ class mf_bank_id
 			$logo_file = get_post_field('guid', $site_icon);
 
 			$size = 50;
-			$position = 160;
+			$position = 155;
 
 			$logoSvg = "<image href='".$logo_file."' x='".$position."' y='".$position."' width='".$size."' height='".$size."'/>";
 
