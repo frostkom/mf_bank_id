@@ -90,12 +90,12 @@
 	define('QR_ECLEVEL_M', 1);
 	define('QR_ECLEVEL_Q', 2);
 	define('QR_ECLEVEL_H', 3);
-	
+
 	// Supported output formats
-	
+
 	define('QR_FORMAT_TEXT', 0);
 	define('QR_FORMAT_PNG',  1);
-	
+
 	class qrstr {
 		public static function set(&$srctab, $x, $y, $repl, $replLen = false) {
 			$srctab[$y] = substr_replace($srctab[$y], ($replLen !== false)?substr($repl,0,$replLen):$repl, $x, ($replLen !== false)?$replLen:strlen($repl));
@@ -449,7 +449,7 @@
         }
     
         //######################################################################
-        
+
         public static $lengthTableBits = array(
             array(10, 12, 14),
             array( 9, 11, 13),
@@ -665,7 +665,7 @@
         // See Table 1 in Appendix D (pp.68) of JIS X0510:2004.
         
 		// size: [QRSPEC_VERSION_MAX - 6]
-		
+
         public static $versionPattern = array(
             0x07c94, 0x085bc, 0x09a99, 0x0a4d3, 0x0bbf6, 0x0c762, 0x0d847, 0x0e60d,
             0x0f928, 0x10b78, 0x1145d, 0x12a17, 0x13532, 0x149a6, 0x15683, 0x168c9,

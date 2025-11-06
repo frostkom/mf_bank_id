@@ -12,9 +12,9 @@
  *
  * For full version, documentation, examples of use please visit:
  *
- *    http://phpqrcode.sourceforge.net/
- *    https://sourceforge.net/projects/phpqrcode/
- *    https://github.com/t0k4rt/phpqrcode
+ *	http://phpqrcode.sourceforge.net/
+ *	https://sourceforge.net/projects/phpqrcode/
+ *	https://github.com/t0k4rt/phpqrcode
  *
  * PHP QR Code is distributed under LGPL 3
  * Copyright (C) 2010 Dominik Dzienia <deltalab at poczta dot fm>
@@ -32,6 +32,4 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
- */
- 
- 
+ */ 
