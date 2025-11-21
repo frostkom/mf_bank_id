@@ -140,11 +140,12 @@ switch($action)
 
 				case 'complete':
 					$login_type = check_var('login_type');
+					$post_id = check_var('post_id');
 
 					$user_ssn = $response->completionData->user->personalNumber;
 					$user_ssn = $obj_bank_id->filter_ssn($user_ssn);
 
-					$obj_bank_id->validate_and_login(array('type' => $login_type, 'ssn' => $user_ssn), $json_output);
+					$obj_bank_id->validate_and_login(array('type' => $login_type, 'post_id' => $post_id, 'ssn' => $user_ssn), $json_output);
 				break;
 
 				case 'NO_CLIENT':

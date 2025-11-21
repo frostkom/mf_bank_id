@@ -69,7 +69,7 @@
 	}	
 
 	//display generated file
-	echo '<img src="'.$PNG_WEB_DIR.basename($filename).'" /><hr/>';  
+	echo '<img src="'.$PNG_WEB_DIR.basename($filename).'" /><hr/>';
 
 	//config form
 	echo '<form action="index.php" method="post">

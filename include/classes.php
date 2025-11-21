@@ -616,13 +616,28 @@ class mf_bank_id
 		return false;
 	}
 
-	function address_exists($birth_date)
+	function address_exists($birth_date, $post_id)
 	{
 		global $wpdb;
 
 		if($birth_date != '')
 		{
-			$intAddressID = $wpdb->get_var($wpdb->prepare("SELECT addressID FROM ".$wpdb->prefix."address WHERE addressBirthDate = %s", $birth_date));
+			$group_id = 0;
+
+			if($post_id > 0)
+			{
+				$group_id = get_post_meta($post_id, $this->meta_prefix.'group_id', true);
+			}
+
+			if($group_id > 0)
+			{
+				$intAddressID = $wpdb->get_var($wpdb->prepare("SELECT addressID FROM ".$wpdb->prefix."address INNER JOIN ".$wpdb->prefix."address2group USING (addressID) WHERE groupID = '%d' AND addressBirthDate = %s AND addressDeleted = '0'", $group_id, $birth_date));
+			}
+
+			else
+			{
+				$intAddressID = $wpdb->get_var($wpdb->prepare("SELECT addressID FROM ".$wpdb->prefix."address WHERE addressBirthDate = %s AND addressDeleted = '0'", $birth_date));
+			}
 
 			return ($intAddressID > 0);
 		}
@@ -663,9 +678,9 @@ class mf_bank_id
 			break;
 
 			case 'address':
-				if($this->address_exists($data['ssn']))
+				if($this->address_exists($data['ssn'], $data['post_id']))
 				{
-					if($this->login_address())
+					if($this->login_address($data['post_id']))
 					{
 						$json_output['success'] = 1;
 						$json_output['msg'] = __("The validation was successful! You are being logged in...", 'lang_bank_id');
@@ -748,26 +763,41 @@ class mf_bank_id
 	{
 		if(is_plugin_active("mf_address/index.php"))
 		{
+			$arr_fields = [];
+
+			$arr_fields[] = array(
+				'name' => __("Activate", 'lang_bank_id'),
+				'id' => $this->meta_prefix.'activate',
+				'type' => 'select',
+				'options' => get_yes_no_for_select(),
+				'std' => 'no',
+			);
+
+			if(is_plugin_active("mf_group/index.php"))
+			{
+				global $obj_group;
+
+				$arr_fields[] = array(
+					'name' => __("Group", 'lang_bank_id'),
+					'id' => $this->meta_prefix.'group_id',
+					'type' => 'select',
+					'options' => $obj_group->get_for_select(),
+				);
+			}
+
+			$arr_fields[] = array(
+				'name' => __("Intent", 'lang_bank_id'),
+				'id' => $this->meta_prefix.'intent',
+				'type' => 'textarea',
+			);
+
 			$meta_boxes[] = array(
 				'id' => $this->meta_prefix.'settings',
 				'title' => __("BankID", 'lang_bank_id'),
 				'post_types' => array('page'),
 				'context' => 'side',
 				'priority' => 'low',
-				'fields' => array(
-					array(
-						'name' => __("Activate", 'lang_bank_id'),
-						'id' => $this->meta_prefix.'activate',
-						'type' => 'select',
-						'options' => get_yes_no_for_select(),
-						'std' => 'no',
-					),
-					array(
-						'name' => __("Intent", 'lang_bank_id'),
-						'id' => $this->meta_prefix.'intent',
-						'type' => 'textarea',
-					),
-				)
+				'fields' => $arr_fields,
 			);
 		}
 
@@ -822,7 +852,7 @@ class mf_bank_id
 		}
 	}
 
-	function filter_theme_core_seo_type($seo_type)
+	function filter_base_page_index($seo_type)
 	{
 		global $post;
 
@@ -916,7 +946,7 @@ class mf_bank_id
 
 		if(($is_protected == false || $is_protected == '') && get_post_meta($data['post_id'], $this->meta_prefix.'activate', true) == 'yes')
 		{
-			if($data['check_login'] == true && $this->is_address_logged_in())
+			if($data['check_login'] == true && $this->is_address_logged_in($data['post_id']))
 			{
 				// Do nothing
 				//$is_protected = false;
@@ -941,20 +971,20 @@ class mf_bank_id
 		return $is_protected;
 	}
 
-	function login_address()
+	function login_address($post_id)
 	{
 		$cookie_name = $this->meta_prefix.COOKIEHASH;
-		$cookie_value = 'address_ssn_'.apply_filters('get_current_visitor_ip', "");
+		$cookie_value = "address_ssn_".$post_id."_".apply_filters('get_current_visitor_ip', "");
 
 		setcookie($cookie_name, md5($cookie_value), strtotime("+1 week"), COOKIEPATH);
 
 		return true;
 	}
 
-	function is_address_logged_in()
+	function is_address_logged_in($post_id)
 	{
 		$cookie_name = $this->meta_prefix.COOKIEHASH;
-		$cookie_value = 'address_ssn_'.apply_filters('get_current_visitor_ip', "");
+		$cookie_value = "address_ssn_".$post_id."_".apply_filters('get_current_visitor_ip', "");
 
 		$cookie_value_md5 = (isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : '');
 
@@ -1064,8 +1094,8 @@ class mf_bank_id
 
 		if($has_qr_login || $has_connected_login)
 		{
-			$out .= "<div class='login_loading hide'>".apply_filters('get_loading_animation', '', ['class' => "fa-3x"])."</div>";
-			$out .= "<div class='notification hide'></div>";
+			$out .= "<div class='login_loading hide'>".apply_filters('get_loading_animation', '', ['class' => "fa-3x"])."</div>
+			<div class='notification hide'></div>";
 		}
 
 		if($this->allow_username_login() && ($has_qr_login || $has_connected_login))
