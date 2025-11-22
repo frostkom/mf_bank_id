@@ -1041,15 +1041,13 @@ class mf_bank_id
 		return $html;
 	}
 
-	function get_visitor_fingerprint($out, $data = [])
+	function get_visitor_fingerprint($out)
 	{
 		global $post;
 
-		$data['post_id'] = $post->ID;
-
-		if(isset($data['post_id']) && $data['post_id'] > 0)
+		if(isset($post->ID) && $post->ID > 0)
 		{
-			$cookie_value = $this->get_cookie_value(array('post_id' => $data['post_id']));
+			$cookie_value = $this->get_cookie_value(array('post_id' => $post->ID));
 
 			if($cookie_value != '')
 			{

@@ -3,7 +3,7 @@
 Plugin Name: MF BankID
 Plugin URI: https://github.com/frostkom/mf_bank_id
 Description: Extension to use BankID
-Version: 2.8.4
+Version: 2.8.5
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
@@ -71,7 +71,7 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 		add_filter('the_content', array($obj_bank_id, 'the_content'));
 	}
 
-	add_filter('get_visitor_fingerprint', array($obj_bank_id, 'get_visitor_fingerprint'), 10, 2);
+	add_filter('get_visitor_fingerprint', array($obj_bank_id, 'get_visitor_fingerprint'), 10);
 
 	add_filter('filter_user_allowed_to_login', array($obj_bank_id, 'filter_user_allowed_to_login'), 10, 2);
 
