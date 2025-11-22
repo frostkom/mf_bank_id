@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-21 13:01+0100\n"
+"POT-Creation-Date: 2025-11-22 05:53+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -27,7 +27,7 @@ msgstr "Utgångsdatum"
 
 #: ../include/classes.php:87
 #: ../include/classes.php:267
-#: ../include/classes.php:754
+#: ../include/classes.php:769
 msgid "Activate"
 msgstr "Aktivera"
 
@@ -51,7 +51,7 @@ msgstr "Avsiktsförklaring vid signatur"
 #: ../include/classes.php:255
 #: ../include/classes.php:261
 #: ../include/classes.php:267
-#: ../include/classes.php:781
+#: ../include/classes.php:796
 msgid "BankID"
 msgstr ""
 
@@ -139,12 +139,12 @@ msgid "Sign"
 msgstr "Signera"
 
 #: ../include/classes.php:221
-#: ../include/classes.php:1101
+#: ../include/classes.php:1177
 msgid "Mobile BankID"
 msgstr "Mobilt BankID"
 
 #: ../include/classes.php:224
-#: ../include/classes.php:1108
+#: ../include/classes.php:1184
 msgid "BankID on This Device"
 msgstr "BankID på denna enhet"
 
@@ -217,104 +217,104 @@ msgstr "Vill du logga in eller signera med ett BankID på denna dator eller med 
 msgid "Unknown Action"
 msgstr "Okänd händelse"
 
-#: ../include/classes.php:647
-#: ../include/classes.php:671
+#: ../include/classes.php:662
+#: ../include/classes.php:686
 msgid "The validation was successful! You are being logged in..."
 msgstr "Valideringen lyckades! Du loggas nu in..."
 
-#: ../include/classes.php:654
-#: ../include/classes.php:678
+#: ../include/classes.php:669
+#: ../include/classes.php:693
 msgid "Something went wrong when trying to login. If the problem persists, please contact an admin."
 msgstr "Något gick fel vid inloggningen. Om problemet kvarstår, var vänlig kontakta en administratör."
 
-#: ../include/classes.php:661
+#: ../include/classes.php:676
 msgid "The social security number that you are trying to login with is not connected to any user. Please login with your username and password, go to your Profile and add your social security number there."
 msgstr "Personnumret som du försöker logga in med är inte kopplad till någon användare. Var vänlig logga in med ditt användarnamn och lösenord, gå till din profil och fyll i ditt personnummer där."
 
-#: ../include/classes.php:685
-msgid "The social security number that you are trying to login with is not connected to anyone. Please contact an admin."
-msgstr "Personnumret som du försöker logga in med är inte kopplad till någon. Var vänlig kontakt en administratör."
+#: ../include/classes.php:700
+msgid "The social security number that you are logging in with is not connected to anyone with permission. Please contact an admin if you think that there is something wrong."
+msgstr "Personnumret som du loggar in med är inte kopplad till någon med behörighet. Var vänlig kontakt en administratör om du misstänker att något är fel."
 
-#: ../include/classes.php:702
-#: ../include/classes.php:816
-#: ../include/classes.php:868
-#: ../include/classes.php:916
+#: ../include/classes.php:717
+#: ../include/classes.php:831
+#: ../include/classes.php:883
+#: ../include/classes.php:931
 msgid "Social Security Number"
 msgstr "Personnummer"
 
-#: ../include/classes.php:766
+#: ../include/classes.php:781
 msgid "Group"
 msgstr "Grupp"
 
-#: ../include/classes.php:774
+#: ../include/classes.php:789
 msgid "Intent"
 msgstr "Avsiktsförklaring"
 
-#: ../include/classes.php:800
+#: ../include/classes.php:815
 msgid "You have to enter your Social Security Number"
 msgstr "Du behöver fylla i ditt personnummer"
 
-#: ../include/classes.php:805
+#: ../include/classes.php:820
 msgid "You have to enter your Social Security Number to be able to login in the future"
 msgstr "Du behöver fylla i ditt personnummer för att kunna logga in i framtiden"
 
-#: ../include/classes.php:827
-#: ../include/classes.php:874
-#: ../include/classes.php:881
-#: ../include/classes.php:917
+#: ../include/classes.php:842
+#: ../include/classes.php:889
+#: ../include/classes.php:896
+#: ../include/classes.php:932
 msgid "YYMMDD-XXXX"
 msgstr "ÅÅMMDD-XXXX"
 
-#: ../include/classes.php:859
+#: ../include/classes.php:874
 msgid "Indicates whether you are logged in"
 msgstr "Visar om du är inloggad"
 
-#: ../include/classes.php:987
+#: ../include/classes.php:1034
 msgid "To view the content on this page you have to first login."
 msgstr "För att kunna se innehållet på denna sida så behöver du först logga in."
 
-#: ../include/classes.php:990
+#: ../include/classes.php:1037
 msgid "Log in"
 msgstr "Logga in"
 
-#: ../include/classes.php:1058
+#: ../include/classes.php:1134
 #, php-format
 msgid "The login took too long. %sPlease try again%s."
 msgstr "Inloggningen tog för lång tid. %sVar vänlig försök igen%s."
 
-#: ../include/classes.php:1090
+#: ../include/classes.php:1166
 msgid "Use BankID"
 msgstr "Använd BankID"
 
-#: ../include/classes.php:1093
+#: ../include/classes.php:1169
 msgid "Use E-mail & Password"
 msgstr "Använd e-post och lösenord"
 
 #: ../include/api/index.php:84
 #: ../include/api/index.php:110
-#: ../include/api/index.php:167
-#: ../include/api/index.php:193
-#: ../include/api/index.php:219
-#: ../include/api/index.php:286
+#: ../include/api/index.php:168
+#: ../include/api/index.php:194
+#: ../include/api/index.php:220
+#: ../include/api/index.php:287
 msgid "Unknown Error"
 msgstr "Okänt fel"
 
 #: ../include/api/index.php:101
-#: ../include/api/index.php:210
+#: ../include/api/index.php:211
 #, php-format
 msgid "Click to open %s app..."
 msgstr "Klicka för att öppna %s-appen..."
 
-#: ../include/api/index.php:152
-#: ../include/api/index.php:271
+#: ../include/api/index.php:153
+#: ../include/api/index.php:272
 msgid "Login attempt timed out. Please try again."
 msgstr "Inloggningsförsöket tog för lång tid. Var vänlig försök igen."
 
-#: ../include/api/index.php:259
+#: ../include/api/index.php:260
 msgid "The signature was successful!"
 msgstr "Signaturen lyckades!"
 
-#: ../include/api/index.php:265
+#: ../include/api/index.php:266
 msgid "The social security number that you are trying to sign with is not connected to any user. Please login with your username and password, go to your Profile and add your social security number there."
 msgstr "Personnumret som du försöker logga in med är inte kopplad till någon användare. Var vänlig logga in med ditt användarnamn och lösenord, gå till din profil och fyll i ditt personnummer där."
 

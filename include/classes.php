@@ -616,27 +616,27 @@ class mf_bank_id
 		return false;
 	}
 
-	function address_exists($birth_date, $post_id)
+	function address_exists($data)
 	{
 		global $wpdb;
 
-		if($birth_date != '')
+		if($data['ssn'] != '')
 		{
 			$group_id = 0;
 
-			if($post_id > 0)
+			if($data['post_id'] > 0)
 			{
-				$group_id = get_post_meta($post_id, $this->meta_prefix.'group_id', true);
+				$group_id = get_post_meta($data['post_id'], $this->meta_prefix.'group_id', true);
 			}
 
 			if($group_id > 0)
 			{
-				$intAddressID = $wpdb->get_var($wpdb->prepare("SELECT addressID FROM ".$wpdb->prefix."address INNER JOIN ".$wpdb->prefix."address2group USING (addressID) WHERE groupID = '%d' AND addressBirthDate = %s AND addressDeleted = '0'", $group_id, $birth_date));
+				$intAddressID = $wpdb->get_var($wpdb->prepare("SELECT addressID FROM ".$wpdb->prefix."address INNER JOIN ".$wpdb->prefix."address2group USING (addressID) WHERE groupID = '%d' AND addressBirthDate = %s AND addressDeleted = '0'", $group_id, $data['ssn']));
 			}
 
 			else
 			{
-				$intAddressID = $wpdb->get_var($wpdb->prepare("SELECT addressID FROM ".$wpdb->prefix."address WHERE addressBirthDate = %s AND addressDeleted = '0'", $birth_date));
+				$intAddressID = $wpdb->get_var($wpdb->prepare("SELECT addressID FROM ".$wpdb->prefix."address WHERE addressBirthDate = %s AND addressDeleted = '0'", $data['ssn']));
 			}
 
 			return ($intAddressID > 0);
@@ -678,9 +678,9 @@ class mf_bank_id
 			break;
 
 			case 'address':
-				if($this->address_exists($data['ssn'], $data['post_id']))
+				if($this->address_exists($data))
 				{
-					if($this->login_address($data['post_id']))
+					if($this->login_address($data))
 					{
 						$json_output['success'] = 1;
 						$json_output['msg'] = __("The validation was successful! You are being logged in...", 'lang_bank_id');
@@ -697,7 +697,7 @@ class mf_bank_id
 				else
 				{
 					$json_output['error'] = 1;
-					$json_output['msg'] = __("The social security number that you are trying to login with is not connected to anyone. Please contact an admin.", 'lang_bank_id');
+					$json_output['msg'] = __("The social security number that you are logging in with is not connected to anyone with permission. Please contact an admin if you think that there is something wrong.", 'lang_bank_id');
 				}
 			break;
 		}
@@ -971,24 +971,54 @@ class mf_bank_id
 		return $is_protected;
 	}
 
-	function login_address($post_id)
+	function get_cookie_value($data)
 	{
-		$cookie_name = $this->meta_prefix.COOKIEHASH;
-		$cookie_value = "address_ssn_".$post_id."_".apply_filters('get_current_visitor_ip', "");
+		$out = "";
 
-		setcookie($cookie_name, md5($cookie_value), strtotime("+1 week"), COOKIEPATH);
+		$cookie_name = $this->meta_prefix.'address_ssn_'.md5(COOKIEHASH).'_'.$data['post_id'];
+
+		if(isset($_COOKIE[$cookie_name]))
+		{
+			$out_temp = $_COOKIE[$cookie_name];
+
+			list($hash, $hmac) = explode("_", $out_temp);
+
+			if($hmac == hash_hmac('sha256', $hash, COOKIEHASH))
+			{
+				$out = $out_temp;
+			}
+		}
+
+		return $out;
+	}
+
+	function generate_cookie_value($out)
+	{
+		if($out != '')
+		{
+			$out = hash('sha256', $out);
+		}
+
+		$out .= "_".hash_hmac('sha256', $out, COOKIEHASH);
+
+		return $out;
+	}
+
+	function login_address($data)
+	{
+		$cookie_name = $this->meta_prefix.'address_ssn_'.md5(COOKIEHASH).'_'.$data['post_id'];
+		$cookie_value = $this->generate_cookie_value($data['ssn']);
+
+		setcookie($cookie_name, $cookie_value, strtotime("+1 week"), COOKIEPATH);
 
 		return true;
 	}
 
 	function is_address_logged_in($post_id)
 	{
-		$cookie_name = $this->meta_prefix.COOKIEHASH;
-		$cookie_value = "address_ssn_".$post_id."_".apply_filters('get_current_visitor_ip', "");
+		$cookie_value = $this->get_cookie_value(array('post_id' => $post_id));
 
-		$cookie_value_md5 = (isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : '');
-
-		return ($cookie_value_md5 == md5($cookie_value));
+		return ($cookie_value != '');
 	}
 
 	function the_content($html)
@@ -1009,6 +1039,25 @@ class mf_bank_id
 		}
 
 		return $html;
+	}
+
+	function get_visitor_fingerprint($out, $data = [])
+	{
+		global $post;
+
+		$data['post_id'] = $post->ID;
+
+		if(isset($data['post_id']) && $data['post_id'] > 0)
+		{
+			$cookie_value = $this->get_cookie_value(array('post_id' => $data['post_id']));
+
+			if($cookie_value != '')
+			{
+				$out = $cookie_value;
+			}
+		}
+
+		return $out;
 	}
 
 	function filter_user_allowed_to_login($is_allowed, $username)
