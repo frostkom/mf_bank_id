@@ -1,8 +1,8 @@
-.widget.login_form form#loginform
+/*.widget.login_form form#loginform
 {
 	text-align: center;
 	width: auto;
-}
+}*/
 
 #loginform #login_ssn
 {
@@ -22,6 +22,7 @@
 	cursor: pointer;
 	margin: 0 auto .5em;
 	padding: .5em 1em;
+	text-align: center;
 	max-width: 18em;
 }
 
@@ -44,17 +45,17 @@
 			box-shadow: none;
 		}
 
-#loginform #login_qr p
+#loginform .bankid_button p
 {
 	margin-bottom: 1em;
 }
 
-#loginform #login_qr .qr_code
+#loginform .bankid_button .qr_code
 {
 	position: relative;
 }
 
-	#loginform #login_qr .qr_code svg.qr_borders
+	#loginform .bankid_button .qr_code svg.qr_borders
 	{
 		left: 0;
 		margin: 0 auto;
@@ -62,27 +63,27 @@
 		right: 0;
 	}
 
-		#loginform #login_qr .qr_code svg.qr_borders path:nth-child(1)
+		#loginform .bankid_button .qr_code svg.qr_borders path:nth-child(1)
 		{
 			transform: translate(19px, 4px) rotate(0deg);
 		}
 
-		#loginform #login_qr .qr_code svg.qr_borders path:nth-child(2)
+		#loginform .bankid_button .qr_code svg.qr_borders path:nth-child(2)
 		{
 			transform: translate(280px, 295px) rotate(180deg);
 		}
 
-		#loginform #login_qr .qr_code svg.qr_borders path:nth-child(3)
+		#loginform .bankid_button .qr_code svg.qr_borders path:nth-child(3)
 		{
 			transform: translate(4px, 280px) rotate(-90deg);
 		}
 
-		#loginform #login_qr .qr_code svg.qr_borders path:nth-child(4)
+		#loginform .bankid_button .qr_code svg.qr_borders path:nth-child(4)
 		{
 			transform: translate(295px, 19px) rotate(90deg);
 		}
 
-	#loginform #login_qr .qr_code img, #loginform #login_qr .qr_code svg:not(.qr_borders)
+	#loginform .bankid_button .qr_code img, #loginform .bankid_button .qr_code svg:not(.qr_borders)
 	{
 		height: 100%;
 		width: 100%;
@@ -99,7 +100,7 @@
 	background: rgba(0, 0, 0, .05);
 	border-radius: .5em;
 	padding: 1.5em 1.5em 1em;
-	width: 400px;
+	/*width: 400px;*/
 }
 
 	.widget.login_form #loginform .form_button, .widget.login_form #loginform .wp-block-button
