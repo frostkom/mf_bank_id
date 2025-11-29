@@ -21,7 +21,6 @@ if(!isset($obj_bank_id))
 }
 
 $action = check_var('action');
-//$order_ref = check_var('orderref');
 
 list($upload_path, $upload_url) = get_uploads_folder();
 
@@ -81,7 +80,7 @@ switch($action)
 			$message_arr = json_decode($e->getMessage());
 
 			$json_output['error'] = 1;
-			$json_output['msg'] = (isset($message_arr->response) ? $message_arr->response : __("Unknown Error", 'lang_bank_id'));
+			$json_output['msg'] = "Exception: ".(isset($message_arr->response) ? $message_arr->response : __("Unknown Error", 'lang_bank_id'));
 		}
 	break;
 
@@ -107,7 +106,7 @@ switch($action)
 			$message_arr = json_decode($e->getMessage());
 
 			$json_output['error'] = 1;
-			$json_output['msg'] = (isset($message_arr->response) ? $message_arr->response : __("Unknown Error", 'lang_bank_id'));
+			$json_output['msg'] = "Exception: ".(isset($message_arr->response) ? $message_arr->response : __("Unknown Error", 'lang_bank_id'));
 		}
 	break;
 
@@ -134,7 +133,7 @@ switch($action)
 
 					else
 					{
-						$json_output['msg'] = $response->hintCode;
+						$json_output['msg'] = "Pending: ".$response->hintCode;
 					}
 				break;
 
@@ -155,7 +154,7 @@ switch($action)
 
 				default:
 					$json_output['error'] = $json_output['retry'] = 1;
-					$json_output['msg'] = $response->status;
+					$json_output['msg'] = "Default: ".$response->status;
 				break;
 			}
 		}
@@ -165,7 +164,7 @@ switch($action)
 			$message_arr = json_decode($e->getMessage());
 
 			$json_output['error'] = 1;
-			$json_output['msg'] = (isset($message_arr->response) ? $message_arr->response : __("Unknown Error", 'lang_bank_id'));
+			$json_output['msg'] = "Exception: ".(isset($message_arr->response) ? $message_arr->response : __("Unknown Error", 'lang_bank_id'));
 		}
 	break;
 
@@ -191,7 +190,7 @@ switch($action)
 			$message_arr = json_decode($e->getMessage());
 
 			$json_output['error'] = 1;
-			$json_output['msg'] = (isset($message_arr->response) ? $message_arr->response : __("Unknown Error", 'lang_bank_id'));
+			$json_output['msg'] = "Exception: ".(isset($message_arr->response) ? $message_arr->response : __("Unknown Error", 'lang_bank_id'));
 		}
 	break;
 
@@ -217,7 +216,7 @@ switch($action)
 			$message_arr = json_decode($e->getMessage());
 
 			$json_output['error'] = 1;
-			$json_output['msg'] = (isset($message_arr->response) ? $message_arr->response : __("Unknown Error", 'lang_bank_id'));
+			$json_output['msg'] = "Exception: ".(isset($message_arr->response) ? $message_arr->response : __("Unknown Error", 'lang_bank_id'));
 		}
 	break;
 
@@ -244,7 +243,7 @@ switch($action)
 
 					else
 					{
-						$json_output['msg'] = $response->hintCode;
+						$json_output['msg'] = "Pending: ".$response->hintCode;
 					}
 				break;
 
@@ -274,7 +273,7 @@ switch($action)
 
 				default:
 					$json_output['error'] = $json_output['retry'] = 1;
-					$json_output['msg'] = $response->status;
+					$json_output['msg'] = "Default: ".$response->status;
 				break;
 			}
 		}
@@ -284,7 +283,7 @@ switch($action)
 			$message_arr = json_decode($e->getMessage());
 
 			$json_output['error'] = 1;
-			$json_output['msg'] = (isset($message_arr->response) ? $message_arr->response : __("Unknown Error", 'lang_bank_id'));
+			$json_output['msg'] = "Exception: ".(isset($message_arr->response) ? $message_arr->response : __("Unknown Error", 'lang_bank_id'));
 		}
 	break;
 
