@@ -29,8 +29,8 @@ jQuery(function($)
 		dom_obj_connected = dom_obj_form.children("#login_connected"),
 		dom_obj_sign = dom_obj_form.children("#sign_form"),
 		checkstatus = 0,
-		checkstatus_limit = 7,
-		timeout_time = 3000;
+		checkstatus_limit = 20,
+		timeout_time = 2000;
 
 	function update_notification(type, message)
 	{
