@@ -665,7 +665,13 @@ class mf_bank_id
 					{
 						$json_output['success'] = 1;
 						$json_output['msg'] = __("The validation was successful! You are being logged in...", 'lang_bank_id');
-						$json_output['redirect'] = admin_url();
+
+						$redirect_to = (current_user_can('read') ? admin_url() : home_url());
+
+						$user_data = get_userdata(get_current_user_id());
+						$redirect_to = apply_filters('login_redirect', $redirect_to, $user_data);
+
+						$json_output['redirect'] = $redirect_to;
 					}
 
 					else
