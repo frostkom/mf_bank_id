@@ -598,7 +598,12 @@ class mf_bank_id
 		}
 
 		add_filter('authenticate', array($this, 'allow_programmatic_login'), 10, 3); // hook in earlier than other callbacks to short-circuit them
-		$user = wp_signon(array('user_login' => $username, 'remember' => true));
+
+		$user = wp_signon(array(
+			'user_login' => $username,
+			'remember' => false
+		), is_ssl());
+
 		remove_filter('authenticate', array($this, 'allow_programmatic_login'), 10);
 
 		if(is_a($user, 'WP_User'))
