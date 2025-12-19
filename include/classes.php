@@ -669,7 +669,7 @@ class mf_bank_id
 						$redirect_to = (current_user_can('read') ? admin_url() : home_url());
 
 						$user_data = get_userdata(get_current_user_id());
-						$redirect_to = apply_filters('login_redirect', $redirect_to, $user_data);
+						$redirect_to = apply_filters('filter_login_redirect', $redirect_to, $user_data);
 
 						$json_output['redirect'] = $redirect_to;
 					}
