@@ -770,6 +770,26 @@ class mf_bank_id
 		return $out;
 	}
 
+	function admin_notices()
+	{
+		global $pagenow, $error_text;
+
+		if($pagenow == 'profile.php' && get_the_author_meta('profile_ssn', get_current_user_id()) == '')
+		{
+			if($this->allow_username_login())
+			{
+				$error_text = __("You have to enter your Social Security Number", 'lang_bank_id');
+			}
+
+			else
+			{
+				$error_text = __("You have to enter your Social Security Number to be able to login in the future", 'lang_bank_id');
+			}
+
+			echo get_notification();
+		}
+	}
+
 	function rwmb_meta_boxes($meta_boxes)
 	{
 		if(is_plugin_active("mf_address/index.php"))
@@ -813,26 +833,6 @@ class mf_bank_id
 		}
 
 		return $meta_boxes;
-	}
-
-	function admin_notices()
-	{
-		global $pagenow, $error_text;
-
-		if($pagenow == 'profile.php' && get_the_author_meta('profile_ssn', get_current_user_id()) == '')
-		{
-			if($this->allow_username_login())
-			{
-				$error_text = __("You have to enter your Social Security Number", 'lang_bank_id');
-			}
-
-			else
-			{
-				$error_text = __("You have to enter your Social Security Number to be able to login in the future", 'lang_bank_id');
-			}
-
-			echo get_notification();
-		}
 	}
 
 	function edit_user_profile($user)
