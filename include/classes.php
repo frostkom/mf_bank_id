@@ -584,13 +584,13 @@ class mf_bank_id
 		}
 	}
 
-	function allow_programmatic_login($user, $username, $password)
+	function allow_programmatic_login($user, $user_login, $password)
 	{
-		return get_user_by('login', $username);
+		return get_user_by('login', $user_login);
 	}
 
 	// The same as used in Custom Login
-	function login($username)
+	function login($user_login)
 	{
 		if(is_user_logged_in())
 		{
@@ -600,7 +600,7 @@ class mf_bank_id
 		add_filter('authenticate', array($this, 'allow_programmatic_login'), 10, 3); // hook in earlier than other callbacks to short-circuit them
 
 		$user = wp_signon(array(
-			'user_login' => $username,
+			'user_login' => $user_login,
 			'remember' => false
 		), is_ssl());
 
@@ -1069,13 +1069,21 @@ class mf_bank_id
 		return $out;
 	}
 
-	function filter_user_allowed_to_login($is_allowed, $username)
+	function filter_user_allowed_to_login($is_allowed, $user_login)
 	{
 		if($is_allowed == true)
 		{
-			$user = get_user_by('login', $username);
+			if(strpos($user_login, "@") !== true)
+			{
+				$user_data = get_user_by('email', $user_login);
+			}
 
-			if(isset($user->ID) && $user->ID > 0)
+			else
+			{
+				$user_data = get_user_by('login', $user_login);
+			}
+
+			if(isset($user_data->ID) && $user_data->ID > 0)
 			{
 				$setting_bank_id_login_methods = get_option_or_default('setting_bank_id_login_methods', array());
 
@@ -1086,7 +1094,7 @@ class mf_bank_id
 
 				else
 				{
-					$is_allowed = user_can($user->ID, 'manage_options');
+					$is_allowed = user_can($user_data->ID, 'manage_options');
 				}
 			}
 
