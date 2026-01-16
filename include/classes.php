@@ -625,6 +625,8 @@ class mf_bank_id
 	{
 		global $wpdb;
 
+		$out = false;
+
 		if($data['ssn'] != '')
 		{
 			$group_id = 0;
@@ -636,21 +638,18 @@ class mf_bank_id
 
 			if($group_id > 0)
 			{
-				$intAddressID = $wpdb->get_var($wpdb->prepare("SELECT addressID FROM ".$wpdb->prefix."address INNER JOIN ".$wpdb->prefix."address2group USING (addressID) WHERE groupID = '%d' AND addressBirthDate = %s AND addressDeleted = '0'", $group_id, $data['ssn']));
+				$intAddressID = $wpdb->get_var($wpdb->prepare("SELECT addressID FROM ".$wpdb->prefix."address INNER JOIN ".$wpdb->prefix."address2group USING (addressID) WHERE groupID = '%d' AND addressBirthDate = %s AND addressDeleted = '%d'", $group_id, $data['ssn'], '0'));
 			}
 
 			else
 			{
-				$intAddressID = $wpdb->get_var($wpdb->prepare("SELECT addressID FROM ".$wpdb->prefix."address WHERE addressBirthDate = %s AND addressDeleted = '0'", $data['ssn']));
+				$intAddressID = $wpdb->get_var($wpdb->prepare("SELECT addressID FROM ".$wpdb->prefix."address WHERE addressBirthDate = %s AND addressDeleted = '%d'", $data['ssn'], '0'));
 			}
 
-			return ($intAddressID > 0);
+			$out = ($intAddressID > 0);
 		}
 
-		else
-		{
-			return false;
-		}
+		return $out;
 	}
 
 	function validate_and_login($data, &$json_output)
