@@ -22,7 +22,7 @@ jQuery(function($)
 
 	var dom_obj_choice = dom_obj_form.children("#login_choice"),
 		dom_obj_loading = dom_obj_form.children(".login_loading"),
-		dom_obj_notification = dom_obj_form.children(".notification"),
+		dom_obj_notification = dom_obj_form.children(".login_notification"),
 		dom_obj_fields = dom_obj_form.children("#login_ssn"),
 			dom_obj_user_ssn = dom_obj_fields.find("#user_ssn"),
 		dom_obj_qr = dom_obj_form.children("#login_qr"),
@@ -41,7 +41,7 @@ jQuery(function($)
 			switch(type)
 			{
 				case 'success':
-					dom_obj_notification.html("<div class='success updated'>" + message + "</div>").removeClass('hide');
+					dom_obj_notification.html("<div class='success updated'><p>" + message + "</p></div>").removeClass('hide');
 				break;
 
 				case 'error':

@@ -211,11 +211,13 @@ class mf_bank_id
 		{
 			$this->login_init(array('login_type' => 'user'));
 
+			do_action('load_notification');
+
 			echo "<h3>".__("Sign", 'lang_bank_id')."</h3>
 			<div class='widget login_form'>
 				<div id='loginform'>
 					<div class='login_loading hide'>".apply_filters('get_loading_animation', '', ['class' => "fa-3x"])."</div>
-					<div class='notification hide'></div>
+					<div class='login_notification notification hide'></div>
 					<div id='sign_form'>
 						<div id='sign_qr' class='bankid_button'>
 							<span>".__("Mobile BankID", 'lang_bank_id')."</span>
@@ -1159,8 +1161,10 @@ class mf_bank_id
 
 		if($has_qr_login || $has_connected_login)
 		{
+			do_action('load_notification');
+
 			$out .= "<div class='login_loading hide'>".apply_filters('get_loading_animation', '', ['class' => "fa-3x"])."</div>
-			<div class='notification hide'></div>";
+			<div class='login_notification notification hide'></div>";
 		}
 
 		if($this->allow_username_login() && ($has_qr_login || $has_connected_login))
