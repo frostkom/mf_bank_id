@@ -809,12 +809,17 @@ class mf_bank_id
 			{
 				global $obj_group;
 
-				$arr_fields[] = array(
-					'name' => __("Group", 'lang_bank_id'),
-					'id' => $this->meta_prefix.'group_id',
-					'type' => 'select',
-					'options' => $obj_group->get_for_select(),
-				);
+				$arr_groups = $obj_group->get_for_select();
+
+				if(count($arr_groups) > 0)
+				{
+					$arr_fields[] = array(
+						'name' => __("Group", 'lang_bank_id'),
+						'id' => $this->meta_prefix.'group_id',
+						'type' => 'select',
+						'options' => $arr_groups,
+					);
+				}
 			}
 
 			$arr_fields[] = array(
