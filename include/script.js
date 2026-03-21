@@ -78,7 +78,6 @@ jQuery(function($)
 		{
 			url: script_bank_id.plugin_url + 'api/',
 			type: 'post',
-			/*cache: false,*/
 			dataType: 'json',
 			data: {
 				action: 'ssc_check',
