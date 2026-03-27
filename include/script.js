@@ -23,8 +23,8 @@ jQuery(function($)
 	var dom_obj_choice = dom_obj_form.children("#login_choice"),
 		dom_obj_loading = dom_obj_form.children(".login_loading"),
 		dom_obj_notification = dom_obj_form.children(".login_notification"),
-		dom_obj_fields = dom_obj_form.children("#login_ssn"),
-			dom_obj_user_ssn = dom_obj_fields.find("#user_ssn"),
+		/*dom_obj_fields = dom_obj_form.children("#login_ssn"),
+			dom_obj_user_ssn = dom_obj_fields.find("#user_ssn"),*/
 		dom_obj_qr = dom_obj_form.children("#login_qr"),
 		dom_obj_connected = dom_obj_form.children("#login_connected"),
 		dom_obj_sign = dom_obj_form.children("#sign_form"),
@@ -59,7 +59,7 @@ jQuery(function($)
 	{
 		dom_obj_loading.removeClass('hide');
 
-		dom_obj_fields.addClass('hide');
+		/*dom_obj_fields.addClass('hide');*/
 		dom_obj_qr.addClass('hide');
 		dom_obj_connected.addClass('hide');
 		dom_obj_notification.addClass('hide');
@@ -67,7 +67,7 @@ jQuery(function($)
 
 	function reset_form_on_error()
 	{
-		dom_obj_fields.removeClass('hide');
+		/*dom_obj_fields.removeClass('hide');*/
 		dom_obj_qr.removeClass('hide');
 		dom_obj_connected.removeClass('hide');
 	}
@@ -158,8 +158,8 @@ jQuery(function($)
 		dom_obj_password.addClass('hide');
 		dom_obj_remember.addClass('hide');
 		dom_obj_submit.addClass('hide');
-		dom_obj_fields.addClass('hide');
-		dom_obj_user_ssn.addClass('hide');
+		/*dom_obj_fields.addClass('hide');
+		dom_obj_user_ssn.addClass('hide');*/
 		dom_obj_qr.addClass('hide');
 		dom_obj_connected.addClass('hide');
 
@@ -167,14 +167,14 @@ jQuery(function($)
 		{
 			dom_obj_choice.addClass('hide');
 
-			if(dom_obj_fields.length > 0)
+			/*if(dom_obj_fields.length > 0)
 			{
 				dom_obj_remember.removeClass('hide');
 				dom_obj_submit.removeClass('hide');
 			}
 
 			dom_obj_fields.removeClass('hide');
-			dom_obj_user_ssn.removeClass('hide');
+			dom_obj_user_ssn.removeClass('hide');*/
 			dom_obj_qr.removeClass('hide');
 			dom_obj_connected.removeClass('hide');
 
