@@ -77,11 +77,11 @@
 }
 
 /* Public */
-/*.widget.login_form
+.widget.login_form
 {
-	margin: 0 !important;
+	/*margin: 0 !important;*/
 	max-width: 25em;
-}*/
+}
 
 		.widget.login_form #loginform .form_button, .widget.login_form #loginform .wp-block-button
 		{
