@@ -19,7 +19,7 @@ class AbstractResponseModel
 	 * AbstractResponseModel constructor.
 	 * @param ResponseInterface|null $response
 	 */
-	public function __construct(ResponseInterface $response = null)
+	public function __construct(?ResponseInterface $response = null)
 	{
 		if(null !== $response)
 		{
