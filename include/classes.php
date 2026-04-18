@@ -57,9 +57,59 @@ class mf_bank_id
 		$obj_cron->end();
 	}
 
+	function block_render_login_callback($attributes)
+	{
+		if(!isset($attributes['bankid_return_url'])){			$attributes['bankid_return_url'] = "";}
+
+		$out = "";
+
+		//$plugin_include_url = plugin_dir_url(__FILE__);
+		//mf_enqueue_style('style_custom_login_login', $plugin_include_url."style_login.css");
+		//mf_enqueue_script('script_custom_login_login', $plugin_include_url."script_login.js", array('ajax_url' => admin_url('admin-ajax.php')));
+
+		$verification_hash = check_var('verification_hash');
+
+		$out .= "<div".parse_block_attributes(array('class' => "widget bankid_login", 'attributes' => $attributes)).">";
+
+			//$out .= "Test";
+			//$out .= $this->login_form(array('login_type' => 'address', 'print' => false));
+			$out .= "<div class='widget login_form'>
+				<form".apply_filters('get_form_attr', " id='loginform' action='#'").">"
+					.$this->login_form(array('login_type' => 'address', 'print' => false))
+					/*."<div".get_form_button_classes().">"
+						.show_button(array('name' => 'btnBankIDLogin', 'text' => __("Log in", 'lang_bank_id')))
+					."</div>"*/
+				."</form>
+			</div>";
+
+		$out .= "</div>";
+
+		return $out;
+	}
+
+	function enqueue_block_editor_assets()
+	{
+		$plugin_include_url = plugin_dir_url(__FILE__);
+		$plugin_version = get_plugin_version(__FILE__);
+
+		wp_register_script('script_bankid_block_wp', $plugin_include_url."block/script_wp.js", array('wp-blocks', 'wp-element', 'wp-components', 'wp-editor', 'wp-block-editor'), $plugin_version, true);
+
+		wp_localize_script('script_bankid_block_wp', 'script_bankid_block_wp', array(
+			'block_title' => __("BankID Login", 'lang_bank_id'),
+			'block_description' => __("Display a BankID Login", 'lang_bank_id'),
+			'bankid_return_url_label' => __("Return URL", 'lang_bank_id'),
+		));
+	}
+
 	function init()
 	{
 		load_plugin_textdomain('lang_bank_id', false, str_replace("/include", "", dirname(plugin_basename(__FILE__)))."/lang/");
+
+		register_block_type('mf/bankidlogin', array(
+			'editor_script' => 'script_bankid_block_wp',
+			'editor_style' => 'style_base_block_wp',
+			'render_callback' => array($this, 'block_render_login_callback'),
+		));
 	}
 
 	function settings_bank_id()
@@ -217,17 +267,27 @@ class mf_bank_id
 			<div class='widget login_form'>
 				<div id='loginform'>
 					<div class='login_loading hide'>".apply_filters('get_loading_animation', '', ['class' => "fa-3x"])."</div>
-					<div class='login_notification notification hide'></div>
-					<div id='sign_form'>
-						<div id='sign_qr' class='bankid_button'>
-							<span>".__("Mobile BankID", 'lang_bank_id')."</span>
-						</div>
-						<div id='sign_connected' class='bankid_button'>
-							<span>".__("BankID on This Device", 'lang_bank_id')."</span>
-						</div>
-					</div>";
+					<div class='login_notification notification hide'></div>";
 
-				echo "</div>
+					if(is_admin())
+					{
+						echo "<div".apply_filters('get_flex_flow', "", ['class' => ['sign_form tight']]).">";
+					}
+
+					else
+					{
+						echo "<div class='sign_form'>";
+					}
+
+						echo "<div".get_form_button_classes("sign_qr").">"
+							.show_button(array('type' => 'button', 'text' => __("Mobile BankID", 'lang_bank_id'), 'class' => 'button-primary'))
+						."</div>
+						<div".get_form_button_classes("sign_connected is-style-outline").">"
+							.show_button(array('type' => 'button', 'text' => __("BankID on This Device", 'lang_bank_id'), 'class' => 'button-secondary'))
+						."</div>";
+
+					echo "</div>
+				</div>
 			</div>";
 		}
 	}
@@ -1174,28 +1234,40 @@ class mf_bank_id
 
 		if($this->allow_username_login() && ($has_qr_login || $has_connected_login))
 		{
-			$out .= "<div id='login_choice'>
-				<div class='login_choice_bankid bankid_button'>
-					<span>".__("Use BankID", 'lang_bank_id')."</span>
-				</div>
-				<div class='login_choice_username bankid_button'>
-					<span>".__("Use E-mail & Password", 'lang_bank_id')."</span>
-				</div>
+			if(is_admin())
+			{
+				$out .= "<div".apply_filters('get_flex_flow', "", ['class' => ['login_choice', 'tight']]).">";
+			}
+
+			else
+			{
+				$out .= "<div class='login_choice'>";
+			}
+
+				$out .= "<div".get_form_button_classes("login_choice_bankid").">"
+					.show_button(array('type' => 'button', 'text' => __("Use BankID", 'lang_bank_id'), 'class' => 'button-primary'))
+				."</div>
+				<div".get_form_button_classes("login_choice_username is-style-outline").">"
+					.show_button(array('type' => 'button', 'text' => __("Use E-mail & Password", 'lang_bank_id'), 'class' => 'button-secondary'))
+				."</div>
 			</div>";
 		}
 
-		if($has_qr_login)
+		if($has_qr_login || $has_connected_login)
 		{
-			$out .= "<div id='login_qr' class='bankid_button'>
-				<span>".__("Mobile BankID", 'lang_bank_id')."</span>
-			</div>";
-		}
+			if($has_qr_login)
+			{
+				$out .= "<div".get_form_button_classes("login_qr").">"
+					.show_button(array('type' => 'button', 'text' => __("Mobile BankID", 'lang_bank_id'), 'class' => 'button-primary'))
+				."</div>";
+			}
 
-		if($has_connected_login)
-		{
-			$out .= "<div id='login_connected' class='bankid_button'>
-				<span>".__("BankID on This Device", 'lang_bank_id')."</span>
-			</div>";
+			if($has_connected_login)
+			{
+				$out .= "<div".get_form_button_classes("login_connected is-style-outline").">"
+					.show_button(array('type' => 'button', 'text' => __("BankID on This Device", 'lang_bank_id'), 'class' => 'button-secondary'))
+				."</div>";
+			}
 		}
 
 		if($data['print'] == true)

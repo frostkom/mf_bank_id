@@ -3,7 +3,7 @@
 Plugin Name: MF BankID
 Plugin URI: https://github.com/frostkom/mf_bank_id
 Description: Make it possible to use BankID for login and signature
-Version: 2.8.24
+Version: 2.9.1
 Licence: GPLv2 or later
 Author: Martin Fors
 Author URI: https://martinfors.se
@@ -23,6 +23,7 @@ if(!function_exists('is_plugin_active') || function_exists('is_plugin_active') &
 
 	add_action('cron_base', array($obj_bank_id, 'cron_base'), mt_rand(1, 10));
 
+	add_action('enqueue_block_editor_assets', array($obj_bank_id, 'enqueue_block_editor_assets'));
 	add_action('init', array($obj_bank_id, 'init'));
 
 	if(is_admin())
