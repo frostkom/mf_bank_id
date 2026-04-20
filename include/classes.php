@@ -57,32 +57,121 @@ class mf_bank_id
 		$obj_cron->end();
 	}
 
+	function login_init($data = array())
+	{
+		if(!is_array($data)){				$data = array();}
+		if(!isset($data['login_type'])){	$data['login_type'] = 'user';}
+		if(!isset($data['post_id'])){		$data['post_id'] = 0;}
+		if(!isset($data['return_url'])){	$data['return_url'] = '';}
+
+		$plugin_include_url = plugin_dir_url(__FILE__);
+
+		$data_temp = array(
+			'plugin_url' => $plugin_include_url,
+			'allow_username_login' => $this->allow_username_login(),
+			'login_type' => $data['login_type'],
+			'took_too_long_text' => sprintf(__("The login took too long. %sPlease try again%s.", 'lang_bank_id'), "<a href='?try_again'>", "</a>"),
+		);
+
+		if($data['post_id'] > 0)
+		{
+			$data_temp['post_id'] = $data['post_id'];
+		}
+
+		if($data['return_url'] != '')
+		{
+			$data_temp['return_url'] = $data['return_url'];
+		}
+
+		mf_enqueue_style('style_bank_id', $plugin_include_url."style.css");
+		mf_enqueue_script('script_bank_id', $plugin_include_url."script.js", $data_temp);
+	}
+
+	function login_form($data = array())
+	{
+		global $error_text;
+
+		if(!is_array($data)){				$data = array();} // It might come from add_action() and then it is no array
+
+		if(!isset($data['login_type'])){	$data['login_type'] = 'user';}
+		if(!isset($data['print'])){			$data['print'] = true;}
+
+		$this->login_init($data);
+
+		$out = "";
+
+		$setting_bank_id_login_methods = get_option_or_default('setting_bank_id_login_methods', array());
+
+		$has_qr_login = (count($setting_bank_id_login_methods) == 0 || in_array('qr', $setting_bank_id_login_methods));
+		$has_connected_login = (count($setting_bank_id_login_methods) == 0 || in_array('connected', $setting_bank_id_login_methods));
+
+		if($has_qr_login || $has_connected_login)
+		{
+			do_action('load_notification');
+
+			$out .= "<div class='login_loading hide'>".apply_filters('get_loading_animation', '', ['class' => "fa-3x"])."</div>
+			<div class='login_notification notification hide'></div>";
+		}
+
+		if($this->allow_username_login() && ($has_qr_login || $has_connected_login))
+		{
+			$out .= "<div".apply_filters('get_flex_flow', "", ['class' => ['login_choice', 'tight']]).">
+				<div".get_form_button_classes("login_choice_bankid").">"
+					.show_button(array('type' => 'button', 'text' => __("Use BankID", 'lang_bank_id'), 'class' => 'button-primary'))
+				."</div>
+				<div".get_form_button_classes("login_choice_username is-style-outline").">"
+					.show_button(array('type' => 'button', 'text' => __("Use E-mail & Password", 'lang_bank_id'), 'class' => 'button-secondary'))
+				."</div>
+			</div>";
+		}
+
+		if($has_qr_login || $has_connected_login)
+		{
+			if($has_qr_login && $has_connected_login)
+			{
+				$out .= "<div".apply_filters('get_flex_flow', "", ['class' => ['tight']]).">";
+			}
+
+				if($has_qr_login)
+				{
+					$out .= "<div".get_form_button_classes("login_qr").">"
+						.show_button(array('type' => 'button', 'text' => __("Mobile BankID", 'lang_bank_id'), 'class' => 'button-primary'))
+					."</div>";
+				}
+
+				if($has_connected_login)
+				{
+					$out .= "<div".get_form_button_classes("login_connected is-style-outline").">"
+						.show_button(array('type' => 'button', 'text' => __("BankID on This Device", 'lang_bank_id'), 'class' => 'button-secondary'))
+					."</div>";
+				}
+
+			if($has_qr_login && $has_connected_login)
+			{
+				$out .= "</div>";
+			}
+		}
+
+		if($data['print'] == true)
+		{
+			echo $out;
+		}
+
+		else
+		{
+			return $out;
+		}
+	}
+
 	function block_render_login_callback($attributes)
 	{
 		if(!isset($attributes['bankid_return_url'])){			$attributes['bankid_return_url'] = "";}
 
-		$out = "";
-
-		//$plugin_include_url = plugin_dir_url(__FILE__);
-		//mf_enqueue_style('style_custom_login_login', $plugin_include_url."style_login.css");
-		//mf_enqueue_script('script_custom_login_login', $plugin_include_url."script_login.js", array('ajax_url' => admin_url('admin-ajax.php')));
-
-		$verification_hash = check_var('verification_hash');
-
-		$out .= "<div".parse_block_attributes(array('class' => "widget bankid_login", 'attributes' => $attributes)).">";
-
-			//$out .= "Test";
-			//$out .= $this->login_form(array('login_type' => 'address', 'print' => false));
-			$out .= "<div class='widget login_form'>
-				<form".apply_filters('get_form_attr', " id='loginform' action='#'").">"
-					.$this->login_form(array('login_type' => 'address', 'print' => false))
-					/*."<div".get_form_button_classes().">"
-						.show_button(array('name' => 'btnBankIDLogin', 'text' => __("Log in", 'lang_bank_id')))
-					."</div>"*/
-				."</form>
-			</div>";
-
-		$out .= "</div>";
+		$out = "<div".parse_block_attributes(array('class' => "widget login_form", 'attributes' => $attributes)).">
+			<form".apply_filters('get_form_attr', " id='loginform' action='#'").">"
+				.$this->login_form(array('login_type' => 'address', 'return_url' => $attributes['bankid_return_url'], 'print' => false))
+			."</form>
+		</div>";
 
 		return $out;
 	}
@@ -104,6 +193,19 @@ class mf_bank_id
 	function init()
 	{
 		load_plugin_textdomain('lang_bank_id', false, str_replace("/include", "", dirname(plugin_basename(__FILE__)))."/lang/");
+
+		register_post_type($this->post_type, array(
+			'labels' => array(
+				'name' => __("BankID Login", 'lang_bank_id'),
+				'singular_name' => __("BankID Login", 'lang_bank_id'),
+				'menu_name' => __("BankID Login", 'lang_bank_id'),
+				'all_items' => __("List", 'lang_bank_id'),
+				'edit_item' => __("Edit", 'lang_bank_id'),
+				'view_item' => __("View", 'lang_bank_id'),
+				'add_new_item' => __("Add New", 'lang_bank_id'),
+			),
+			'public' => false,
+		));
 
 		register_block_type('mf/bankidlogin', array(
 			'editor_script' => 'script_bankid_block_wp',
@@ -700,18 +802,40 @@ class mf_bank_id
 
 			if($group_id > 0)
 			{
-				$intAddressID = $wpdb->get_var($wpdb->prepare("SELECT addressID FROM ".$wpdb->prefix."address INNER JOIN ".$wpdb->prefix."address2group USING (addressID) WHERE groupID = '%d' AND addressBirthDate = %s AND addressDeleted = '%d'", $group_id, $data['ssn'], '0'));
+				$intAddressID = $wpdb->get_var($wpdb->prepare("SELECT addressID FROM ".$wpdb->prefix."address INNER JOIN ".$wpdb->prefix."address2group USING (addressID) WHERE groupID = '%d' AND (addressBirthDate = %s OR addressBirthDate = %s) AND addressDeleted = '%d'", $group_id, $data['ssn'], substr($data['ssn'], 2), '0'));
 			}
 
 			else
 			{
-				$intAddressID = $wpdb->get_var($wpdb->prepare("SELECT addressID FROM ".$wpdb->prefix."address WHERE addressBirthDate = %s AND addressDeleted = '%d'", $data['ssn'], '0'));
+				$intAddressID = $wpdb->get_var($wpdb->prepare("SELECT addressID FROM ".$wpdb->prefix."address WHERE (addressBirthDate = %s OR addressBirthDate = %s) AND addressDeleted = '%d'", $data['ssn'], substr($data['ssn'], 2), '0'));
 			}
 
 			$out = ($intAddressID > 0);
 		}
 
 		return $out;
+	}
+
+	function generate_cookie_value($out)
+	{
+		if($out != '')
+		{
+			$out = hash('sha256', $out);
+		}
+
+		$out .= "_".hash_hmac('sha256', $out, COOKIEHASH);
+
+		return $out;
+	}
+
+	function login_address($data)
+	{
+		$cookie_name = $this->meta_prefix.'address_ssn_'.md5(COOKIEHASH).'_'.$data['post_id'];
+		$cookie_value = $this->generate_cookie_value($data['ssn']);
+
+		setcookie($cookie_name, $cookie_value, strtotime("+1 week"), COOKIEPATH);
+
+		return true;
 	}
 
 	function validate_and_login($data, &$json_output)
@@ -756,7 +880,26 @@ class mf_bank_id
 					{
 						$json_output['success'] = 1;
 						$json_output['msg'] = __("The validation was successful! You are being logged in...", 'lang_bank_id');
-						$json_output['redirect'] = wp_get_referer();
+
+						if(isset($data['return_url']) && $data['return_url'] != '')
+						{
+							$obj_encryption = new mf_encryption(__CLASS__);
+							$verification_hash = $obj_encryption->encrypt(current_time('mysql'), md5(AUTH_KEY));
+
+							$verification_id = wp_insert_post(array(
+								'post_type' => $this->post_type,
+								'post_status' => 'publish',
+								'post_title' => $verification_hash,
+								'post_content' => 'ready_for_verification',
+							));
+
+							$json_output['redirect'] = $data['return_url'].(strpos($data['return_url'], "?") ? "&" : "?")."success&verification_id=".$verification_id."&verification_hash=".$verification_hash;
+						}
+
+						else
+						{
+							$json_output['redirect'] = wp_get_referer();
+						}
 					}
 
 					else
@@ -812,6 +955,25 @@ class mf_bank_id
 		}
 
 		return $value;
+	}
+
+	function display_post_states($post_states, $post)
+	{
+		$arr_page_types = array(
+			'mf/bankidlogin' => __("BankID Login", 'lang_bank_id'),
+		);
+
+		foreach($arr_page_types as $handle => $label)
+		{
+			if(has_block($handle, $post))
+			{
+				list($prefix, $type) = explode("/", $handle);
+
+				$post_states[$this->meta_prefix.$type] = $label;
+			}
+		}
+
+		return $post_states;
 	}
 
 	function get_intent()
@@ -1069,28 +1231,6 @@ class mf_bank_id
 		return $out;
 	}
 
-	function generate_cookie_value($out)
-	{
-		if($out != '')
-		{
-			$out = hash('sha256', $out);
-		}
-
-		$out .= "_".hash_hmac('sha256', $out, COOKIEHASH);
-
-		return $out;
-	}
-
-	function login_address($data)
-	{
-		$cookie_name = $this->meta_prefix.'address_ssn_'.md5(COOKIEHASH).'_'.$data['post_id'];
-		$cookie_value = $this->generate_cookie_value($data['ssn']);
-
-		setcookie($cookie_name, $cookie_value, strtotime("+1 week"), COOKIEPATH);
-
-		return true;
-	}
-
 	function is_address_logged_in($post_id)
 	{
 		$cookie_value = $this->get_cookie_value(array('post_id' => $post_id));
@@ -1108,10 +1248,10 @@ class mf_bank_id
 				<form".apply_filters('get_form_attr', " id='loginform' action='#'").">
 					<p>".__("To view the content on this page you have to first login.", 'lang_bank_id')."</p>"
 					.$this->login_form(array('login_type' => 'address', 'post_id' => $post->ID, 'print' => false))
-					."<div".get_form_button_classes().">"
+					/*."<div".get_form_button_classes().">"
 						.show_button(array('name' => 'btnBankIDLogin', 'text' => __("Log in", 'lang_bank_id')))
-					."</div>
-				</form>
+					."</div>"*/
+				."</form>
 			</div>";
 		}
 
@@ -1185,99 +1325,6 @@ class mf_bank_id
 			$setting_bank_id_login_methods = get_option_or_default('setting_bank_id_login_methods', array());
 
 			return (count($setting_bank_id_login_methods) == 0 || in_array('username', $setting_bank_id_login_methods));
-		}
-	}
-
-	function login_init($data = array())
-	{
-		if(!is_array($data)){				$data = array();}
-		if(!isset($data['login_type'])){	$data['login_type'] = 'user';}
-		if(!isset($data['post_id'])){		$data['post_id'] = '';}
-
-		$plugin_include_url = plugin_dir_url(__FILE__);
-
-		mf_enqueue_style('style_bank_id', $plugin_include_url."style.css");
-		mf_enqueue_script('script_bank_id', $plugin_include_url."script.js", array(
-			'plugin_url' => $plugin_include_url,
-			'allow_username_login' => $this->allow_username_login(),
-			'login_type' => $data['login_type'],
-			'post_id' => $data['post_id'],
-			'took_too_long_text' => sprintf(__("The login took too long. %sPlease try again%s.", 'lang_bank_id'), "<a href='?try_again'>", "</a>"),
-		));
-	}
-
-	function login_form($data = array())
-	{
-		global $error_text;
-
-		if(!is_array($data)){				$data = array();} // It might come from add_action() and then it is no array
-
-		if(!isset($data['login_type'])){	$data['login_type'] = 'user';}
-		if(!isset($data['print'])){			$data['print'] = true;}
-
-		$this->login_init($data);
-
-		$out = "";
-
-		$setting_bank_id_login_methods = get_option_or_default('setting_bank_id_login_methods', array());
-
-		$has_qr_login = (count($setting_bank_id_login_methods) == 0 || in_array('qr', $setting_bank_id_login_methods));
-		$has_connected_login = (count($setting_bank_id_login_methods) == 0 || in_array('connected', $setting_bank_id_login_methods));
-
-		if($has_qr_login || $has_connected_login)
-		{
-			do_action('load_notification');
-
-			$out .= "<div class='login_loading hide'>".apply_filters('get_loading_animation', '', ['class' => "fa-3x"])."</div>
-			<div class='login_notification notification hide'></div>";
-		}
-
-		if($this->allow_username_login() && ($has_qr_login || $has_connected_login))
-		{
-			if(is_admin())
-			{
-				$out .= "<div".apply_filters('get_flex_flow', "", ['class' => ['login_choice', 'tight']]).">";
-			}
-
-			else
-			{
-				$out .= "<div class='login_choice'>";
-			}
-
-				$out .= "<div".get_form_button_classes("login_choice_bankid").">"
-					.show_button(array('type' => 'button', 'text' => __("Use BankID", 'lang_bank_id'), 'class' => 'button-primary'))
-				."</div>
-				<div".get_form_button_classes("login_choice_username is-style-outline").">"
-					.show_button(array('type' => 'button', 'text' => __("Use E-mail & Password", 'lang_bank_id'), 'class' => 'button-secondary'))
-				."</div>
-			</div>";
-		}
-
-		if($has_qr_login || $has_connected_login)
-		{
-			if($has_qr_login)
-			{
-				$out .= "<div".get_form_button_classes("login_qr").">"
-					.show_button(array('type' => 'button', 'text' => __("Mobile BankID", 'lang_bank_id'), 'class' => 'button-primary'))
-				."</div>";
-			}
-
-			if($has_connected_login)
-			{
-				$out .= "<div".get_form_button_classes("login_connected is-style-outline").">"
-					.show_button(array('type' => 'button', 'text' => __("BankID on This Device", 'lang_bank_id'), 'class' => 'button-secondary'))
-				."</div>";
-			}
-		}
-
-		if($data['print'] == true)
-		{
-			echo $out;
-		}
-
-		else
-		{
-			return $out;
 		}
 	}
 }

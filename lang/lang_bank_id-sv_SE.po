@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-22 05:53+0100\n"
+"POT-Creation-Date: 2026-04-20 09:53-0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Martin Fors\n"
 "Language-Team: \n"
@@ -15,283 +15,292 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../include/classes.php:77
-#: ../include/classes.php:255
-msgid "Certificate File"
-msgstr "Certifikatfil"
-
-#: ../include/classes.php:84
-#: ../include/classes.php:261
-msgid "Expiry Date"
-msgstr "Utgångsdatum"
-
-#: ../include/classes.php:87
-#: ../include/classes.php:267
-#: ../include/classes.php:769
-msgid "Activate"
-msgstr "Aktivera"
-
-#: ../include/classes.php:91
-msgid "Login Methods"
-msgstr "Inloggningssätt"
-
-#: ../include/classes.php:92
-msgid "API Mode"
-msgstr "API-läge"
-
-#: ../include/classes.php:93
-msgid "Login Intent"
-msgstr "Avsiktsförklaring vid inloggning"
-
-#: ../include/classes.php:94
-msgid "Signature Intent"
-msgstr "Avsiktsförklaring vid signatur"
-
-#: ../include/classes.php:111
-#: ../include/classes.php:255
-#: ../include/classes.php:261
-#: ../include/classes.php:267
-#: ../include/classes.php:796
-msgid "BankID"
-msgstr ""
-
-#: ../include/classes.php:124
-#, php-format
-msgid "The file should be a %s file."
-msgstr "Filen bör vara en %s-fil."
-
-#: ../include/classes.php:124
-msgid "Get yours here"
-msgstr "Hämta din här"
-
-#: ../include/classes.php:151
-#, php-format
-msgid "Use the certificate file %s"
-msgstr "Använd certifikatfilen %s"
-
-#: ../include/classes.php:160
-msgid "Username"
-msgstr "Användarnamn"
-
-#: ../include/classes.php:161
-msgid "QR Code"
-msgstr "QR-kod"
-
-#: ../include/classes.php:162
-msgid "Same Device"
-msgstr "Samma enhet"
-
-#: ../include/classes.php:173
-msgid "Test"
-msgstr ""
-
-#: ../include/classes.php:174
-msgid "Live"
-msgstr ""
-
-#: ../include/classes.php:185
-msgid "This is used as a way for you to display to the user why they are logging."
-msgstr "Detta används som ett sätt för er att visa för användaren varför de loggar in."
-
-#: ../include/classes.php:186
-#: ../include/classes.php:189
-#: ../include/classes.php:193
-msgid "Heading"
-msgstr "Rubrik"
-
-#: ../include/classes.php:187
-msgid "Text"
-msgstr ""
-
-#: ../include/classes.php:190
-msgid "Highlight"
-msgstr "Förstärk"
-
-#: ../include/classes.php:191
-#: ../include/classes.php:192
-msgid "List Item"
-msgstr "Listobjekt"
-
-#: ../include/classes.php:194
-msgid "One"
-msgstr "Ett"
-
-#: ../include/classes.php:194
-msgid "Two"
-msgstr "Två"
-
-#: ../include/classes.php:194
-msgid "Three"
-msgstr "Tre"
-
-#: ../include/classes.php:196
-#: ../include/classes.php:197
-msgid "Row"
-msgstr "Rad"
-
-#: ../include/classes.php:196
-#: ../include/classes.php:197
-msgid "Column"
-msgstr "Kolumn"
-
-#: ../include/classes.php:214
-msgid "Sign"
-msgstr "Signera"
-
-#: ../include/classes.php:221
-#: ../include/classes.php:1177
-msgid "Mobile BankID"
-msgstr "Mobilt BankID"
-
-#: ../include/classes.php:224
-#: ../include/classes.php:1184
-msgid "BankID on This Device"
-msgstr "BankID på denna enhet"
-
-#: ../include/classes.php:344
-msgid "Open your BankID app and scan the QR code"
-msgstr "Öppna din BankID-app och scanna QR-koden"
-
-#: ../include/classes.php:466
-msgid "Start your BankID app"
-msgstr "Starta din BankID-app"
-
-#: ../include/classes.php:470
-msgid "The BankID app is not installed. Please contact your internet bank"
-msgstr "BankID-appen är inte installerad. Var vänlig kontakta din internetbank"
-
-#: ../include/classes.php:475
-msgid "Already in Progress. Wait a few seconds and then try again"
-msgstr "Redan pågående. Vänta en stund och försök igen"
-
-#: ../include/classes.php:480
-msgid "Action cancelled. Please try again"
-msgstr "Åtgärden avbröts. Var vänlig försök igen"
-
-#: ../include/classes.php:486
-msgid "Internal error. Please try again"
-msgstr "Internt fel. Var vänlig försök igen"
-
-#: ../include/classes.php:491
-msgid "Action cancelled"
-msgstr "Åtgärden avbröts"
-
-#: ../include/classes.php:496
-msgid "The BankID app is not responding. Please check that the program is started and that you have internet access. If you do not have a valid BankID you can get one from your bank. Try again"
-msgstr "BankID-appen svarar inte. Var vänlig se till så att programmet är startat och att du har tillgång till internet. Om du inte har ett giltigt BankID så kan du hämta ett från din bank. Försök igen"
-
-#: ../include/classes.php:501
-msgid "Enter your security code in the BankID app and select Identify or Sign"
-msgstr "Fyll i din säkerhetskod i BankID-appen och välj att identifiera eller signera"
-
-#: ../include/classes.php:506
-msgid "Internal error. Update your BankID app and try again"
-msgstr "Internt fel. Uppdatera din BankID-app och försök igen"
-
-#: ../include/classes.php:511
-msgid "Trying to start your BankID app"
-msgstr "Försöker starta din BankID-app"
-
-#: ../include/classes.php:519
-msgid "Searching for BankID. It may take a little while..."
-msgstr "Söker efter BankID. Det kan ta en liten stund..."
-
-#: ../include/classes.php:524
-msgid "The BankID you are trying to use is revoked or too old. Please use another BankID or order a new one from your internet bank"
-msgstr "Det BankID som du försöker använda är tillbakadraget eller gammalt. Använd ett annat BankID eller beställ ett nytt från din internetbank"
-
-#: ../include/classes.php:529
-#, php-format
-msgid "The BankID app could not be found on your computer or mobile device. Please install it and order a BankID from your internet bank. Install the app from %s."
-msgstr "BankID-appen kunde inte hittas på denna dator eller mobila enhet. Var vänlig installera den och beställ ett BankID från din internetbank. Installera appen från %s."
-
-#: ../include/classes.php:533
-msgid "Would you like to login or sign with a BankID on this computer or with a Mobile BankID?"
-msgstr "Vill du logga in eller signera med ett BankID på denna dator eller med ett mobilt BankID?"
-
-#: ../include/classes.php:537
-msgid "Would you like to login or sign with a BankID on this device or with a BankID on another device?"
-msgstr "Vill du logga in eller signera med ett BankID på denna dator eller med ett BankID på en annan enhet?"
-
-#: ../include/classes.php:541
-msgid "Unknown Action"
-msgstr "Okänd händelse"
-
-#: ../include/classes.php:662
-#: ../include/classes.php:686
-msgid "The validation was successful! You are being logged in..."
-msgstr "Valideringen lyckades! Du loggas nu in..."
-
-#: ../include/classes.php:669
-#: ../include/classes.php:693
-msgid "Something went wrong when trying to login. If the problem persists, please contact an admin."
-msgstr "Något gick fel vid inloggningen. Om problemet kvarstår, var vänlig kontakta en administratör."
-
-#: ../include/classes.php:676
-msgid "The social security number that you are trying to login with is not connected to any user. Please login with your username and password, go to your Profile and add your social security number there."
-msgstr "Personnumret som du försöker logga in med är inte kopplad till någon användare. Var vänlig logga in med ditt användarnamn och lösenord, gå till din profil och fyll i ditt personnummer där."
-
-#: ../include/classes.php:700
-msgid "The social security number that you are logging in with is not connected to anyone with permission. Please contact an admin if you think that there is something wrong."
-msgstr "Personnumret som du loggar in med är inte kopplad till någon med behörighet. Var vänlig kontakt en administratör om du misstänker att något är fel."
-
-#: ../include/classes.php:717
-#: ../include/classes.php:831
-#: ../include/classes.php:883
-#: ../include/classes.php:931
-msgid "Social Security Number"
-msgstr "Personnummer"
-
-#: ../include/classes.php:781
-msgid "Group"
-msgstr "Grupp"
-
-#: ../include/classes.php:789
-msgid "Intent"
-msgstr "Avsiktsförklaring"
-
-#: ../include/classes.php:815
-msgid "You have to enter your Social Security Number"
-msgstr "Du behöver fylla i ditt personnummer"
-
-#: ../include/classes.php:820
-msgid "You have to enter your Social Security Number to be able to login in the future"
-msgstr "Du behöver fylla i ditt personnummer för att kunna logga in i framtiden"
-
-#: ../include/classes.php:842
-#: ../include/classes.php:889
-#: ../include/classes.php:896
-#: ../include/classes.php:932
-msgid "YYMMDD-XXXX"
-msgstr "ÅÅMMDD-XXXX"
-
-#: ../include/classes.php:874
-msgid "Indicates whether you are logged in"
-msgstr "Visar om du är inloggad"
-
-#: ../include/classes.php:1034
-msgid "To view the content on this page you have to first login."
-msgstr "För att kunna se innehållet på denna sida så behöver du först logga in."
-
-#: ../include/classes.php:1037
-msgid "Log in"
-msgstr "Logga in"
-
-#: ../include/classes.php:1134
+#: ../include/classes.php:73
 #, php-format
 msgid "The login took too long. %sPlease try again%s."
 msgstr "Inloggningen tog för lång tid. %sVar vänlig försök igen%s."
 
-#: ../include/classes.php:1166
+#: ../include/classes.php:120
 msgid "Use BankID"
 msgstr "Använd BankID"
 
-#: ../include/classes.php:1169
+#: ../include/classes.php:123
 msgid "Use E-mail & Password"
 msgstr "Använd e-post och lösenord"
 
-#: ../include/api/index.php:84
-#: ../include/api/index.php:110
+#: ../include/classes.php:138
+#: ../include/classes.php:374
+msgid "Mobile BankID"
+msgstr "Mobilt BankID"
+
+#: ../include/classes.php:145
+#: ../include/classes.php:377
+msgid "BankID on This Device"
+msgstr "BankID på denna enhet"
+
+#: ../include/classes.php:189
+#: ../include/classes.php:935
+msgid "BankID Login"
+msgstr "BankID-inloggning"
+
+#: ../include/classes.php:190
+msgid "Display a BankID Login"
+msgstr "Visa en BankID-inloggning"
+
+#: ../include/classes.php:191
+msgid "Return URL"
+msgstr "Skicka till URL"
+
+#: ../include/classes.php:218
+#: ../include/classes.php:408
+msgid "Certificate File"
+msgstr "Certifikatfil"
+
+#: ../include/classes.php:225
+#: ../include/classes.php:414
+msgid "Expiry Date"
+msgstr "Utgångsdatum"
+
+#: ../include/classes.php:228
+#: ../include/classes.php:420
+#: ../include/classes.php:995
+msgid "Activate"
+msgstr "Aktivera"
+
+#: ../include/classes.php:232
+msgid "Login Methods"
+msgstr "Inloggningssätt"
+
+#: ../include/classes.php:233
+msgid "API Mode"
+msgstr "API-läge"
+
+#: ../include/classes.php:234
+msgid "Login Intent"
+msgstr "Avsiktsförklaring vid inloggning"
+
+#: ../include/classes.php:235
+msgid "Signature Intent"
+msgstr "Avsiktsförklaring vid signatur"
+
+#: ../include/classes.php:252
+#: ../include/classes.php:408
+#: ../include/classes.php:414
+#: ../include/classes.php:420
+#: ../include/classes.php:1027
+msgid "BankID"
+msgstr ""
+
+#: ../include/classes.php:265
+#, php-format
+msgid "The file should be a %s file."
+msgstr "Filen bör vara en %s-fil."
+
+#: ../include/classes.php:265
+msgid "Get yours here"
+msgstr "Hämta din här"
+
+#: ../include/classes.php:292
+#, php-format
+msgid "Use the certificate file %s"
+msgstr "Använd certifikatfilen %s"
+
+#: ../include/classes.php:301
+msgid "Username"
+msgstr "Användarnamn"
+
+#: ../include/classes.php:302
+msgid "QR Code"
+msgstr "QR-kod"
+
+#: ../include/classes.php:303
+msgid "Same Device"
+msgstr "Samma enhet"
+
+#: ../include/classes.php:314
+msgid "Test"
+msgstr ""
+
+#: ../include/classes.php:315
+msgid "Live"
+msgstr ""
+
+#: ../include/classes.php:326
+msgid "This is used as a way for you to display to the user why they are logging."
+msgstr "Detta används som ett sätt för er att visa för användaren varför de loggar in."
+
+#: ../include/classes.php:327
+#: ../include/classes.php:330
+#: ../include/classes.php:334
+msgid "Heading"
+msgstr "Rubrik"
+
+#: ../include/classes.php:328
+msgid "Text"
+msgstr ""
+
+#: ../include/classes.php:331
+msgid "Highlight"
+msgstr "Förstärk"
+
+#: ../include/classes.php:332
+#: ../include/classes.php:333
+msgid "List Item"
+msgstr "Listobjekt"
+
+#: ../include/classes.php:335
+msgid "One"
+msgstr "Ett"
+
+#: ../include/classes.php:335
+msgid "Two"
+msgstr "Två"
+
+#: ../include/classes.php:335
+msgid "Three"
+msgstr "Tre"
+
+#: ../include/classes.php:337
+#: ../include/classes.php:338
+msgid "Row"
+msgstr "Rad"
+
+#: ../include/classes.php:337
+#: ../include/classes.php:338
+msgid "Column"
+msgstr "Kolumn"
+
+#: ../include/classes.php:357
+msgid "Sign"
+msgstr "Signera"
+
+#: ../include/classes.php:497
+msgid "Open your BankID app and scan the QR code"
+msgstr "Öppna din BankID-app och scanna QR-koden"
+
+#: ../include/classes.php:619
+msgid "Start your BankID app"
+msgstr "Starta din BankID-app"
+
+#: ../include/classes.php:623
+msgid "The BankID app is not installed. Please contact your internet bank"
+msgstr "BankID-appen är inte installerad. Var vänlig kontakta din internetbank"
+
+#: ../include/classes.php:628
+msgid "Already in Progress. Wait a few seconds and then try again"
+msgstr "Redan pågående. Vänta en stund och försök igen"
+
+#: ../include/classes.php:633
+msgid "Action cancelled. Please try again"
+msgstr "Åtgärden avbröts. Var vänlig försök igen"
+
+#: ../include/classes.php:639
+msgid "Internal error. Please try again"
+msgstr "Internt fel. Var vänlig försök igen"
+
+#: ../include/classes.php:644
+msgid "Action cancelled"
+msgstr "Åtgärden avbröts"
+
+#: ../include/classes.php:649
+msgid "The BankID app is not responding. Please check that the program is started and that you have internet access. If you do not have a valid BankID you can get one from your bank. Try again"
+msgstr "BankID-appen svarar inte. Var vänlig se till så att programmet är startat och att du har tillgång till internet. Om du inte har ett giltigt BankID så kan du hämta ett från din bank. Försök igen"
+
+#: ../include/classes.php:654
+msgid "Enter your security code in the BankID app and select Identify or Sign"
+msgstr "Fyll i din säkerhetskod i BankID-appen och välj att identifiera eller signera"
+
+#: ../include/classes.php:659
+msgid "Internal error. Update your BankID app and try again"
+msgstr "Internt fel. Uppdatera din BankID-app och försök igen"
+
+#: ../include/classes.php:664
+msgid "Trying to start your BankID app"
+msgstr "Försöker starta din BankID-app"
+
+#: ../include/classes.php:672
+msgid "Searching for BankID. It may take a little while..."
+msgstr "Söker efter BankID. Det kan ta en liten stund..."
+
+#: ../include/classes.php:677
+msgid "The BankID you are trying to use is revoked or too old. Please use another BankID or order a new one from your internet bank"
+msgstr "Det BankID som du försöker använda är tillbakadraget eller gammalt. Använd ett annat BankID eller beställ ett nytt från din internetbank"
+
+#: ../include/classes.php:682
+#, php-format
+msgid "The BankID app could not be found on your computer or mobile device. Please install it and order a BankID from your internet bank. Install the app from %s."
+msgstr "BankID-appen kunde inte hittas på denna dator eller mobila enhet. Var vänlig installera den och beställ ett BankID från din internetbank. Installera appen från %s."
+
+#: ../include/classes.php:686
+msgid "Would you like to login or sign with a BankID on this computer or with a Mobile BankID?"
+msgstr "Vill du logga in eller signera med ett BankID på denna dator eller med ett mobilt BankID?"
+
+#: ../include/classes.php:690
+msgid "Would you like to login or sign with a BankID on this device or with a BankID on another device?"
+msgstr "Vill du logga in eller signera med ett BankID på denna dator eller med ett BankID på en annan enhet?"
+
+#: ../include/classes.php:694
+msgid "Unknown Action"
+msgstr "Okänd händelse"
+
+#: ../include/classes.php:843
+#: ../include/classes.php:873
+msgid "The validation was successful! You are being logged in..."
+msgstr "Valideringen lyckades! Du loggas nu in..."
+
+#: ../include/classes.php:856
+#: ../include/classes.php:880
+msgid "Something went wrong when trying to login. If the problem persists, please contact an admin."
+msgstr "Något gick fel vid inloggningen. Om problemet kvarstår, var vänlig kontakta en administratör."
+
+#: ../include/classes.php:863
+msgid "The social security number that you are trying to login with is not connected to any user. Please login with your username and password, go to your Profile and add your social security number there."
+msgstr "Personnumret som du försöker logga in med är inte kopplad till någon användare. Var vänlig logga in med ditt användarnamn och lösenord, gå till din profil och fyll i ditt personnummer där."
+
+#: ../include/classes.php:887
+msgid "The social security number that you are logging in with is not connected to anyone with permission. Please contact an admin if you think that there is something wrong."
+msgstr "Personnumret som du loggar in med är inte kopplad till någon med behörighet. Var vänlig kontakta en administratör om du misstänker att något är fel."
+
+#: ../include/classes.php:904
+#: ../include/classes.php:1042
+#: ../include/classes.php:1094
+#: ../include/classes.php:1142
+msgid "Social Security Number"
+msgstr "Personnummer"
+
+#: ../include/classes.php:976
+msgid "You have to enter your Social Security Number"
+msgstr "Du behöver fylla i ditt personnummer"
+
+#: ../include/classes.php:981
+msgid "You have to enter your Social Security Number to be able to login in the future"
+msgstr "Du behöver fylla i ditt personnummer för att kunna logga in i framtiden"
+
+#: ../include/classes.php:1011
+msgid "Group"
+msgstr "Grupp"
+
+#: ../include/classes.php:1020
+msgid "Intent"
+msgstr "Avsiktsförklaring"
+
+#: ../include/classes.php:1053
+#: ../include/classes.php:1100
+#: ../include/classes.php:1107
+#: ../include/classes.php:1143
+msgid "YYMMDD-XXXX"
+msgstr "ÅÅMMDD-XXXX"
+
+#: ../include/classes.php:1085
+msgid "Indicates whether you are logged in"
+msgstr "Visar om du är inloggad"
+
+#: ../include/classes.php:1221
+msgid "To view the content on this page you have to first login."
+msgstr "För att kunna se innehållet på denna sida så behöver du först logga in."
+
+#: ../include/api/index.php:83
+#: ../include/api/index.php:109
 #: ../include/api/index.php:168
 #: ../include/api/index.php:194
 #: ../include/api/index.php:220
@@ -299,7 +308,7 @@ msgstr "Använd e-post och lösenord"
 msgid "Unknown Error"
 msgstr "Okänt fel"
 
-#: ../include/api/index.php:101
+#: ../include/api/index.php:100
 #: ../include/api/index.php:211
 #, php-format
 msgid "Click to open %s app..."
@@ -317,6 +326,9 @@ msgstr "Signaturen lyckades!"
 #: ../include/api/index.php:266
 msgid "The social security number that you are trying to sign with is not connected to any user. Please login with your username and password, go to your Profile and add your social security number there."
 msgstr "Personnumret som du försöker logga in med är inte kopplad till någon användare. Var vänlig logga in med ditt användarnamn och lösenord, gå till din profil och fyll i ditt personnummer där."
+
+#~ msgid "Log in"
+#~ msgstr "Logga in"
 
 #~ msgid "or"
 #~ msgstr "eller"

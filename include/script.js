@@ -84,7 +84,8 @@ jQuery(function($)
 			data: {
 				action: 'ssc_check',
 				login_type: script_bank_id.login_type,
-				post_id: script_bank_id.post_id,
+				post_id: (script_bank_id.post_id || ''),
+				return_url: (script_bank_id.return_url || ''),
 				orderref: orderref
 			}
 		})
@@ -197,12 +198,12 @@ jQuery(function($)
 			{
 				url: script_bank_id.plugin_url + 'api/',
 				type: 'post',
-				/*cache: false,*/
 				dataType: 'json',
 				data: {
 					action: 'qr_check',
 					login_type: script_bank_id.login_type,
-					post_id: script_bank_id.post_id
+					post_id: (script_bank_id.post_id || ''),
+					return_url: (script_bank_id.return_url || '')
 				}
 			})
 			.done(function(data, textStatus)
@@ -267,11 +268,11 @@ jQuery(function($)
 			{
 				url: script_bank_id.plugin_url + 'api/',
 				type: 'post',
-				/*cache: false,*/
 				dataType: 'json',
 				data: {
 					action: 'qr_init',
-					post_id: script_bank_id.post_id
+					post_id: (script_bank_id.post_id || ''),
+					return_url: (script_bank_id.return_url || '')
 				}
 			})
 			.done(function(data, textStatus)
@@ -309,12 +310,12 @@ jQuery(function($)
 			{
 				url: script_bank_id.plugin_url + 'api/',
 				type: 'post',
-				/*cache: false,*/
 				dataType: 'json',
 				data: {
 					action: 'connected_check',
 					login_type: script_bank_id.login_type,
-					post_id: script_bank_id.post_id
+					post_id: (script_bank_id.post_id || ''),
+					return_url: (script_bank_id.return_url || '')
 				}
 			})
 			.done(function(data, textStatus)
@@ -374,11 +375,11 @@ jQuery(function($)
 			{
 				url: script_bank_id.plugin_url + 'api/',
 				type: 'post',
-				/*cache: false,*/
 				dataType: 'json',
 				data: {
 					action: 'connected_init',
-					post_id: script_bank_id.post_id
+					post_id: (script_bank_id.post_id || ''),
+					return_url: (script_bank_id.return_url || '')
 				}
 			})
 			.done(function(data, textStatus)
@@ -391,13 +392,16 @@ jQuery(function($)
 					{
 						location.href = data.redirect;
 					}
-
-					dom_obj_connected.html(data.html).removeClass('hide');
-
-					setTimeout(function()
+	
+					else
 					{
-						check_connected_response();
-					}, timeout_time);
+						dom_obj_connected.html(data.html).removeClass('hide');
+
+						setTimeout(function()
+						{
+							check_connected_response();
+						}, timeout_time);
+					}
 				}
 
 				else
@@ -424,12 +428,12 @@ jQuery(function($)
 			{
 				url: script_bank_id.plugin_url + 'api/',
 				type: 'post',
-				/*cache: false,*/
 				dataType: 'json',
 				data: {
 					action: type,
 					login_type: script_bank_id.login_type,
-					post_id: script_bank_id.post_id
+					post_id: (script_bank_id.post_id || ''),
+					return_url: (script_bank_id.return_url || '')
 				}
 			})
 			.done(function(data, textStatus)
@@ -496,7 +500,6 @@ jQuery(function($)
 			{
 				url: script_bank_id.plugin_url + 'api/',
 				type: 'post',
-				/*cache: false,*/
 				dataType: 'json',
 				data: {
 					action: type_init
@@ -513,12 +516,15 @@ jQuery(function($)
 						location.href = data.redirect;
 					}
 
-					dom_obj.html(data.html).removeClass('flex_flow hide');
-
-					setTimeout(function()
+					else
 					{
-						check_sign_response(dom_obj, type_check);
-					}, timeout_time);
+						dom_obj.html(data.html).removeClass('flex_flow hide');
+
+						setTimeout(function()
+						{
+							check_sign_response(dom_obj, type_check);
+						}, timeout_time);
+					}
 				}
 
 				else

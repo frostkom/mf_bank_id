@@ -140,11 +140,12 @@ switch($action)
 				case 'complete':
 					$login_type = check_var('login_type');
 					$post_id = check_var('post_id');
+					$return_url = check_var('return_url');
 
 					$user_ssn = $response->completionData->user->personalNumber;
 					$user_ssn = $obj_bank_id->filter_ssn($user_ssn);
 
-					$obj_bank_id->validate_and_login(array('type' => $login_type, 'post_id' => $post_id, 'ssn' => $user_ssn), $json_output);
+					$obj_bank_id->validate_and_login(array('type' => $login_type, 'post_id' => $post_id, 'return_url' => $return_url, 'ssn' => $user_ssn), $json_output);
 				break;
 
 				case 'NO_CLIENT':
@@ -165,6 +166,37 @@ switch($action)
 
 			$json_output['error'] = 1;
 			$json_output['msg'] = "Exception: ".(isset($message_arr->response) ? $message_arr->response : __("Unknown Error", 'lang_bank_id'));
+		}
+	break;
+
+	case 'login_verification':
+		$verification_id = check_var('verification_id');
+		$verification_hash = check_var('verification_hash');
+
+		$result = $wpdb->get_results($wpdb->prepare("SELECT ID FROM ".$wpdb->posts." WHERE ID = '%d' AND post_type = %s AND post_title = %s AND post_content = %s", $verification_id, $obj_bank_id->post_type, $verification_hash, 'ready_for_verification'));
+
+		if($wpdb->num_rows == 1)
+		{
+			foreach($result as $r)
+			{
+				$post_id = $r->ID;
+
+				wp_update_post(array(
+					'ID' => $post_id,
+					'post_content' => 'already_verified',
+				));
+			}
+
+			header("Status: 200 OK");
+
+			$json_output['success'] = true;
+		}
+
+		else
+		{
+			header("Status: 401 Unauthorized");
+
+			$json_output['success'] = false;
 		}
 	break;
 
