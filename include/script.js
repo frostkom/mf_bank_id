@@ -392,7 +392,7 @@ jQuery(function($)
 					{
 						location.href = data.redirect;
 					}
-	
+
 					else
 					{
 						dom_obj_connected.html(data.html).removeClass('hide');
