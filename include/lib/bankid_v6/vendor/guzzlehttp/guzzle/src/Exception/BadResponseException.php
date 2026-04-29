@@ -13,7 +13,7 @@ class BadResponseException extends RequestException
 		$message,
 		RequestInterface $request,
 		?ResponseInterface $response = null,
-		\Exception $previous = null,
+		?\Exception $previous = null,
 		array $handlerContext = []
 	) {
 		if (null === $response) {
