@@ -60,7 +60,7 @@ class mf_bank_id
 	function login_init($data = array())
 	{
 		if(!is_array($data)){				$data = array();}
-		if(!isset($data['login_type'])){	$data['login_type'] = 'user';}
+		if(!isset($data['validation_type'])){	$data['validation_type'] = 'user';}
 		if(!isset($data['post_id'])){		$data['post_id'] = 0;}
 		if(!isset($data['return_url'])){	$data['return_url'] = '';}
 
@@ -69,7 +69,7 @@ class mf_bank_id
 		$data_temp = array(
 			'plugin_url' => $plugin_include_url,
 			'allow_username_login' => $this->allow_username_login(),
-			'login_type' => $data['login_type'],
+			'validation_type' => $data['validation_type'],
 			'took_too_long_text' => sprintf(__("The login took too long. %sPlease try again%s.", 'lang_bank_id'), "<a href='?try_again'>", "</a>"),
 		);
 
@@ -93,7 +93,7 @@ class mf_bank_id
 
 		if(!is_array($data)){				$data = array();} // It might come from add_action() and then it is no array
 
-		if(!isset($data['login_type'])){	$data['login_type'] = 'user';}
+		if(!isset($data['validation_type'])){	$data['validation_type'] = 'user';}
 		if(!isset($data['print'])){			$data['print'] = true;}
 
 		$this->login_init($data);
@@ -169,7 +169,45 @@ class mf_bank_id
 
 		$out = "<div".parse_block_attributes(array('class' => "widget login_form", 'attributes' => $attributes)).">
 			<form".apply_filters('get_form_attr', " id='loginform' action='#'").">"
-				.$this->login_form(array('login_type' => 'address', 'return_url' => $attributes['bankid_return_url'], 'print' => false))
+				.$this->login_form(array('validation_type' => 'address', 'return_url' => $attributes['bankid_return_url'], 'print' => false))
+			."</form>
+		</div>";
+
+		return $out;
+	}
+
+	function sign_form($data)
+	{
+		if(!isset($data['sign_type'])){		$data['sign_type'] = 'user';}
+		if(!isset($data['print'])){			$data['print'] = true;}
+
+		$out = "<p>Display the content to sign here...</p>";
+
+		do_action('load_notification');
+
+		$this->login_init(array('validation_type' => $data['sign_type']));
+
+		$out .= "<div class='login_loading hide'>".apply_filters('get_loading_animation', '', ['class' => "fa-3x"])."</div>
+		<div class='login_notification notification hide'></div>
+		<div".apply_filters('get_flex_flow', "", ['class' => ['sign_form tight']]).">
+			<div".get_form_button_classes("sign_qr").">"
+				.show_button(array('type' => 'button', 'text' => __("Mobile BankID", 'lang_bank_id'), 'class' => 'button-primary'))
+			."</div>
+			<div".get_form_button_classes("sign_connected is-style-outline").">"
+				.show_button(array('type' => 'button', 'text' => __("BankID on This Device", 'lang_bank_id'), 'class' => 'button-secondary'))
+			."</div>
+		</div>";
+
+		return $out;
+	}
+
+	function block_render_sign_callback($attributes)
+	{
+		if(!isset($attributes['bankid_return_url'])){			$attributes['bankid_return_url'] = "";}
+
+		$out = "<div".parse_block_attributes(array('class' => "widget login_form", 'attributes' => $attributes)).">
+			<div id='loginform'>"
+				.$this->sign_form(array('validation_type' => 'address', 'return_url' => $attributes['bankid_return_url'], 'print' => false))
 			."</form>
 		</div>";
 
@@ -187,6 +225,8 @@ class mf_bank_id
 			'block_title' => __("BankID Login", 'lang_bank_id'),
 			'block_description' => __("Display a BankID Login", 'lang_bank_id'),
 			'bankid_return_url_label' => __("Return URL", 'lang_bank_id'),
+			'block_title_sign' => __("BankID Signature", 'lang_bank_id'),
+			'block_description_sign' => __("Display a BankID Signature", 'lang_bank_id'),
 		));
 	}
 
@@ -211,6 +251,12 @@ class mf_bank_id
 			'editor_script' => 'script_bankid_block_wp',
 			'editor_style' => 'style_base_block_wp',
 			'render_callback' => array($this, 'block_render_login_callback'),
+		));
+
+		register_block_type('mf/bankidsign', array(
+			'editor_script' => 'script_bankid_block_wp',
+			'editor_style' => 'style_base_block_wp',
+			'render_callback' => array($this, 'block_render_sign_callback'),
 		));
 	}
 
@@ -359,39 +405,15 @@ class mf_bank_id
 
 		echo show_textarea(array('name' => $setting_key, 'value' => $option));
 
-		if(IS_SUPER_ADMIN && $option != '')
+		/*if(IS_SUPER_ADMIN && $option != '')
 		{
-			$this->login_init(array('login_type' => 'user'));
-
-			do_action('load_notification');
-
 			echo "<h3>".__("Sign", 'lang_bank_id')."</h3>
 			<div class='widget login_form'>
-				<div id='loginform'>
-					<div class='login_loading hide'>".apply_filters('get_loading_animation', '', ['class' => "fa-3x"])."</div>
-					<div class='login_notification notification hide'></div>";
-
-					if(is_admin())
-					{
-						echo "<div".apply_filters('get_flex_flow', "", ['class' => ['sign_form tight']]).">";
-					}
-
-					else
-					{
-						echo "<div class='sign_form'>";
-					}
-
-						echo "<div".get_form_button_classes("sign_qr").">"
-							.show_button(array('type' => 'button', 'text' => __("Mobile BankID", 'lang_bank_id'), 'class' => 'button-primary'))
-						."</div>
-						<div".get_form_button_classes("sign_connected is-style-outline").">"
-							.show_button(array('type' => 'button', 'text' => __("BankID on This Device", 'lang_bank_id'), 'class' => 'button-secondary'))
-						."</div>";
-
-					echo "</div>
-				</div>
+				<div id='loginform'>"
+					.$this->sign_form()
+				."</div>
 			</div>";
-		}
+		}*/
 	}
 
 	function admin_init()
@@ -838,9 +860,60 @@ class mf_bank_id
 		return true;
 	}
 
+	function save_verification($data)
+	{
+		$obj_encryption = new mf_encryption(__CLASS__);
+		$verification_hash = $obj_encryption->encrypt(current_time('mysql'), md5(AUTH_KEY));
+
+		$arr_meta_input = array(
+			$this->meta_prefix.'action_type' => $data['action_type'],
+			$this->meta_prefix.'validation_type' => $data['validation_type'],
+		);
+
+		if(isset($data['response']))
+		{
+			//$response->completionData->user->name, $response->completionData->user->givenName, $response->completionData->user->surname, $response->completionData->device->ipAddress, $response->completionData->signature, $response->completionData->ocspResponse
+
+			if(isset($data['reponse']['completionData']['user']['name']))
+			{
+				$arr_meta_input[$this->meta_prefix.'first_name'] = $data['reponse']['completionData']['user']['name'];
+			}
+
+			if(isset($data['reponse']['completionData']['user']['surname']))
+			{
+				$arr_meta_input[$this->meta_prefix.'last_name'] = $data['reponse']['completionData']['user']['surname'];
+			}
+
+			if(isset($data['reponse']['completionData']['device']['ipAddress']))
+			{
+				$arr_meta_input[$this->meta_prefix.'ip_address'] = $data['reponse']['completionData']['device']['ipAddress'];
+			}
+
+			if(isset($data['reponse']['completionData']['signature']))
+			{
+				$arr_meta_input[$this->meta_prefix.'signature'] = $data['reponse']['completionData']['signature'];
+			}
+
+			if(isset($data['reponse']['completionData']['user']['name']))
+			{
+				$arr_meta_input[$this->meta_prefix.'ocspResponse'] = $data['reponse']['completionData']['ocspResponse'];
+			}
+		}
+
+		$verification_id = wp_insert_post(array(
+			'post_type' => $this->post_type,
+			'post_status' => 'publish',
+			'post_title' => $verification_hash,
+			'post_content' => 'ready_for_verification',
+			'meta_input' => apply_filters('filter_meta_input', $arr_meta_input),
+		));
+
+		return $data['return_url'].(strpos($data['return_url'], "?") ? "&" : "?")."success&verification_id=".$verification_id."&verification_hash=".$verification_hash;
+	}
+
 	function validate_and_login($data, &$json_output)
 	{
-		switch($data['type'])
+		switch($data['validation_type'])
 		{
 			default:
 			case 'user':
@@ -851,12 +924,20 @@ class mf_bank_id
 						$json_output['success'] = 1;
 						$json_output['msg'] = __("The validation was successful! You are being logged in...", 'lang_bank_id');
 
-						$redirect_to = (current_user_can('read') ? admin_url() : home_url());
+						if(isset($data['return_url']) && $data['return_url'] != '')
+						{
+							$json_output['redirect'] = $this->save_verification($data);
+						}
 
-						$user_data = get_userdata(get_current_user_id());
-						$redirect_to = apply_filters('filter_login_redirect', $redirect_to, $user_data);
+						else
+						{
+							$redirect_to = (current_user_can('read') ? admin_url() : home_url());
 
-						$json_output['redirect'] = $redirect_to;
+							$user_data = get_userdata(get_current_user_id());
+							$redirect_to = apply_filters('filter_login_redirect', $redirect_to, $user_data);
+
+							$json_output['redirect'] = $redirect_to;
+						}
 					}
 
 					else
@@ -883,17 +964,7 @@ class mf_bank_id
 
 						if(isset($data['return_url']) && $data['return_url'] != '')
 						{
-							$obj_encryption = new mf_encryption(__CLASS__);
-							$verification_hash = $obj_encryption->encrypt(current_time('mysql'), md5(AUTH_KEY));
-
-							$verification_id = wp_insert_post(array(
-								'post_type' => $this->post_type,
-								'post_status' => 'publish',
-								'post_title' => $verification_hash,
-								'post_content' => 'ready_for_verification',
-							));
-
-							$json_output['redirect'] = $data['return_url'].(strpos($data['return_url'], "?") ? "&" : "?")."success&verification_id=".$verification_id."&verification_hash=".$verification_hash;
+							$json_output['redirect'] = $this->save_verification($data);
 						}
 
 						else
@@ -961,6 +1032,7 @@ class mf_bank_id
 	{
 		$arr_page_types = array(
 			'mf/bankidlogin' => __("BankID Login", 'lang_bank_id'),
+			'mf/bankidsign' => __("BankID Signature", 'lang_bank_id'),
 		);
 
 		foreach($arr_page_types as $handle => $label)
@@ -1247,7 +1319,7 @@ class mf_bank_id
 			$html = "<div class='widget login_form'>
 				<form".apply_filters('get_form_attr', " id='loginform' action='#'").">
 					<p>".__("To view the content on this page you have to first login.", 'lang_bank_id')."</p>"
-					.$this->login_form(array('login_type' => 'address', 'post_id' => $post->ID, 'print' => false))
+					.$this->login_form(array('validation_type' => 'address', 'post_id' => $post->ID, 'print' => false))
 					/*."<div".get_form_button_classes().">"
 						.show_button(array('name' => 'btnBankIDLogin', 'text' => __("Log in", 'lang_bank_id')))
 					."</div>"*/

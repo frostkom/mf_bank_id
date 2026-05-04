@@ -8,6 +8,7 @@ jQuery(function($)
 			dom_obj_password = $("#user_pass").parent(".form_password"),
 			dom_obj_remember = dom_obj_form.find("#rememberme").parent(".form_checkbox"),
 			/*dom_obj_submit = dom_obj_form.find(".form_button, .wp-block-button"),*/
+			dom_obj_submit = dom_obj_form.find(".submit"),
 			dom_obj_forgot_password_link = dom_obj_form.next("p#lost_password_link");
 	}
 
@@ -16,7 +17,7 @@ jQuery(function($)
 		var dom_obj_username = $("#user_login").parent("p"),
 			dom_obj_password = $("#user_pass").parent(".wp-pwd").parent(".user-pass-wrap"),
 			dom_obj_remember = dom_obj_form.find(".forgetmenot"),
-			/*dom_obj_submit = dom_obj_form.find(".submit"),*/
+			dom_obj_submit = dom_obj_form.find(".submit"),
 			dom_obj_forgot_password_link = dom_obj_form.next("p#nav");
 	}
 
@@ -83,7 +84,7 @@ jQuery(function($)
 			dataType: 'json',
 			data: {
 				action: 'ssc_check',
-				login_type: script_bank_id.login_type,
+				validation_type: script_bank_id.validation_type,
 				post_id: (script_bank_id.post_id || ''),
 				return_url: (script_bank_id.return_url || ''),
 				orderref: orderref
@@ -150,7 +151,7 @@ jQuery(function($)
 		dom_obj_username.addClass('hide');
 		dom_obj_password.addClass('hide');
 		dom_obj_remember.addClass('hide');
-		/*dom_obj_submit.addClass('hide');*/
+		dom_obj_submit.addClass('hide');
 		dom_obj_actions.addClass('hide');
 		dom_obj_forgot_password_link.addClass('hide');
 	}
@@ -161,7 +162,7 @@ jQuery(function($)
 		dom_obj_username.addClass('hide');
 		dom_obj_password.addClass('hide');
 		dom_obj_remember.addClass('hide');
-		/*dom_obj_submit.addClass('hide');*/
+		dom_obj_submit.addClass('hide');
 		dom_obj_actions.addClass('hide');
 		dom_obj_qr.addClass('hide');
 		dom_obj_connected.addClass('hide');
@@ -182,7 +183,7 @@ jQuery(function($)
 			dom_obj_username.removeClass('hide');
 			dom_obj_password.removeClass('hide');
 			dom_obj_remember.removeClass('hide');
-			/*dom_obj_submit.removeClass('hide');*/
+			dom_obj_submit.removeClass('hide');
 			dom_obj_actions.removeClass('hide');
 
 			return false;
@@ -201,7 +202,7 @@ jQuery(function($)
 				dataType: 'json',
 				data: {
 					action: 'qr_check',
-					login_type: script_bank_id.login_type,
+					validation_type: script_bank_id.validation_type,
 					post_id: (script_bank_id.post_id || ''),
 					return_url: (script_bank_id.return_url || '')
 				}
@@ -313,7 +314,7 @@ jQuery(function($)
 				dataType: 'json',
 				data: {
 					action: 'connected_check',
-					login_type: script_bank_id.login_type,
+					validation_type: script_bank_id.validation_type,
 					post_id: (script_bank_id.post_id || ''),
 					return_url: (script_bank_id.return_url || '')
 				}
@@ -431,7 +432,7 @@ jQuery(function($)
 				dataType: 'json',
 				data: {
 					action: type,
-					login_type: script_bank_id.login_type,
+					validation_type: script_bank_id.validation_type,
 					post_id: (script_bank_id.post_id || ''),
 					return_url: (script_bank_id.return_url || '')
 				}
