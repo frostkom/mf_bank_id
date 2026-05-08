@@ -1209,7 +1209,7 @@ class mf_bank_id
 		}
 	}
 
-	function user_register($user_id, $password = '', $meta = array())
+	function user_register($user_id, $password = '', $meta = [])
 	{
 		global $wpdb;
 
