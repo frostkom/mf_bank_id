@@ -3,6 +3,11 @@
 	margin: .5em 0;
 }
 
+#loginform .button-primary
+{
+	float: none;
+}
+
 #loginform .qr_code
 {
 	position: relative;
