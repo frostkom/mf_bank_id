@@ -2,6 +2,7 @@
 {
 	var el = wp.element.createElement,
 		registerBlockType = wp.blocks.registerBlockType,
+		SelectControl = wp.components.SelectControl,
 		TextControl = wp.components.TextControl,
 		InspectorControls = wp.blockEditor.InspectorControls;
 
@@ -22,6 +23,11 @@
 			{
 				'type': 'string',
 				'default': ''
+			},
+			'bankid_return_ssn':
+			{
+				'type': 'string',
+				'default': 'yes'
 			}
 		},
 		'supports':
@@ -69,6 +75,18 @@
 								onChange: function(value)
 								{
 									props.setAttributes({bankid_return_url: value});
+								}
+							}
+						),
+						el(
+							SelectControl,
+							{
+								label: script_bankid_block_wp.bankid_return_ssn_label,
+								value: props.attributes.news_images,
+								options: convert_php_array_to_block_js(script_bankid_block_wp.yes_no_for_select),
+								onChange: function(value)
+								{
+									props.setAttributes({bankid_return_ssn: value});
 								}
 							}
 						)

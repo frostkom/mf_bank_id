@@ -63,6 +63,7 @@ class mf_bank_id
 		if(!isset($data['validation_type'])){	$data['validation_type'] = 'user';}
 		if(!isset($data['post_id'])){		$data['post_id'] = 0;}
 		if(!isset($data['return_url'])){	$data['return_url'] = '';}
+		if(!isset($data['return_ssn'])){	$data['return_ssn'] = '';}
 
 		$plugin_include_url = plugin_dir_url(__FILE__);
 
@@ -81,6 +82,7 @@ class mf_bank_id
 		if($data['return_url'] != '')
 		{
 			$data_temp['return_url'] = $data['return_url'];
+			$data_temp['return_ssn'] = $data['return_ssn'];
 		}
 
 		mf_enqueue_style('style_bank_id', $plugin_include_url."style.css");
@@ -94,7 +96,7 @@ class mf_bank_id
 		if(!is_array($data)){				$data = array();} // It might come from add_action() and then it is no array
 
 		if(!isset($data['validation_type'])){	$data['validation_type'] = 'user';}
-		if(!isset($data['print'])){			$data['print'] = true;}
+		if(!isset($data['print'])){				$data['print'] = true;}
 
 		$this->login_init($data);
 
@@ -163,13 +165,14 @@ class mf_bank_id
 		}
 	}
 
-	function block_render_login_callback($attributes)
+	function block_render_login_callback($attributes) // The reciever has to check vericiation_id and verification_hash against get_site_url()."/wp-content/plugins/mf_bank_id/include/api/?action=login_verification&verification_id=[verification_id]&verification_hash=[verification_hash]" to be sure that the callback is correct
 	{
 		if(!isset($attributes['bankid_return_url'])){			$attributes['bankid_return_url'] = "";}
+		if(!isset($attributes['bankid_return_ssn'])){			$attributes['bankid_return_ssn'] = 'no';}
 
 		$out = "<div".parse_block_attributes(array('class' => "widget login_form", 'attributes' => $attributes)).">
 			<form".apply_filters('get_form_attr', " id='loginform' action='#'").">"
-				.$this->login_form(array('validation_type' => 'address', 'return_url' => $attributes['bankid_return_url'], 'print' => false))
+				.$this->login_form(array('validation_type' => 'address', 'return_url' => $attributes['bankid_return_url'], 'return_ssn' => $attributes['bankid_return_ssn'], 'print' => false))
 			."</form>
 		</div>";
 
@@ -225,6 +228,8 @@ class mf_bank_id
 			'block_title' => __("BankID Login", 'lang_bank_id'),
 			'block_description' => __("Display a BankID Login", 'lang_bank_id'),
 			'bankid_return_url_label' => __("Return URL", 'lang_bank_id'),
+			'bankid_return_ssn_label' => __("Return Social Security Number", 'lang_bank_id'),
+			'yes_no_for_select' => get_yes_no_for_select(),
 			'block_title_sign' => __("BankID Signature", 'lang_bank_id'),
 			'block_description_sign' => __("Display a BankID Signature", 'lang_bank_id'),
 		));
@@ -908,7 +913,7 @@ class mf_bank_id
 			'meta_input' => apply_filters('filter_meta_input', $arr_meta_input),
 		));
 
-		return $data['return_url'].(strpos($data['return_url'], "?") ? "&" : "?")."success&verification_id=".$verification_id."&verification_hash=".$verification_hash;
+		return $data['return_url'].(strpos($data['return_url'], "?") ? "&" : "?")."success&verification_id=".$verification_id."&verification_hash=".$verification_hash.($data['return_ssn'] == 'yes' ? "&ssn=".$data['ssn'] : "");
 	}
 
 	function validate_and_login($data, &$json_output)

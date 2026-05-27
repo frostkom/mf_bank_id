@@ -141,11 +141,12 @@ switch($action)
 					$validation_type = check_var('validation_type');
 					$post_id = check_var('post_id');
 					$return_url = check_var('return_url');
+					$return_ssn = check_var('return_ssn');
 
 					$user_ssn = $response->completionData->user->personalNumber;
 					$user_ssn = $obj_bank_id->filter_ssn($user_ssn);
 
-					$obj_bank_id->validate_and_login(array('action_type' => 'login', 'validation_type' => $validation_type, 'post_id' => $post_id, 'return_url' => $return_url, 'ssn' => $user_ssn), $json_output);
+					$obj_bank_id->validate_and_login(array('action_type' => 'login', 'validation_type' => $validation_type, 'post_id' => $post_id, 'return_url' => $return_url, 'return_ssn' => $return_ssn, 'ssn' => $user_ssn), $json_output);
 				break;
 
 				case 'NO_CLIENT':
@@ -288,8 +289,9 @@ switch($action)
 						$validation_type = check_var('validation_type');
 						$post_id = check_var('post_id');
 						$return_url = check_var('return_url');
+						$return_ssn = check_var('return_ssn');
 
-						$obj_bank_id->validate_and_login(array('action_type' => 'sign', 'validation_type' => $validation_type, 'post_id' => $post_id, 'return_url' => $return_url, 'ssn' => $user_ssn, 'response' => $response), $json_output);
+						$obj_bank_id->validate_and_login(array('action_type' => 'sign', 'validation_type' => $validation_type, 'post_id' => $post_id, 'return_url' => $return_url, 'return_ssn' => $return_ssn, 'ssn' => $user_ssn, 'response' => $response), $json_output);
 
 						$json_output['success'] = 1;
 						$json_output['msg'] = __("The signature was successful!", 'lang_bank_id');
