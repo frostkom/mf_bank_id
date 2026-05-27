@@ -82,7 +82,7 @@
 							SelectControl,
 							{
 								label: script_bankid_block_wp.bankid_return_ssn_label,
-								value: props.attributes.news_images,
+								value: props.attributes.bankid_return_ssn,
 								options: convert_php_array_to_block_js(script_bankid_block_wp.yes_no_for_select),
 								onChange: function(value)
 								{
